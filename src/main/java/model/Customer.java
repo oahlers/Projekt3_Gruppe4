@@ -1,6 +1,6 @@
 package model;
 
-public class User {
+public class Customer {
     private String id;
     private String firstName;
     private String lastName;
@@ -10,5 +10,6 @@ public class User {
     private String address;
     private String city;
     private String zipCode;
+    private String returnAddress;
     // private Integer creditScore;
 }
