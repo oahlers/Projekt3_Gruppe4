@@ -1,4 +1,4 @@
-package model;
+package com.example.gruppe4_projekt3.model;
 
 public class Car {
     private Integer carId;

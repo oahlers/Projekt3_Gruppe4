@@ -1,4 +1,4 @@
-package model;
+package com.example.gruppe4_projekt3.model;
 
 public class Employee {
     private int employeeId;
