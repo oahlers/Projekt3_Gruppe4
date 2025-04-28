@@ -1,10 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login og Opret Bruger - Bilabonnement</title>
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
+<div class="header">
+    <div class="logo">BILABONNEMENT</div>
+    <nav>
+        <a href="index.html" class="back-btn">Tilbage</a>
+    </nav>
+</div>
 
+<div class="container">
+    <div class="section">
+        <h2>Log ind</h2>
+        <div>
+            <label for="login-employee-id">EmployeeID</label>
+            <input type="text" id="login-employee-id" placeholder="Indtast EmployeeID" required>
+
+            <label for="login-username">Brugernavn</label>
+            <input type="text" id="login-username" placeholder="Indtast brugernavn" required>
+
+            <label for="login-password">Adgangskode</label>
+            <input type="password" id="login-password" placeholder="Indtast adgangskode" required>
+
+            <button onclick="alert('Login-funktionalitet kræver backend-implementering')">Log ind</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Opret bruger</h2>
+        <div>
+            <label for="signup-employee-id">EmployeeID</label>
+            <input type="text" id="signup-employee-id" placeholder="Indtast EmployeeID" required>
+
+            <label for="signup-full-name">Fulde navn</label>
+            <input type="text" id="signup-full-name" placeholder="Indtast fulde navn" required>
+
+            <label for="signup-username">Brugernavn</label>
+            <input type="text" id="signup-username" placeholder="Indtast brugernavn" required>
+
+            <label for="signup-password">Adgangskode</label>
+            <input type="password" id="signup-password" placeholder="Indtast adgangskode" required>
+
+            <button onclick="alert('Opret bruger-funktionalitet kræver backend-implementering')">Opret bruger</button>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
+</div>
 </body>
 </html>
