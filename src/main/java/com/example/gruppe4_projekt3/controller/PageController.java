@@ -19,7 +19,7 @@ public class PageController {
     // Viser login-siden
     @GetMapping("/login")
     public String showLoginPage() {
-        return "login"; // Antager, at login.html ligger i templates/login.html
+        return "Homepage/login"; // Antager, at login.html ligger i templates/login.html
     }
 
     // Viser index-siden efter registrering
