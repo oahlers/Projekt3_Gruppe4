@@ -2,8 +2,26 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
     background-color: #f5f7fa;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #ffffff;
+    color: #666;
+    font-size: 14px;
+    border-top: 1px solid #e0e0e0;
+    margin-top: auto;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Header stilarter (fælles for begge sider) */
@@ -15,6 +33,7 @@ body {
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .header .logo {
     font-size: 24px;
     font-weight: bold;
@@ -31,16 +50,6 @@ body {
     color: #ffffff;
     padding: 8px 15px;
     border-radius: 5px;
-}
-
-/* Footer stilarter (fælles for begge sider) */
-.footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #ffffff;
-    color: #666;
-    font-size: 14px;
-    border-top: 1px solid #e0e0e0;
 }
 
 /* Stilarter for hjemmesiden (index.html) */
