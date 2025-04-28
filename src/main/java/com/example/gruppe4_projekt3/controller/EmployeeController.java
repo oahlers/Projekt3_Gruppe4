@@ -62,7 +62,7 @@ public class EmployeeController {
     }
 
     //Omdirigering til dashboard efter login
-    @GetMapping("/dashboard")
+    @GetMapping("EmployeeLogin/dashboard")
     public String showDashboard(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
