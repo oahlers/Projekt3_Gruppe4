@@ -24,7 +24,7 @@ public class EmployeeRepository {
         try {
             return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Employee.class), employeeId);
         } catch (Exception e) {
-            return null; // Returnerer null, hvis ingen medarbejder findes
+            return null;
         }
     }
 
@@ -34,7 +34,7 @@ public class EmployeeRepository {
         try {
             return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Employee.class), username);
         } catch (Exception e) {
-            return null; // Returnerer null, hvis ingen medarbejder findes
+            return null;
         }
     }
 
@@ -44,7 +44,7 @@ public class EmployeeRepository {
         try {
             return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Employee.class), employeeId, username);
         } catch (Exception e) {
-            return null; // Returnerer null, hvis ingen medarbejder findes
+            return null;
         }
     }
 }

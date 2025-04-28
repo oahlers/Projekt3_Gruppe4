@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS database;
-CREATE DATABASE database;
-USE database;
+DROP DATABASE IF EXISTS bilabonnement;
+CREATE DATABASE bilabonnement;
+USE bilabonnement;
 
 CREATE TABLE car (
                      car_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -31,7 +31,7 @@ CREATE TABLE customer (
                           return_address VARCHAR(100)
 );
 
-CREATE TABLE employee (
+CREATE TABLE employee  (
                           employee_id INT AUTO_INCREMENT PRIMARY KEY,
                           fullname VARCHAR(100) NOT NULL,
                           username VARCHAR(100) NOT NULL UNIQUE,
@@ -39,8 +39,8 @@ CREATE TABLE employee (
 );
 
 
-INSERT INTO employee (username, password, firstname, lastname, user_type)
-VALUES ('user1', 'password1', 'First', 'Last', 'admin');
+INSERT INTO employee (employee_id, username, password, fullname)
+VALUES ('1', 'demo', 'demo', 'Demo demosen');
 
 CREATE TABLE damage_report (
                                report_id INT AUTO_INCREMENT PRIMARY KEY,
