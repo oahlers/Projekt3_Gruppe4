@@ -143,3 +143,61 @@ body {
 .section button:hover {
     background-color: #0056b3;
 }
+
+
+----
+
+
+    /* Skaderapport Form Styling */
+.damage-report-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: 0 auto;
+}
+
+.damage-report-form .form-group {
+    margin-bottom: 15px;
+}
+
+.damage-report-form label {
+    font-weight: bold;
+    color: #003087;
+}
+
+.damage-report-form input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.damage-report-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #003087;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.damage-report-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Detaljer sektion */
+.damage-report-details {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.damage-report-details div {
+    margin-bottom: 10px;
+}
