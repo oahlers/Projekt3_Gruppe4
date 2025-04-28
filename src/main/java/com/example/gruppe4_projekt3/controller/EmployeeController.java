@@ -31,7 +31,7 @@ public class EmployeeController {
             return "redirect:EmployeeLogin/dashboard";
         } else {
             model.addAttribute("loginError", "Ugyldigt EmployeeID, brugernavn eller adgangskode");
-            return "Homepage/login";
+            return "Homepage/index";
         }
     }
 
@@ -44,17 +44,17 @@ public class EmployeeController {
                            Model model) {
         if (password.length() < 8) {
             model.addAttribute("registerError", "Adgangskoden skal være mindst 8 tegn.");
-            return "Homepage/login";
+            return "Homepage/index";
         }
         Employee existingEmployeeById = employeeRepository.findByEmployeeId(employeeId);
         Employee existingEmployeeByUsername = employeeRepository.findByUsername(username);
         if (existingEmployeeById != null) {
             model.addAttribute("registerError", "EmployeeID eksisterer allerede");
-            return "Homepage/login";
+            return "Homepage/index";
         }
         if (existingEmployeeByUsername != null) {
             model.addAttribute("registerError", "Brugernavnet eksisterer allerede");
-            return "Homepage/login";
+            return "Homepage/index";
         }
         Employee newEmployee = new Employee(employeeId, fullName, username, password);
         employeeRepository.save(newEmployee);
