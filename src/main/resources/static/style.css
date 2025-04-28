@@ -201,3 +201,7 @@ body {
 .damage-report-details div {
     margin-bottom: 10px;
 }
+
+.logo {
+    picture-scale: 10%;
+}
