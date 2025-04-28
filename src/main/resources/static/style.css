@@ -17,6 +17,12 @@ body {
     margin-top: auto;
 }
 
+.hero {
+    background: linear-gradient(to right, #e0e7ff, #ffffff);
+    padding: 25px 20px;
+    text-align: center;
+}
+
 .main-content {
     flex: 1;
     display: flex;
@@ -53,11 +59,7 @@ body {
 }
 
 /* Stilarter for hjemmesiden (index.html) */
-.hero {
-    background: linear-gradient(to right, #e0e7ff, #ffffff);
-    padding: 50px 20px;
-    text-align: center;
-}
+
 .hero h1 {
     color: #003087;
     font-size: 36px;
