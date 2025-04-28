@@ -58,7 +58,7 @@ public class EmployeeController {
         }
         Employee newEmployee = new Employee(employeeId, fullName, username, password);
         employeeRepository.save(newEmployee);
-        return "homePage/index";
+        return "HomePage/index";
     }
 
     //Omdirigering til dashboard efter login
@@ -71,4 +71,16 @@ public class EmployeeController {
         model.addAttribute("employee", loggedInEmployee);
         return "EmployeeLogin/dashboard";
     }
+
+
+    @GetMapping("EmployeeLogin/damageReport")
+    public String showDamageReport(HttpSession session, Model model) {
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        if (loggedInEmployee == null) {
+            return "redirect:/auth"; // Omdiriger til login, hvis ikke logget ind
+        }
+        model.addAttribute("employee", loggedInEmployee);
+        return "EmployeeLogin/damageReport"; // Din damage report side
+    }
+
 }
