@@ -31,7 +31,7 @@ CREATE TABLE customer (
                           return_address VARCHAR(100)
 );
 
-CREATE TABLE employee (
+CREATE TABLE employee  (
                           employee_id INT AUTO_INCREMENT PRIMARY KEY,
                           fullname VARCHAR(100) NOT NULL,
                           username VARCHAR(100) NOT NULL UNIQUE,
