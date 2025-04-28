@@ -3,29 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medarbejderportal - Bilabonnement</title>
+    <title>Login og Opret Bruger - Bilabonnement</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <div class="header">
     <div class="logo">BILABONNEMENT</div>
     <nav>
-        <a href="#">Hjem</a>
-        <a href="#">Kontakt</a>
-        <a href="#">Log ud</a>
-        <a href="https://bilabonnement.dk" class="back-btn">Tilbage til hjemmesiden</a>
+        <a href="index.html" class="back-btn">Tilbage</a>
     </nav>
 </div>
 
-<div class="hero">
-    <h1>Velkommen til Medarbejderportalen</h1>
-    <p>Her finder du alt, hvad du har brug for som medarbejder hos Bilabonnement.</p>
-</div>
+<div class="container">
+    <div class="section">
+        <h2>Log ind</h2>
+        <div>
+            <label for="login-employee-id">EmployeeID</label>
+            <input type="text" id="login-employee-id" placeholder="Indtast EmployeeID" required>
 
-<div class="dashboard">
-    <div class="card">
-        <h3>Log ind</h3>
-        <a href="#">Log ind</a>
+            <label for="login-username">Brugernavn</label>
+            <input type="text" id="login-username" placeholder="Indtast brugernavn" required>
+
+            <label for="login-password">Adgangskode</label>
+            <input type="password" id="login-password" placeholder="Indtast adgangskode" required>
+
+            <button onclick="alert('Login-funktionalitet kræver backend-implementering')">Log ind</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Opret bruger</h2>
+        <div>
+            <label for="signup-employee-id">EmployeeID</label>
+            <input type="text" id="signup-employee-id" placeholder="Indtast EmployeeID" required>
+
+            <label for="signup-full-name">Fulde navn</label>
+            <input type="text" id="signup-full-name" placeholder="Indtast fulde navn" required>
+
+            <label for="signup-username">Brugernavn</label>
+            <input type="text" id="signup-username" placeholder="Indtast brugernavn" required>
+
+            <label for="signup-password">Adgangskode</label>
+            <input type="password" id="signup-password" placeholder="Indtast adgangskode" required>
+
+            <button onclick="alert('Opret bruger-funktionalitet kræver backend-implementering')">Opret bruger</button>
+        </div>
     </div>
 </div>
 

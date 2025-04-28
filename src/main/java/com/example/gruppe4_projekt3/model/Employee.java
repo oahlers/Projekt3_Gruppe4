@@ -2,6 +2,19 @@ package com.example.gruppe4_projekt3.model;
 
 public class Employee {
     private int employeeId;
+    private String fullName;
+    private String username;
+    private String password;
+
+    public Employee() {
+    }
+
+    public Employee(int employeeId, String fullName, String username, String password) {
+        this.employeeId = employeeId;
+        this.fullName = fullName;
+        this.username = username;
+        this.password = password;
+    }
 
     public int getEmployeeId() {
         return employeeId;
@@ -34,8 +47,4 @@ public class Employee {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    private String fullName;
-    private String username;
-    private String password;
 }
