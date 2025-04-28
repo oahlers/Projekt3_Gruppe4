@@ -46,7 +46,7 @@ public class EmployeeController {
             model.addAttribute("registerError", "Adgangskoden skal være mindst 8 tegn.");
             return "Homepage/index";
         }
-        Employee existingEmployeeById = employeeRepository.findByEmployeeId(employeeId);
+         Employee existingEmployeeById = employeeRepository.findByEmployeeId(employeeId);
         Employee existingEmployeeByUsername = employeeRepository.findByUsername(username);
         if (existingEmployeeById != null) {
             model.addAttribute("registerError", "EmployeeID eksisterer allerede");
