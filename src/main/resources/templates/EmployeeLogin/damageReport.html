@@ -1,10 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skaderapport - Bilabonnement</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+
+<div class="layout">
+    <div class="header">
+        <div class="logo">BILABONNEMENT</div>
+        <nav>
+            <a th:href="@{/}" class="back-btn">Tilbage</a>
+        </nav>
+    </div>
+
+    <main class="main-content">
+        <section class="hero">
+            <h1>Skaderapport</h1>
+            <p>Indtast oplysninger om en bilskade.</p>
+        </section>
+
+        <section class="damage-report-form">
+            <form action="/submit-damage-report" method="POST">
+                <div class="form-group">
+                    <label for="carId">Bil ID</label>
+                    <input type="number" id="carId" name="carId" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Pris på reparation (kr.)</label>
+                    <input type="number" step="0.01" id="price" name="price" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="car">Bil Model</label>
+                    <input type="text" id="car" name="car" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="employee">Medarbejder</label>
+                    <input type="text" id="employee" name="employee" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="customer">Kunde Navn</label>
+                    <input type="text" id="customer" name="customer" required>
+                </div>
+
+                <button type="submit">Indsend Skaderapport</button>
+            </form>
+        </section>
+
+        <section class="damage-report-details">
+            <h2>Rapport Detaljer</h2>
+            <div>
+                <strong>Bil ID:</strong> <span id="detail-carId">12345</span>
+            </div>
+            <div>
+                <strong>Pris:</strong> <span id="detail-price">1000.00</span> kr.
+            </div>
+            <div>
+                <strong>Bil Model:</strong> <span id="detail-car">Audi A4</span>
+            </div>
+            <div>
+                <strong>Medarbejder:</strong> <span id="detail-employee">John Doe</span>
+            </div>
+            <div>
+                <strong>Kunde:</strong> <span id="detail-customer">Jane Smith</span>
+            </div>
+        </section>
+    </main>
+
+    <div class="footer">
+        <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
+    </div>
+
+</div>
 
 </body>
 </html>
