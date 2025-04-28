@@ -1,9 +1,12 @@
+/* Generelle stilarter */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f5f7fa;
 }
+
+/* Header stilarter (fælles for begge sider) */
 .header {
     display: flex;
     justify-content: space-between;
@@ -29,6 +32,18 @@ body {
     padding: 8px 15px;
     border-radius: 5px;
 }
+
+/* Footer stilarter (fælles for begge sider) */
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #ffffff;
+    color: #666;
+    font-size: 14px;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Stilarter for hjemmesiden (index.html) */
 .hero {
     background: linear-gradient(to right, #e0e7ff, #ffffff);
     padding: 50px 20px;
@@ -71,11 +86,49 @@ body {
     border-radius: 5px;
     font-weight: bold;
 }
-.footer {
-    text-align: center;
-    padding: 20px;
+
+/* Stilarter for login-siden (login.html) */
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 50px 20px;
+}
+.section {
     background-color: #ffffff;
-    color: #666;
-    font-size: 14px;
-    border-top: 1px solid #e0e0e0;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+.section h2 {
+    color: #003087;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.section label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+.section input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.section button {
+    width: 100%;
+    padding: 10px;
+    background-color: #003087;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.section button:hover {
+    background-color: #0056b3;
 }
