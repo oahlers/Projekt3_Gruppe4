@@ -3,9 +3,9 @@ package com.example.gruppe4_projekt3.model;
 public class Car {
     private Integer carId;
     private Integer carEmission;
+    private Integer year;
     private String brand;
     private String model;
-    private String year;
     private String color;
     private String equipmentLevel; //udstyrniveau
     private String returnAddress;

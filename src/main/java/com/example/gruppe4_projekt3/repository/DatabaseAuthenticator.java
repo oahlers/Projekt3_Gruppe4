@@ -21,4 +21,7 @@ public class DatabaseAuthenticator {
         public static int authenticate(String username, String password) throws AuthenticationException {
             try (Connection connection = dataSource.getConnection()) {
                 String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
+            }
+        }
+    }
 }
