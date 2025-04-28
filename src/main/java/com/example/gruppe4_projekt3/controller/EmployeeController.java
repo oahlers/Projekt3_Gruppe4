@@ -58,7 +58,7 @@ public class EmployeeController {
         }
         Employee newEmployee = new Employee(employeeId, fullName, username, password);
         employeeRepository.save(newEmployee);
-        return "redirect:/auth";
+        return "homePage/index";
     }
 
     //Omdirigering til dashboard efter login

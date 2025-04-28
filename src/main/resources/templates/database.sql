@@ -31,7 +31,7 @@ CREATE TABLE customer (
                           return_address VARCHAR(100)
 );
 
-CREATE TABLE employee  (
+CREATE TABLE employees  (
                           employee_id INT AUTO_INCREMENT PRIMARY KEY,
                           fullname VARCHAR(100) NOT NULL,
                           username VARCHAR(100) NOT NULL UNIQUE,
@@ -39,7 +39,7 @@ CREATE TABLE employee  (
 );
 
 
-INSERT INTO employee (employee_id, username, password, fullname)
+INSERT INTO employees (employee_id, username, password, fullname)
 VALUES ('1', 'demo', 'demo', 'Demo demosen');
 
 CREATE TABLE damage_report (
@@ -49,6 +49,6 @@ CREATE TABLE damage_report (
                                employee_id INT NOT NULL,
                                customer_id VARCHAR(36) NOT NULL,
                                FOREIGN KEY (car_id) REFERENCES car(car_id),
-                               FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
+                               FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
                                FOREIGN KEY (customer_id) REFERENCES customer(id)
 );

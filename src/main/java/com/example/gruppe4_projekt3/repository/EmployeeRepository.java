@@ -14,7 +14,7 @@ public class EmployeeRepository {
 
     // Gemmer en ny medarbejder i databasen
     public void save(Employee employee) {
-        String sql = "INSERT INTO employees (employee_id, full_name, username, password) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO employees (employee_id, fullname, username, password) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, employee.getEmployeeId(), employee.getFullName(), employee.getUsername(), employee.getPassword());
     }
 

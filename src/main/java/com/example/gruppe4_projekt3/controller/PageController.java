@@ -13,12 +13,6 @@ public class PageController {
         return "Homepage/index"; // Matcher templates/Homepage/index.html
     }
 
-    // Viser login-siden
-    @GetMapping("/login")
-    public String showLoginPage() {
-        return "Homepage/login"; // Antager, at login.html ligger i templates/login.html
-    }
-
     // Viser index-siden efter registrering
     @GetMapping("/auth")
     public String showAuthPage() {
