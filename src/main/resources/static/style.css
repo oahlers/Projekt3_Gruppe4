@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff; /* Hvid baggrund */
+    color: #333333; /* Mørkegrå tekst */
+}
+
+.navbarTop {
+    background-color: #f2f2f2; /* Lys grå navbar */
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbarTop ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbarTop ul li {
+    margin-right: 20px;
+}
+
+.navbarTop ul li a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.navbarTop ul li a:hover {
+    color: #666666; /* Lysere grå ved hover */
+}
+
+.welcomeBox {
+    background-color: #e0e0e0; /* Lysere grå boks */
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.content-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fafafa; /* Næsten hvid boks */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Let skygge */
+}
+
+.about-container h2 {
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+.about-container p {
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.footer {
+    background-color: #f2f2f2; /* Samme som navbar */
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    color: #666666;
+    margin-top: 40px;
+}
