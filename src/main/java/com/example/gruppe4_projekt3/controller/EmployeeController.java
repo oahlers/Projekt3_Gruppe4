@@ -28,10 +28,10 @@ public class EmployeeController {
         if (employee != null && employee.getPassword().equals(password)) {
             session.setAttribute("loggedInEmployee", employee);
             model.addAttribute("loggedInEmployee", employee);
-            return "redirect:/dashboard";
+            return "redirect:EmployeeLogin/dashboard";
         } else {
             model.addAttribute("loginError", "Ugyldigt EmployeeID, brugernavn eller adgangskode");
-            return "login";
+            return "Homepage/login";
         }
     }
 
@@ -44,27 +44,21 @@ public class EmployeeController {
                            Model model) {
         if (password.length() < 8) {
             model.addAttribute("registerError", "Adgangskoden skal være mindst 8 tegn.");
-            return "login";
+            return "Homepage/login";
         }
         Employee existingEmployeeById = employeeRepository.findByEmployeeId(employeeId);
         Employee existingEmployeeByUsername = employeeRepository.findByUsername(username);
         if (existingEmployeeById != null) {
             model.addAttribute("registerError", "EmployeeID eksisterer allerede");
-            return "login";
+            return "Homepage/login";
         }
         if (existingEmployeeByUsername != null) {
             model.addAttribute("registerError", "Brugernavnet eksisterer allerede");
-            return "login";
+            return "Homepage/login";
         }
         Employee newEmployee = new Employee(employeeId, fullName, username, password);
         employeeRepository.save(newEmployee);
         return "redirect:/auth";
-    }
-
-    // Tilbage til index efter oprettelse af bruger
-    @GetMapping("/auth")
-    public String showAuthPage() {
-        return "index";
     }
 
     //Omdirigering til dashboard efter login
@@ -75,6 +69,6 @@ public class EmployeeController {
             return "redirect:/auth"; // Omdiriger til login, hvis ikke logget ind
         }
         model.addAttribute("employee", loggedInEmployee);
-        return "dashboard";
+        return "EmployeeLogin/dashboard";
     }
 }
