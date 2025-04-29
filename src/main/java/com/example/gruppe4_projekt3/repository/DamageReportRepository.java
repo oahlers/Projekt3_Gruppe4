@@ -3,7 +3,6 @@ package com.example.gruppe4_projekt3.repository;
 import com.example.gruppe4_projekt3.model.DamageReport;
 import com.example.gruppe4_projekt3.model.Car;
 import com.example.gruppe4_projekt3.model.Employee;
-import com.example.gruppe4_projekt3.model.Customer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -27,7 +26,7 @@ public class DamageReportRepository {
             int carId = rs.getInt("car_id");
             double price = rs.getDouble("price");
             int employeeId = rs.getInt("employee_id");
-            String customerId = rs.getString("customer_id");
+            String customerEmail = rs.getString("customer_email");
 
             Car car = new Car();
             car.setCarId(carId);
@@ -35,19 +34,18 @@ public class DamageReportRepository {
             Employee employee = new Employee();
             employee.setEmployeeId(employeeId);
 
-            Customer customer = new Customer();
-            customer.setId(customerId);
-
-            return new DamageReport(car, price, employee, customer);
+            return new DamageReport(car, price, employee, customerEmail);
         }
     }
 
-    public void save(DamageReport damageReport) {
-        String sql = "INSERT INTO damage_report (car_id, price, employee_id, customer_id) VALUES (?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, damageReport.getCarId(), damageReport.getPrice(),
-                damageReport.getEmployee() != null ? damageReport.getEmployee().getEmployeeId() : null,
-                damageReport.getCustomer() != null ? damageReport.getCustomer().getId() : null);
+    public void save(DamageReport damageReport) {
+        String sql = "INSERT INTO damage_report (car_id, price, employee_id) VALUES (?, ?, ?)";
+
+        jdbcTemplate.update(sql,
+                damageReport.getCar().getCarId(),
+                damageReport.getPrice(),
+                damageReport.getEmployee() != null ? damageReport.getEmployee().getEmployeeId() : null);
     }
 
     public DamageReport findByCarId(int carId) {
@@ -59,4 +57,33 @@ public class DamageReportRepository {
         String sql = "SELECT * FROM damage_report";
         return jdbcTemplate.query(sql, new DamageReportRowMapper());
     }
+
+    @Repository
+    public class CarRepository {
+
+        private final JdbcTemplate jdbcTemplate;
+
+        public CarRepository(JdbcTemplate jdbcTemplate) {
+            this.jdbcTemplate = jdbcTemplate;
+        }
+
+        public List<Car> findCarsWithDamageReports() {
+            String sql = "SELECT DISTINCT c.* FROM car c " +
+                    "JOIN damage_report dr ON c.car_id = dr.car_id";
+
+            return jdbcTemplate.query(sql, new RowMapper<Car>() {
+                @Override
+                public Car mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Car car = new Car();
+                    car.setCarId(rs.getInt("car_id"));
+                    car.setBrand(rs.getString("brand"));
+                    car.setModel(rs.getString("model"));
+                    car.setColor(rs.getString("color"));
+                    car.setPrice(rs.getDouble("price"));
+                    return car;
+                }
+            });
+        }
+    }
+
 }

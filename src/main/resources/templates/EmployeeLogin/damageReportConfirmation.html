@@ -18,20 +18,19 @@
   </nav>
 </div>
 
-  <main class="main-content">
-    <h1>Udfyld Skaderapport for: <span th:text="${car.brand} + ' ' + ${car.model}"></span></h1>
+  <form th:action="@{/EmployeeLogin/damageReportFill/{id}(id=${car.carId})}" method="POST">
+    <label for="report">Skaderapport:</label>
+    <textarea name="report" id="report" required></textarea>
 
-    <form th:action="@{/EmployeeLogin/damageReportFill/{id}(id=${car.carId})}" method="post">
+    <label for="price">Pris:</label>
+    <input type="number" name="price" id="price" required>
 
-      <label for="report">Beskrivelse af skade(r):</label><br>
-      <textarea id="report" name="report" rows="6" cols="50" required></textarea><br><br>
+    <label for="customerEmail">Kundens E-mail:</label>
+    <input type="email" name="customerEmail" id="customerEmail" required>
 
-      <label for="price">Skadepris:</label><br>
-      <input type="number" id="price" name="price" min="0" step="0.01" required><br><br>
+    <button type="submit">Indsend Rapport</button>
+  </form>
 
-      <button type="submit" class="btn-link">Gem rapport</button>
-    </form>
-  </main>
 
   <div class="footer">
     <p>Bilabonnement | Medarbejderportal</p>

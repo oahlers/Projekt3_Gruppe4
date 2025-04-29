@@ -1,7 +1,6 @@
 package com.example.gruppe4_projekt3.controller;
 
 import com.example.gruppe4_projekt3.model.Car;
-import com.example.gruppe4_projekt3.model.Customer;
 import com.example.gruppe4_projekt3.model.Employee;
 import com.example.gruppe4_projekt3.model.DamageReport;
 import com.example.gruppe4_projekt3.repository.CarRepository;
@@ -57,9 +56,12 @@ public class DamageReportController {
         }
 
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
-        Customer customer = (Customer) session.getAttribute("loggedInCustomer");
 
-        DamageReport damageReport = new DamageReport(car, price, loggedInEmployee, customer);
+        if (loggedInEmployee == null) {
+            return "redirect:/auth";
+        }
+
+        DamageReport damageReport = new DamageReport(car, price, loggedInEmployee, null);
 
         damageReportRepository.save(damageReport);
 
@@ -70,6 +72,7 @@ public class DamageReportController {
         return "EmployeeLogin/damageReportDone";
     }
 
+
     @GetMapping("/EmployeeLogin/damageReportDone")
     public String showDamageReportDone() {
         return "EmployeeLogin/damageReportDone";
@@ -77,8 +80,10 @@ public class DamageReportController {
 
     @GetMapping("/EmployeeLogin/damageReportHistory")
     public String showDamageReportHistory(Model model) {
-        List<Car> carsWithDamageReports = carRepository.findCarsWithDamageReports();
-        model.addAttribute("cars", carsWithDamageReports);
+        List<DamageReport> damageReports = damageReportRepository.findAll();
+        model.addAttribute("damageReports", damageReports);
         return "EmployeeLogin/damageReportHistory";
     }
+
+
 }

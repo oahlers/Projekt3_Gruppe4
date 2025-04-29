@@ -1,62 +1,47 @@
 package com.example.gruppe4_projekt3.model;
 
-import com.example.gruppe4_projekt3.model.Car;
-import com.example.gruppe4_projekt3.model.Customer;
-import com.example.gruppe4_projekt3.model.Employee;
-
 public class DamageReport {
-    private int carId;
-    private double price;
     private Car car;
+    private double price;
     private Employee employee;
-    private Customer customer;
+    private String customerEmail;
 
-    public DamageReport(Car car, double price, Employee employee, Customer customer) {
+    public DamageReport(Car car, double price, Employee employee, String customerEmail) {
         this.car = car;
-        this.carId = car.getCarId();
         this.price = price;
         this.employee = employee;
-        this.customer = customer;
-    }
-
-
-    public int getCarId() {
-        return carId;
-    }
-
-    public double getPrice() {
-        return price;
+        this.customerEmail = customerEmail;
     }
 
     public Car getCar() {
         return car;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public void setCar(Car car) {
+        this.car = car;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCarId(int carId) {
-        this.carId = carId;
+    public double getPrice() {
+        return price;
     }
 
     public void setPrice(double price) {
         this.price = price;
     }
 
-    public void setCar(Car car) {
-        this.car = car;
+    public Employee getEmployee() {
+        return employee;
     }
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
 }

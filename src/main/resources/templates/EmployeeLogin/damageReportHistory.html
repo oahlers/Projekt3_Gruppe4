@@ -45,10 +45,12 @@
                         <td th:text="${report.car.brand}">Volkswagen</td>
                         <td th:text="${report.car.model}">Golf</td>
                         <td th:text="${report.price}">5000</td>
-                        <td th:text="${report.customer.firstName + ' ' + report.customer.lastName}">Kunde Navn</td>
-                        <td th:text="${report.employee.firstName + ' ' + report.employee.lastName}">Medarbejder Navn</td>
+                        <td th:text="${report.customerEmail}">Kunde Email</td>
+                        <span th:text="${report.employee != null ? report.employee.fullName : 'Ukendt medarbejder'}"></span>
                     </tr>
                     </tbody>
+
+
                 </table>
             </div>
             <a th:href="@{/EmployeeLogin/damageReport}" class="btn-link">Tilbage til Skaderapporter</a>
