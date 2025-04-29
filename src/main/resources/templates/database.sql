@@ -22,18 +22,7 @@ INSERT INTO car (
     car_emission, year, brand, model, color, equipment_level, return_address, vehicle_number,chassis_number, price,registration_fee, is_car_available
 )
 VALUES (
-           0,                         -- car_emission (elbil, antages 0 g/km)
-           2024,                      -- year
-           'NAVOR',                   -- brand
-           'E5 ROCK 218 HK',          -- model
-           'Sort',                    -- color
-           'Premium',                 -- equipment_level
-           'Elbilvej 10, 2100 København Ø', -- return_address
-           'EVN12345',                -- vehicle_number (skal være unik)
-           'NAVORE5ROCK12345678',     -- chassis_number (unik)
-           329995.00,                 -- price
-           18420.00,                  -- registration_fee
-           b'1'                       -- is_car_available (tilgængelig)
+           0,2024,'NAVOR','E5 ROCK 218 HK','Sort','Premium','Elbilvej 10, 2100 København Ø','EVN12345','NAVORE5ROCK12345678',329995.00,18420.00,b'1'
        );
 
 
