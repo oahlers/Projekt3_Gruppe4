@@ -1,8 +1,11 @@
 package com.example.gruppe4_projekt3.controller;
 
 import com.example.gruppe4_projekt3.model.Car;
+import com.example.gruppe4_projekt3.model.Customer;
 import com.example.gruppe4_projekt3.model.Employee;
+import com.example.gruppe4_projekt3.model.DamageReport;
 import com.example.gruppe4_projekt3.repository.CarRepository;
+import com.example.gruppe4_projekt3.repository.DamageReportRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +20,11 @@ import java.util.List;
 public class DamageReportController {
 
     private final CarRepository carRepository;
+    private final DamageReportRepository damageReportRepository;
 
-    public DamageReportController(CarRepository carRepository) {
+    public DamageReportController(CarRepository carRepository, DamageReportRepository damageReportRepository) {
         this.carRepository = carRepository;
+        this.damageReportRepository = damageReportRepository;
     }
 
     @GetMapping("/EmployeeLogin/damageReport")
@@ -45,15 +50,23 @@ public class DamageReportController {
     }
 
     @PostMapping("/EmployeeLogin/damageReportFill/{id}")
-    public String submitDamageReport(@PathVariable Long id, @RequestParam String report) {
+    public String submitDamageReport(@PathVariable Long id, @RequestParam String report, @RequestParam Double price, HttpSession session) {
         Car car = carRepository.findById(id);
         if (car == null) {
             return "error";
         }
-        car.setDamageReport(report);
+
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        Customer customer = (Customer) session.getAttribute("loggedInCustomer");
+
+        DamageReport damageReport = new DamageReport(car, price, loggedInEmployee, customer);
+
+        damageReportRepository.save(damageReport);
+
         car.setCarAvailable(true);
         car.setReadyForLoan(true);
         carRepository.save(car);
+
         return "EmployeeLogin/damageReportDone";
     }
 

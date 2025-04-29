@@ -8,27 +8,14 @@ public class Car {
     private String brand;
     private String model;
     private String color;
-    private String equipmentLevel; //udstyrniveau
+    private String equipmentLevel;
     private String returnAddress;
-    //private String fuelType;
-    private String vehicleNumber; // registrerings nummer
-    private String chassisNumber; // stelnummer
+    private String vehicleNumber;
+    private String chassisNumber;
     private double price;
     private double registrationFee;
-
-    public String getDamageReport() {
-        return damageReport;
-    }
-
-    public void setDamageReport(String damageReport) {
-        this.damageReport = damageReport;
-    }
-
-    private String damageReport;
-
     private boolean isCarAvailable;
     private boolean readyForLoan;
-
     private int paymentTime;
     private int transportTime;
 
@@ -159,6 +146,7 @@ public class Car {
     public void setTransportTime(int transportTime) {
         this.transportTime = transportTime;
     }
+
     public String getImage() {
         return image;
     }
