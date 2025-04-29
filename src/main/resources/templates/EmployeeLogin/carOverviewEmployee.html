@@ -1,10 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Udlejede Biler - Bilabonnement</title>
+    <link rel="icon" href="/img/fav.png" type="image/x-icon">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+
+<div class="layout">
+
+    <div class="header">
+        <div class="logo">
+            <img src="/img/Logo.png" alt="BILABONNEMENT Logo">
+        </div>
+        <h3>Medarbejderportal</h3>
+        <nav>
+            <a th:href="@{/EmployeeLogin/dashboard}" class="back-btn">Tilbage til Dashboard</a>
+        </nav>
+    </div>
+
+    <section class="hero">
+        <h1>Oversigt over Udlejede Biler</h1>
+        <p>Herunder ser du alle biler, som er udlejede lige nu.</p>
+    </section>
+
+    <main class="main-content">
+
+        <section class="car-table">
+            <table>
+                <thead>
+                <tr>
+                    <th>Vognnummer</th>
+                    <th>Stelnummer</th>
+                    <th>Mærke</th>
+                    <th>Model</th>
+                    <th>Farve</th>
+                    <th>Udstyrsniveau</th>
+                    <th>Pris</th>
+                    <th>Udlejet?</th>
+                    <th>Klar til Udlejning?</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="car : ${rentedCars}">
+                    <td th:text="${car.vehicleNumber}"></td>
+                    <td th:text="${car.chassisNumber}"></td>
+                    <td th:text="${car.brand}"></td>
+                    <td th:text="${car.model}"></td>
+                    <td th:text="${car.color}"></td>
+                    <td th:text="${car.equipmentLevel}"></td>
+                    <td th:text="${car.price} + ' DKK'"></td>
+                    <td th:text="${car.carAvailable}"></td>
+                    <td th:text="${car.readyForLoan}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <div class="footer">
+        <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
+    </div>
+</div>
 
 </body>
 </html>

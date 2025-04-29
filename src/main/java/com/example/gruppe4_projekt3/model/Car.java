@@ -148,3 +148,4 @@ public class Car {
     public void setTransportTime(int transportTime) {
         this.transportTime = transportTime;
     }
+}
