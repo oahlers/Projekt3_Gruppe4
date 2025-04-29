@@ -22,8 +22,12 @@
     <h1>Udfyld Skaderapport for: <span th:text="${car.brand} + ' ' + ${car.model}"></span></h1>
 
     <form th:action="@{/EmployeeLogin/damageReportFill/{id}(id=${car.carId})}" method="post">
+
       <label for="report">Beskrivelse af skade(r):</label><br>
       <textarea id="report" name="report" rows="6" cols="50" required></textarea><br><br>
+
+      <label for="price">Skadepris:</label><br>
+      <input type="number" id="price" name="price" min="0" step="0.01" required><br><br>
 
       <button type="submit" class="btn-link">Gem rapport</button>
     </form>

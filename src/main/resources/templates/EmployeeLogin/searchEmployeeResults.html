@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Søgeresultater - Medarbejderopslag</title>
+  <link rel="icon" href="/img/fav.png" type="image/x-icon" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<div class="layout">
+
+  <div class="header">
+    <div class="logo">
+      <a th:href="@{/EmployeeLogin/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
+    </div>
+    <h3>Medarbejderportal</h3>
+    <nav>
+      <a th:href="@{/}" class="back-btn">Log ud</a>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <h1>Medarbejderresultater</h1>
+  </section>
+
+  <main class="main-content">
+    <h2>Resultater for søgningen</h2>
+
+    <div th:if="${employees != null and #lists.isEmpty(employees)}">
+      <p>Der blev ikke fundet nogen medarbejdere med de angivne oplysninger.</p>
+    </div>
+
+    <div th:if="${employees != null and !#lists.isEmpty(employees)}">
+      <div class="employee-results">
+        <div th:each="employee : ${employees}" class="employee-card">
+          <h3 th:text="${employee.fullname}"></h3>
+          <p><strong>ID:</strong> <span th:text="${employee.employeeId}"></span></p>
+          <p><strong>Brugernavn:</strong> <span th:text="${employee.username}"></span></p>
+          <p><strong>Email:</strong> <span th:text="${employee.email}"></span></p>
+          <p><strong>Rolle:</strong> <span th:text="${employee.role}"></span></p>
+          <a th:href="@{/employees/{id}/details(id=${employee.employeeId})}" class="view-details">Se detaljer</a>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <a th:href="@{/EmployeeLogin/searchEmployee}" class="back-btn">Tilbage til søgning af medarbejder</a>
+    </div>
+
+  </main>
+
+  <div class="footer">
+    <p>
+      Bilabonnement | Medarbejderportal | Kontakt os på
+      support@bilabonnement.dk
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,5 +1,9 @@
 package com.example.gruppe4_projekt3.model;
 
+import com.example.gruppe4_projekt3.model.Car;
+import com.example.gruppe4_projekt3.model.Customer;
+import com.example.gruppe4_projekt3.model.Employee;
+
 public class DamageReport {
     private int carId;
     private double price;
@@ -7,13 +11,14 @@ public class DamageReport {
     private Employee employee;
     private Customer customer;
 
-    public DamageReport(int carId, double price, Car car, Employee employee, Customer customer) {
-        this.carId = carId;
-        this.price = price;
+    public DamageReport(Car car, double price, Employee employee, Customer customer) {
         this.car = car;
+        this.carId = car.getCarId();
+        this.price = price;
         this.employee = employee;
         this.customer = customer;
     }
+
 
     public int getCarId() {
         return carId;
