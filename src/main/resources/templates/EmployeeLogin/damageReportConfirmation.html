@@ -14,14 +14,14 @@
     </div>
     <h3>Skaderapport</h3>
     <nav>
-      <a th:href="@{/}" class="back-btn">Tilbage</a>
+      <a th:href="@{/EmployeeLogin/damageReport}" class="back-btn">Tilbage</a>
     </nav>
   </div>
 
   <main class="main-content">
     <h1>Udfyld Skaderapport for: <span th:text="${car.brand} + ' ' + ${car.model}"></span></h1>
 
-    <form th:action="@{'/damage-report/fill/' + ${car.carId}}" method="post">
+    <form th:action="@{/EmployeeLogin/damageReportFill/{id}(id=${car.carId})}" method="post">
       <label for="report">Beskrivelse af skade(r):</label><br>
       <textarea id="report" name="report" rows="6" cols="50" required></textarea><br><br>
 

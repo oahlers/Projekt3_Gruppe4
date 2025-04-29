@@ -42,17 +42,6 @@ public class PageController {
         return "EmployeeLogin/dashboard";
     }
 
-
-    @GetMapping("EmployeeLogin/damageReport")
-    public String showDamageReport(HttpSession session, Model model) {
-        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
-        if (loggedInEmployee == null) {
-            return "redirect:/auth";
-        }
-        model.addAttribute("employee", loggedInEmployee);
-        return "EmployeeLogin/damageReport";
-    }
-
     @GetMapping("EmployeeLogin/carOverviewEmployee")
     public String showRentedCars(Model model) {
         List<Car> rentedCars = carRepository.findRentedCars();

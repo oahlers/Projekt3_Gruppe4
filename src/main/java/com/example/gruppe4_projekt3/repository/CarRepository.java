@@ -28,13 +28,11 @@ public class CarRepository {
         jdbcTemplate.update(sql, car.isCarAvailable(), car.isReadyForLoan(), car.getCarId());
     }
 
-    // Hent alle udlejede biler (altså dem der ikke er  tilgængelige)
     public List<Car> findRentedCars() {
         String sql = "SELECT * FROM car WHERE is_car_available = 0";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-    // Hent udlejede biler der også er klar til afhentning
     public List<Car> findRentedAndReadyCars() {
         String sql = "SELECT * FROM car WHERE is_car_available = 0 AND ready_for_loan = 1";
         return jdbcTemplate.query(sql, new CarRowMapper());
@@ -45,7 +43,13 @@ public class CarRepository {
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-    // Mapper fra SQL-resultat til Car-objekt
+    public List<Car> findCarsWithDamageReports() {
+        String sql = "SELECT car.* FROM car " +
+                "JOIN damage_report ON car.car_id = damage_report.car_id " +
+                "WHERE damage_report.report_id IS NOT NULL";
+        return jdbcTemplate.query(sql, new CarRowMapper());
+    }
+
     private static class CarRowMapper implements RowMapper<Car> {
         @Override
         public Car mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -69,4 +73,5 @@ public class CarRepository {
             return car;
         }
     }
+
 }

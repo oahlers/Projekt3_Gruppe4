@@ -1,7 +1,9 @@
 package com.example.gruppe4_projekt3.controller;
 
 import com.example.gruppe4_projekt3.model.Car;
+import com.example.gruppe4_projekt3.model.Employee;
 import com.example.gruppe4_projekt3.repository.CarRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,43 +22,50 @@ public class DamageReportController {
         this.carRepository = carRepository;
     }
 
-    @GetMapping("/damage-report")
-    public String showCarsWithMissingDamageReport(Model model) {
+    @GetMapping("/EmployeeLogin/damageReport")
+    public String showDamageReportList(HttpSession session, Model model) {
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        if (loggedInEmployee == null) {
+            return "redirect:/auth";
+        }
         List<Car> cars = carRepository.findNotRentedAndNotReadyCars();
+        model.addAttribute("employee", loggedInEmployee);
         model.addAttribute("cars", cars);
-        return "damagereport";
+        return "EmployeeLogin/damageReport";
     }
 
-    @GetMapping("/damage-report/fill/{id}")
+    @GetMapping("/EmployeeLogin/damageReportFill/{id}")
     public String showFillReportPage(@PathVariable Long id, Model model) {
-        Car car;
-        try {
-            car = carRepository.findById(id);
-        } catch (Exception e) {
-            // Her kan du evt. logge fejlen eller sende til en fejlside
-            return "error"; // eller "redirect:/damage-report" hvis du hellere vil tilbage
+        Car car = carRepository.findById(id);
+        if (car == null) {
+            return "error";
         }
-
         model.addAttribute("car", car);
-        return "fill_damagereport"; // fill_damagereport.html
+        return "EmployeeLogin/damageReportConfirmation";
     }
 
-    @PostMapping("/damage-report/fill/{id}")
+    @PostMapping("/EmployeeLogin/damageReportFill/{id}")
     public String submitDamageReport(@PathVariable Long id, @RequestParam String report) {
-        Car car;
-        try {
-            car = carRepository.findById(id);
-        } catch (Exception e) {
-            // Her kan du evt. logge fejlen eller sende til en fejlside
-            return "error"; // eller "redirect:/damage-report" hvis du hellere vil tilbage
+        Car car = carRepository.findById(id);
+        if (car == null) {
+            return "error";
         }
-
-
         car.setDamageReport(report);
         car.setCarAvailable(true);
         car.setReadyForLoan(true);
-
         carRepository.save(car);
-        return "redirect:/damage-report";
+        return "EmployeeLogin/damageReportDone";
+    }
+
+    @GetMapping("/EmployeeLogin/damageReportDone")
+    public String showDamageReportDone() {
+        return "EmployeeLogin/damageReportDone";
+    }
+
+    @GetMapping("/EmployeeLogin/damageReportHistory")
+    public String showDamageReportHistory(Model model) {
+        List<Car> carsWithDamageReports = carRepository.findCarsWithDamageReports();
+        model.addAttribute("cars", carsWithDamageReports);
+        return "EmployeeLogin/damageReportHistory";
     }
 }
