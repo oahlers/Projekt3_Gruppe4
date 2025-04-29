@@ -93,4 +93,28 @@ public class EmployeeController {
         model.addAttribute("rentedCars", rentedCars);
         return "/EmployeeLogin/carOverviewEmployee";
     }
+    @GetMapping("/find")
+    public String findEmployee(
+            @RequestParam(required = false) Integer employeeId,
+            @RequestParam(required = false) String username,
+            Model model
+    ) {
+        Employee employee = null;
+
+        if (employeeId != null && username != null) {
+            employee = employeeRepository.findByEmployeeIdAndUsername(employeeId, username);
+        } else if (employeeId != null) {
+            employee = employeeRepository.findByEmployeeId(employeeId);
+        } else if (username != null) {
+            employee = employeeRepository.findByUsername(username);
+        }
+
+        if (employee != null) {
+            model.addAttribute("employee", employee);
+            return "employeeDetails"; // fx en Thymeleaf-side: employeeDetails.html
+        } else {
+            model.addAttribute("message", "Medarbejder blev ikke fundet.");
+            return "employeeNotFound"; // fx employeeNotFound.html
+        }
+    }
 }
