@@ -2,6 +2,16 @@ package com.example.gruppe4_projekt3.model;
 
 public class Car {
     private Integer carId;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    private String image;
     private Integer carEmission;
     private Integer year;
     private String brand;
