@@ -28,37 +28,16 @@
 
     <main class="main-content">
 
-        <section class="car-table">
-            <table>
-                <thead>
-                <tr>
-                    <th>Vognnummer</th>
-                    <th>Stelnummer</th>
-                    <th>Mærke</th>
-                    <th>Model</th>
-                    <th>Farve</th>
-                    <th>Udstyrsniveau</th>
-                    <th>Pris</th>
-                    <th>Udlejet?</th>
-                    <th>Klar til Udlejning?</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="car : ${rentedCars}">
-                    <td th:text="${car.vehicleNumber}"></td>
-                    <td th:text="${car.chassisNumber}"></td>
-                    <td th:text="${car.brand}"></td>
-                    <td th:text="${car.model}"></td>
-                    <td th:text="${car.color}"></td>
-                    <td th:text="${car.equipmentLevel}"></td>
-                    <td th:text="${car.price} + ' DKK'"></td>
-                    <td th:text="${car.carAvailable}"></td>
-                    <td th:text="${car.readyForLoan}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-
+            <section class="dashboard">
+                <div class="card" th:each="car : ${rentedCars}">
+                    <h3 th:text="${car.brand} + ' ' + ${car.model}"></h3>
+                    <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
+                    <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
+                    <p><strong>Pris:</strong> <span th:text="${car.price} + ' DKK'"></span></p>
+                    <p><strong>Udlejet:</strong> <span th:text="${car.carAvailable ? 'Nej' : 'Ja'}"></span></p>
+                    <p><strong>Klar til Udlejning:</strong> <span th:text="${car.readyForLoan ? 'Ja' : 'Nej'}"></span></p>
+                </div>
+            </section>
     </main>
 
     <div class="footer">

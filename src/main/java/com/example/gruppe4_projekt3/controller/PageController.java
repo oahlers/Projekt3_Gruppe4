@@ -48,4 +48,9 @@ public class PageController {
         model.addAttribute("rentedCars", rentedCars);
         return "EmployeeLogin/carOverviewEmployee";
     }
+
+    @GetMapping("EmployeeLogin/searchEmployee")
+    public String showSearchForm() {
+        return "EmployeeLogin/searchEmployee";
+    }
 }
