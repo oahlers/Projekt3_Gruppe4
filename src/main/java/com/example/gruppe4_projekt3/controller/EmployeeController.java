@@ -87,10 +87,10 @@ public class EmployeeController {
         return "EmployeeLogin/damageReport";
     }
 
-    @GetMapping("/EmployeeLogin/carOverviewEmployee")
+    @GetMapping("EmployeeLogin/carOverviewEmployee")
     public String showRentedCars(Model model) {
         List<Car> rentedCars = carRepository.findRentedCars();
         model.addAttribute("rentedCars", rentedCars);
-        return "/EmployeeLogin/carOverviewEmployee";
+        return "EmployeeLogin/carOverviewEmployee";
     }
 }
