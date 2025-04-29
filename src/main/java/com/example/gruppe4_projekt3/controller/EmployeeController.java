@@ -66,11 +66,6 @@ public class EmployeeController {
         return "HomePage/index";
     }
 
-    @GetMapping("/searchEmployee")
-    public String showSearchForm() {
-        return "EmployeeLogin/searchEmployee";
-    }
-
     @GetMapping("/findEmployee")
     public String findEmployee(
             @RequestParam(required = false) Integer employeeId,
