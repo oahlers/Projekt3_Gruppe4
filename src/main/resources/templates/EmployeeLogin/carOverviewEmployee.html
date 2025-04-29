@@ -27,9 +27,8 @@
     </section>
 
     <main class="main-content">
-
-            <section class="dashboard">
-                <div class="card" th:each="car : ${rentedCars}">
+            <section class="car-dashboard">
+                <div class="car-card" th:each="car : ${rentedCars}">
                     <h3 th:text="${car.brand} + ' ' + ${car.model}"></h3>
                     <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
                     <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
@@ -37,6 +36,7 @@
                     <p><strong>Udlejet:</strong> <span th:text="${car.carAvailable ? 'Nej' : 'Ja'}"></span></p>
                     <p><strong>Klar til Udlejning:</strong> <span th:text="${car.readyForLoan ? 'Ja' : 'Nej'}"></span></p>
                 </div>
+
             </section>
     </main>
 

@@ -82,32 +82,25 @@ body {
     grid-gap: 30px;
     padding: 30px 20px;
 }
-.card {
+ .card {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    height: 300px;
     text-align: center;
-    font-weight: bold;
-    display: flex;
     flex-direction: column;
-    justify-content: space-between;
 }
 
 .card h3 {
-    color: #003087;
-    margin: 0 auto;
+   color: #003087;
 }
 
 .card a {
-    margin-top: auto;
-    padding: 10px 20px;
-    background-color: #003087;
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 5px;
+   margin-top: auto;
+   padding: 10px 20px;
+   background-color: #003087;
+   color: #ffffff;
+   border-radius: 5px;
 }
 
 /* Stilarter for login-siden (login.html) */
@@ -158,10 +151,6 @@ body {
 .section button:hover {
     background-color: #0056b3;
 }
-
-
-----
-
 
     /* Skaderapport Form Styling */
 .damage-report-form {
@@ -215,4 +204,35 @@ body {
 
 .damage-report-details div {
     margin-bottom: 10px;
+}
+
+.car-dashboard {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 30px 20px;
+
+}
+
+.car-card {
+    width: 300px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    flex-direction: column;
+}
+
+.car-card h3 {
+    color: #003087;
+}
+
+.car-card a {
+    margin-top: auto;
+    padding: 10px 20px;
+    background-color: #003087;
+    color: #ffffff;
+    border-radius: 5px;
 }
