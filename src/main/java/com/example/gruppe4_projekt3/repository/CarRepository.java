@@ -18,7 +18,7 @@ public class CarRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Hent alle udlejede biler (altså dem der ikke er tilgængelige)
+    // Hent alle udlejede biler (altså dem der ikke er  tilgængelige)
     public List<Car> findRentedCars() {
         String sql = "SELECT * FROM car WHERE is_car_available = false";
         return jdbcTemplate.query(sql, new CarRowMapper());

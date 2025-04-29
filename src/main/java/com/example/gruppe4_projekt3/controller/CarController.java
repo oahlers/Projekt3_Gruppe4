@@ -5,7 +5,7 @@ import com.example.gruppe4_projekt3.model.Car;
 import com.example.gruppe4_projekt3.repository.CarRepository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cars")
