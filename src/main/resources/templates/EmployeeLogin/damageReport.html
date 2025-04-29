@@ -24,7 +24,6 @@
 
     <!-- Main Section -->
     <main class="main-content">
-
         <section class="dashboard">
             <h1>Skaderapporter</h1>
             <p>Herunder ses biler der mangler skaderapport.</p>
@@ -40,18 +39,18 @@
                 </thead>
                 <tbody>
                 <tr th:each="car : ${cars}">
-                    <td th:text="${car.id}">1</td>
+                    <td th:text="${car.carId}">1</td>
                     <td th:text="${car.model}">Modelnavn</td>
-                    <td th:text="${car.registrationNumber}">XX12345</td>
+                    <td th:text="${car.vehicleNumber}">XX12345</td>
                     <td>
-                        <a th:href="@{'/damage-report/fill/' + ${car.id}}" class="btn-link">Udfyld Skaderapport</a>
+                        <a th:href="@{/EmployeeLogin/damageReportFill/{id}(id=${car.carId})}" class="btn-link">Udfyld Skaderapport</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
             <div style="margin-top: 2rem;">
-                <a th:href="@{/damage-report/history}" class="btn-link">Se tidligere skaderapporter</a>
+                <a th:href="@{/EmployeeLogin/damageReportHistory}" class="btn-link">Se tidligere skaderapporter</a>
             </div>
         </section>
     </main>
