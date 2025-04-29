@@ -1,84 +1,66 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skaderapport - Bilabonnement</title>
+    <title>Skaderapporter - Bilabonnement</title>
     <link rel="icon" href="/img/fav.png" type="image/x-icon">
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
 <div class="layout">
+
+    <!-- Header -->
     <div class="header">
         <div class="logo">
             <img src="/img/Logo.png" alt="BILABONNEMENT Logo">
         </div>
+        <h3>Medarbejderportal</h3>
         <nav>
-            <a th:href="@{/}" class="back-btn">Tilbage</a>
+            <a th:href="@{/}" class="back-btn">Log ud</a>
         </nav>
     </div>
 
-    <section class="hero">
-        <h1>Skaderapport</h1>
-        <p>Udfyld venligst oplysninger om bilens skade.</p>
-    </section>
-
+    <!-- Main Section -->
     <main class="main-content">
-        <section class="damage-report-form">
-            <form action="/submit-damage-report" method="POST">
-                <div class="form-group">
-                    <label for="carId">Bil ID</label>
-                    <input type="number" id="carId" name="carId" required>
-                </div>
 
-                <div class="form-group">
-                    <label for="price">Reparationspris (kr.)</label>
-                    <input type="number" step="0.01" id="price" name="price" required>
-                </div>
+        <section class="dashboard">
+            <h1>Skaderapporter</h1>
+            <p>Herunder ses biler der mangler skaderapport.</p>
 
-                <div class="form-group">
-                    <label for="carModel">Bilmodel</label>
-                    <input type="text" id="carModel" name="car.model" required>
-                </div>
+            <table class="styled-table">
+                <thead>
+                <tr>
+                    <th>Bil ID</th>
+                    <th>Model</th>
+                    <th>Registreringsnummer</th>
+                    <th>Handling</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="car : ${cars}">
+                    <td th:text="${car.id}">1</td>
+                    <td th:text="${car.model}">Modelnavn</td>
+                    <td th:text="${car.registrationNumber}">XX12345</td>
+                    <td>
+                        <a th:href="@{'/damage-report/fill/' + ${car.id}}" class="btn-link">Udfyld Skaderapport</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-                <div class="form-group">
-                    <label for="employeeName">Medarbejdernavn</label>
-                    <input type="text" id="employeeName" name="employee.fullname" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="customerName">Kundenavn</label>
-                    <input type="text" id="customerName" name="customer.fullname" required>
-                </div>
-
-                <button type="submit">Indsend Skaderapport</button>
-            </form>
-        </section>
-
-        <section class="damage-report-details">
-            <h2>Rapport Detaljer</h2>
-            <div>
-                <strong>Bil ID:</strong> <span th:text="${damageReport.carId}">12345</span>
-            </div>
-            <div>
-                <strong>Pris:</strong> <span th:text="${damageReport.price}">1000.00</span> kr.
-            </div>
-            <div>
-                <strong>Bilmodel:</strong> <span th:text="${damageReport.car.model}">Audi A4</span>
-            </div>
-            <div>
-                <strong>Medarbejder:</strong> <span th:text="${damageReport.employee.fullname}">John Doe</span>
-            </div>
-            <div>
-                <strong>Kunde:</strong> <span th:text="${damageReport.customer.fullname}">Jane Smith</span>
+            <div style="margin-top: 2rem;">
+                <a th:href="@{/damage-report/history}" class="btn-link">Se tidligere skaderapporter</a>
             </div>
         </section>
     </main>
 
+    <!-- Footer -->
     <div class="footer">
         <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
     </div>
+
 </div>
 
 </body>

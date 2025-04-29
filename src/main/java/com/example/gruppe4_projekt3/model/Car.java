@@ -25,6 +25,16 @@ public class Car {
     private double price;
     private double registrationFee;
 
+    public String getDamageReport() {
+        return damageReport;
+    }
+
+    public void setDamageReport(String damageReport) {
+        this.damageReport = damageReport;
+    }
+
+    private String damageReport;
+
     private boolean isCarAvailable;
     private boolean readyForLoan;
 

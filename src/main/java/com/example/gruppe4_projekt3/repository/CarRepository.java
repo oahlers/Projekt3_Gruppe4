@@ -18,20 +18,30 @@ public class CarRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public Car findById(Long id) {
+        String sql = "SELECT * FROM car WHERE car_id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new CarRowMapper());
+    }
+
+    public void save(Car car) {
+        String sql = "UPDATE car SET is_car_available = ?, ready_for_loan = ? WHERE car_id = ?";
+        jdbcTemplate.update(sql, car.isCarAvailable(), car.isReadyForLoan(), car.getCarId());
+    }
+
     // Hent alle udlejede biler (altså dem der ikke er  tilgængelige)
     public List<Car> findRentedCars() {
-        String sql = "SELECT * FROM car WHERE is_car_available = false";
+        String sql = "SELECT * FROM car WHERE is_car_available = 0";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     // Hent udlejede biler der også er klar til afhentning
     public List<Car> findRentedAndReadyCars() {
-        String sql = "SELECT * FROM car WHERE is_car_available = false AND ready_for_loan = true";
+        String sql = "SELECT * FROM car WHERE is_car_available = 0 AND ready_for_loan = 1";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     public List<Car> findNotRentedAndNotReadyCars() {
-        String sql = "SELECT * FROM car WHERE is_car_available = false AND ready_for_loan = false";
+        String sql = "SELECT * FROM car WHERE is_car_available = 0 AND ready_for_loan = 0";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
