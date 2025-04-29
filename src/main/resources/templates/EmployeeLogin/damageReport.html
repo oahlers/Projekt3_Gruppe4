@@ -18,12 +18,13 @@
             <a th:href="@{/}" class="back-btn">Tilbage</a>
         </nav>
     </div>
+
     <section class="hero">
         <h1>Skaderapport</h1>
-        <p>Indtast oplysninger om en bilskade.</p>
+        <p>Udfyld venligst oplysninger om bilens skade.</p>
     </section>
-    <main class="main-content">
 
+    <main class="main-content">
         <section class="damage-report-form">
             <form action="/submit-damage-report" method="POST">
                 <div class="form-group">
@@ -32,23 +33,23 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="price">Pris på reparation (kr.)</label>
+                    <label for="price">Reparationspris (kr.)</label>
                     <input type="number" step="0.01" id="price" name="price" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="car">Bil Model</label>
-                    <input type="text" id="car" name="car" required>
+                    <label for="carModel">Bilmodel</label>
+                    <input type="text" id="carModel" name="car.model" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="employee">Medarbejder</label>
-                    <input type="text" id="employee" name="employee" required>
+                    <label for="employeeName">Medarbejdernavn</label>
+                    <input type="text" id="employeeName" name="employee.fullname" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="customer">Kunde Navn</label>
-                    <input type="text" id="customer" name="customer" required>
+                    <label for="customerName">Kundenavn</label>
+                    <input type="text" id="customerName" name="customer.fullname" required>
                 </div>
 
                 <button type="submit">Indsend Skaderapport</button>
@@ -58,19 +59,19 @@
         <section class="damage-report-details">
             <h2>Rapport Detaljer</h2>
             <div>
-                <strong>Bil ID:</strong> <span id="detail-carId">12345</span>
+                <strong>Bil ID:</strong> <span th:text="${damageReport.carId}">12345</span>
             </div>
             <div>
-                <strong>Pris:</strong> <span id="detail-price">1000.00</span> kr.
+                <strong>Pris:</strong> <span th:text="${damageReport.price}">1000.00</span> kr.
             </div>
             <div>
-                <strong>Bil Model:</strong> <span id="detail-car">Audi A4</span>
+                <strong>Bilmodel:</strong> <span th:text="${damageReport.car.model}">Audi A4</span>
             </div>
             <div>
-                <strong>Medarbejder:</strong> <span id="detail-employee">John Doe</span>
+                <strong>Medarbejder:</strong> <span th:text="${damageReport.employee.fullname}">John Doe</span>
             </div>
             <div>
-                <strong>Kunde:</strong> <span id="detail-customer">Jane Smith</span>
+                <strong>Kunde:</strong> <span th:text="${damageReport.customer.fullname}">Jane Smith</span>
             </div>
         </section>
     </main>
@@ -78,7 +79,6 @@
     <div class="footer">
         <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
     </div>
-
 </div>
 
 </body>
