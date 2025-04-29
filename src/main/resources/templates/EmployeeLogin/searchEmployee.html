@@ -8,17 +8,26 @@
     <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+
 <div class="layout">
+
     <div class="header">
         <div class="logo">
             <img src="/img/Logo.png" alt="BILABONNEMENT Logo" />
         </div>
+        <h3>Medarbejderportal</h3>
         <nav>
             <a th:href="@{/}" class="back-btn">Tilbage</a>
         </nav>
     </div>
 
+    <section class="hero">
+        <h1>Velkommen til Medarbejder Dashboard</h1>
+        <p>Administrer bilabonnementer, skaderapporter og medarbejderdata.</p>
+    </section>
+
     <main class="main-content">
+
         <h1>Medarbejderoplysninger</h1>
 
         <form th:action="@{/EmployeeLogin/findEmployee}" method="get" class="search-form">
@@ -31,18 +40,19 @@
             <button type="submit">Søg</button>
         </form>
 
-        <div th:if="${employee != null}">
+        <div class="card" th:if="${employee != null}">
+            <h3>Medarbejderdetaljer</h3>
             <p><strong>ID:</strong> <span th:text="${employee.employeeId}"></span></p>
             <p><strong>Brugernavn:</strong> <span th:text="${employee.username}"></span></p>
             <p><strong>Navn:</strong> <span th:text="${employee.name}"></span></p>
             <p><strong>Email:</strong> <span th:text="${employee.email}"></span></p>
             <p><strong>Rolle:</strong> <span th:text="${employee.role}"></span></p>
-            <!-- Tilføj flere felter hvis nødvendigt -->
         </div>
 
         <div th:if="${employee == null}">
             <p class="error">Der blev ikke fundet nogen medarbejder med de angivne oplysninger.</p>
         </div>
+
     </main>
 
     <div class="footer">
@@ -51,6 +61,8 @@
             support@bilabonnement.dk
         </p>
     </div>
+
 </div>
+
 </body>
 </html>
