@@ -13,24 +13,24 @@
 
     <div class="header">
         <div class="logo">
-            <img src="/img/Logo.png" alt="BILABONNEMENT Logo" />
+            <a th:href="@{/EmployeeLogin/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
         </div>
         <h3>Medarbejderportal</h3>
         <nav>
-            <a th:href="@{/}" class="back-btn">Tilbage</a>
+            <a th:href="@{/}" class="back-btn">Log ud</a>
         </nav>
     </div>
 
     <section class="hero">
         <h1>Velkommen til Medarbejder Dashboard</h1>
-        <p>Administrer bilabonnementer, skaderapporter og medarbejderdata.</p>
+        <p>Her kan du opsøge medarbejdere.</p>
     </section>
 
     <main class="main-content">
 
         <h1>Medarbejderoplysninger</h1>
 
-        <form th:action="@{/EmployeeLogin/findEmployee}" method="get" class="search-form">
+        <form action="/findEmployee" method="post">
             <label for="employeeId">Medarbejder ID:</label>
             <input type="number" id="employeeId" name="employeeId" />
 
@@ -47,10 +47,6 @@
             <p><strong>Navn:</strong> <span th:text="${employee.name}"></span></p>
             <p><strong>Email:</strong> <span th:text="${employee.email}"></span></p>
             <p><strong>Rolle:</strong> <span th:text="${employee.role}"></span></p>
-        </div>
-
-        <div th:if="${employee == null}">
-            <p class="error">Der blev ikke fundet nogen medarbejder med de angivne oplysninger.</p>
         </div>
 
     </main>
