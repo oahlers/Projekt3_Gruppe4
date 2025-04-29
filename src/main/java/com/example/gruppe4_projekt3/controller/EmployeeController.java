@@ -66,7 +66,12 @@ public class EmployeeController {
         return "HomePage/index";
     }
 
-    @GetMapping("/find")
+    @GetMapping("/searchEmployee")
+    public String showSearchForm() {
+        return "EmployeeLogin/searchEmployee";
+    }
+
+    @GetMapping("/findEmployee")
     public String findEmployee(
             @RequestParam(required = false) Integer employeeId,
             @RequestParam(required = false) String username,
@@ -84,10 +89,9 @@ public class EmployeeController {
 
         if (employee != null) {
             model.addAttribute("employee", employee);
-            return "employeeDetails"; // fx en Thymeleaf-side: employeeDetails.html
         } else {
             model.addAttribute("message", "Medarbejder blev ikke fundet.");
-            return "employeeNotFound"; // fx employeeNotFound.html
         }
+        return "EmployeeLogin/searchEmployee";
     }
 }
