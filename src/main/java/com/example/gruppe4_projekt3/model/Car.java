@@ -2,15 +2,6 @@ package com.example.gruppe4_projekt3.model;
 
 public class Car {
     private Integer carId;
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
     private String image;
     private Integer carEmission;
     private Integer year;
@@ -157,5 +148,12 @@ public class Car {
 
     public void setTransportTime(int transportTime) {
         this.transportTime = transportTime;
+    }
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
