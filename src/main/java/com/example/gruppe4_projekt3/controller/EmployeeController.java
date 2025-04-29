@@ -1,6 +1,8 @@
 package com.example.gruppe4_projekt3.controller;
 
+import com.example.gruppe4_projekt3.model.Car;
 import com.example.gruppe4_projekt3.model.Employee;
+import com.example.gruppe4_projekt3.repository.CarRepository;
 import com.example.gruppe4_projekt3.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,13 +13,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 
+import java.util.List;
+
 @Controller
 public class EmployeeController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    // Behandler loginformularen, validerer employeeId, brugernavn og adgangskode, og opretter session for medarbejderen
+    @Autowired
+    private CarRepository carRepository;
+
     @PostMapping("/login")
     public String login(@RequestParam("employeeId") int employeeId,
                         @RequestParam("username") String username,
@@ -35,7 +41,6 @@ public class EmployeeController {
         }
     }
 
-    // Behandler registreringsformularen, opretter en ny medarbejder i databasen
     @PostMapping("/register")
     public String register(@RequestParam("employeeId") int employeeId,
                            @RequestParam("fullName") String fullName,
@@ -61,12 +66,11 @@ public class EmployeeController {
         return "HomePage/index";
     }
 
-    //Omdirigering til dashboard efter login
     @GetMapping("EmployeeLogin/dashboard")
     public String showDashboard(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
-            return "redirect:/auth"; // Omdiriger til login, hvis ikke logget ind
+            return "redirect:/auth";
         }
         model.addAttribute("employee", loggedInEmployee);
         return "EmployeeLogin/dashboard";
@@ -77,10 +81,16 @@ public class EmployeeController {
     public String showDamageReport(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
-            return "redirect:/auth"; // Omdiriger til login, hvis ikke logget ind
+            return "redirect:/auth";
         }
         model.addAttribute("employee", loggedInEmployee);
-        return "EmployeeLogin/damageReport"; // Din damage report side
+        return "EmployeeLogin/damageReport";
     }
 
+    @GetMapping("/EmployeeLogin/carOverviewEmployee")
+    public String showRentedCars(Model model) {
+        List<Car> rentedCars = carRepository.findRentedCars();
+        model.addAttribute("rentedCars", rentedCars);
+        return "/EmployeeLogin/carOverviewEmployee";
+    }
 }

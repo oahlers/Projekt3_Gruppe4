@@ -22,14 +22,6 @@ public class CarController {
         return carRepository.findRentedCars();
     }
 
-    @GetMapping("/EmployeeLogin/carOverviewEmployee")
-    public String showRentedCars(Model model) {
-        List<Car> rentedCars = carRepository.findRentedCars();
-        model.addAttribute("rentedCars", rentedCars);
-        return "car-overview-employee";
-    }
-
-
     @GetMapping("/rented/ready")
     public List<Car> getRentedAndReadyCars() {
         return carRepository.findRentedAndReadyCars();

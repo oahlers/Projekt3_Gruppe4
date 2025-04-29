@@ -24,9 +24,9 @@ CREATE TABLE car (
 INSERT INTO car ( car_emission, year, brand, model, color, equipment_level, return_address, vehicle_number, chassis_number, price, registration_fee, is_car_available, ready_for_loan, payment_time,transport_time)
 VALUES
 -- NAVOR E5 ROCK 218 HK
-(0, 2024, 'NAVOR', 'E5 ROCK 218 HK', 'Sort', 'Premium', 'Elbilvej 10, 2100 København Ø', 'EVN12345', 'NAVORE5ROCK12345678', 329995.00, 18420.00, b'1', b'1', 7, 2),
+(0, 2024, 'NAVOR', 'E5 ROCK 218 HK', 'Sort', 'Premium', 'Elbilvej 10, 2100 København Ø', 'EVN12345', 'NAVORE5ROCK12345678', 329995.00, 18420.00, b'0', b'1', 7, 2),
 -- Fiat 500e Icon Pack 118 HK
-(0, 2023, 'Fiat', '500e Icon Pack 118 HK', 'Hvid', 'Icon Pack', 'Elbilvej 10, 2100 København Ø', 'EVF50001', 'FIAT500EICON12345678', 259995.00, 16230.00, b'1', b'1', 5, 2),
+(0, 2023, 'Fiat', '500e Icon Pack 118 HK', 'Hvid', 'Icon Pack', 'Elbilvej 10, 2100 København Ø', 'EVF50001', 'FIAT500EICON12345678', 259995.00, 16230.00, b'0', b'1', 5, 2),
 -- Renault Captur Techno 160 HK
 (105, 2022, 'Renault', 'Captur Techno 160 HK', 'Grå', 'Techno', 'Hybridvej 3, 2200 København N', 'EVR16001', 'RENAULTCAPTUR16012345', 274995.00, 17100.00, b'1', b'0', 6, 3),
 -- Honda Civic Sport 184 HK
