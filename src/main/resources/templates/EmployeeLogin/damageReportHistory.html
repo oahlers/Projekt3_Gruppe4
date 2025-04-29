@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Skadesrapport Historik - Bilabonnement</title>
+    <link rel="icon" href="/img/fav.png" type="image/x-icon">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="layout">
+    <div class="header">
+        <div class="logo">
+            <img src="/img/Logo.png" alt="BILABONNEMENT Logo">
+        </div>
+        <h3>Medarbejderportal</h3>
+        <nav>
+            <a th:href="@{/}" class="back-btn">Log ud</a>
+        </nav>
+    </div>
+
+    <section class="hero">
+        <h1>Historik over Skadesrapporter</h1>
+        <p>Se tidligere oprettede skadesrapporter i systemet.</p>
+    </section>
+
+    <main class="main-content">
+        <section class="dashboard">
+            <div class="card">
+                <h3>Tidligere rapporter</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Bil ID</th>
+                        <th>Mærke</th>
+                        <th>Model</th>
+                        <th>Skade Pris</th>
+                        <th>Kunde</th>
+                        <th>Medarbejder</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="report : ${damageReports}">
+                        <td th:text="${report.car.carId}">123</td>
+                        <td th:text="${report.car.brand}">Volkswagen</td>
+                        <td th:text="${report.car.model}">Golf</td>
+                        <td th:text="${report.price}">5000</td>
+                        <td th:text="${report.customer.firstName + ' ' + report.customer.lastName}">Kunde Navn</td>
+                        <td th:text="${report.employee.firstName + ' ' + report.employee.lastName}">Medarbejder Navn</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a th:href="@{/damage-report}" class="btn-link">Tilbage til Skaderapporter</a>
+        </section>
+    </main>
+
+    <div class="footer">
+        <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
+    </div>
+</div>
+
+</body>
+</html>
