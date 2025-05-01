@@ -2,101 +2,114 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alle Biler & Tilføj Bil</title>
   <link rel="icon" href="/img/fav.png" type="image/x-icon">
-  <link rel="stylesheet" th:href="@{/style.css}" href="/style.css" />
+  <link rel="stylesheet" href="/style.css">
 </head>
+<body>
 
-<body class="create-car-page">
-<div class="navbarTop">
-  <ul>
-    <li><a th:href="@{/}">Hjem</a></li>
-    <li><a th:href="@{/viewAllCarsAndAddCar}">Vis alle biler</a></li>
-  </ul>
-</div>
+<div class="layout">
 
-<div class="content-container">
-  <div class="container">
-    <h1>Tilføj Ny Bil</h1>
+  <div class="header">
+    <div class="logo">
+      <a th:href="@{/}"><img src="/img/Logo.png" alt="Logo"></a>
+    </div>
+    <h3>Medarbejderportal</h3>
+    <nav>
+      <a th:href="@{/}" class="back-btn">Log ud</a>
+    </nav>
+  </div>
 
-    <form th:action="@{/cars/add}" method="post">
-      <label>Biludledning:</label>
-      <input type="number" name="carEmission" required><br>
+  <section class="hero">
+    <h1>Velkommen til Tilføj Bil</h1>
+    <p>Tilføj nye biler og se alle tilgængelige biler.</p>
+  </section>
 
-      <label>År:</label>
-      <input type="number" name="year" required><br>
+  <main class="main-content">
 
-      <label>Brand:</label>
-      <input type="text" name="brand" required><br>
+    <section class="dashboard">
+      <div class="card">
+        <h3>Tilføj Ny Bil</h3>
+        <form th:action="@{/cars/add}" method="post">
+          <label>Biludledning:</label>
+          <input type="number" name="carEmission" required><br>
 
-      <label>Model:</label>
-      <input type="text" name="model" required><br>
+          <label>År:</label>
+          <input type="number" name="year" required><br>
 
-      <label>Farve:</label>
-      <input type="text" name="color" required><br>
+          <label>Brand:</label>
+          <input type="text" name="brand" required><br>
 
-      <label>Udstyrsniveau:</label>
-      <input type="text" name="equipmentLevel" required><br>
+          <label>Model:</label>
+          <input type="text" name="model" required><br>
 
-      <label>Returneringsadresse:</label>
-      <input type="text" name="returnAddress" required><br>
+          <label>Farve:</label>
+          <input type="text" name="color" required><br>
 
-      <label>Registreringsnummer:</label>
-      <input type="text" name="vehicleNumber" required><br>
+          <label>Udstyrsniveau:</label>
+          <input type="text" name="equipmentLevel" required><br>
 
-      <label>Chassisnummer:</label>
-      <input type="text" name="chassisNumber" required><br>
+          <label>Returneringsadresse:</label>
+          <input type="text" name="returnAddress" required><br>
 
-      <label>Pris:</label>
-      <input type="number" step="0.01" name="price" required><br>
+          <label>Registreringsnummer:</label>
+          <input type="text" name="vehicleNumber" required><br>
 
-      <label>Registreringsafgift:</label>
-      <input type="number" step="0.01" name="registrationFee" required><br>
+          <label>Chassisnummer:</label>
+          <input type="text" name="chassisNumber" required><br>
 
-      <label>Betalingstid:</label>
-      <input type="number" name="paymentTime" required><br>
+          <label>Pris:</label>
+          <input type="number" step="0.01" name="price" required><br>
 
-      <label>Transporttid:</label>
-      <input type="number" name="transportTime" required><br>
+          <label>Registreringsafgift:</label>
+          <input type="number" step="0.01" name="registrationFee" required><br>
 
-      <div class="button-group">
-        <button type="submit" class="submit">Gem Bil</button>
+          <label>Betalingstid:</label>
+          <input type="number" name="paymentTime" required><br>
+
+          <label>Transporttid:</label>
+          <input type="number" name="transportTime" required><br>
+
+          <div class="button-group">
+            <button type="submit" class="submit">Gem Bil</button>
+          </div>
+        </form>
       </div>
-    </form>
+
+      <div class="card">
+        <h3>Alle Biler</h3>
+        <table>
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>År</th>
+            <th>Farve</th>
+            <th>Tilgængelig</th>
+            <th>Klar</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="car : ${cars}">
+            <td th:text="${car.carId}">1</td>
+            <td th:text="${car.brand}">Brand</td>
+            <td th:text="${car.model}">Model</td>
+            <td th:text="${car.year}">2025</td>
+            <td th:text="${car.color}">Rød</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">
+    <p>© 2025 Wishcloud</p>
+    <p>Projekt 3 - Gruppe 4</p>
   </div>
 
-  <hr>
-
-  <div class="container">
-    <h2>Alle Biler</h2>
-    <table>
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Brand</th>
-        <th>Model</th>
-        <th>År</th>
-        <th>Farve</th>
-        <th>Tilgængelig</th>
-        <th>Klar</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="car : ${cars}">
-        <td th:text="${car.carId}">1</td>
-        <td th:text="${car.brand}">Brand</td>
-        <td th:text="${car.model}">Model</td>
-        <td th:text="${car.year}">2025</td>
-        <td th:text="${car.color}">Rød</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="footer">
-  <p>© 2025 Wishcloud</p>
-  <p>Projekt 3 - Gruppe 4</p>
 </div>
 
 </body>
