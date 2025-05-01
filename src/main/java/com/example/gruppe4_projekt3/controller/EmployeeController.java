@@ -1,13 +1,11 @@
 package com.example.gruppe4_projekt3.controller;
 
-import com.example.gruppe4_projekt3.model.Car;
 import com.example.gruppe4_projekt3.model.Employee;
 import com.example.gruppe4_projekt3.repository.CarRepository;
 import com.example.gruppe4_projekt3.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -85,7 +83,7 @@ public class EmployeeController {
 
         // Hvis medarbejderen findes, vis oplysningerne
         if (employee != null) {
-            model.addAttribute("employee", employee);
+            model.addAttribute("employees", List.of(employee));
         } else {
             // Hvis medarbejderen ikke findes, vis en fejlmeddelelse
             model.addAttribute("message", "Medarbejder blev ikke fundet.");

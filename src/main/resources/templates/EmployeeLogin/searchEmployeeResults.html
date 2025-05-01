@@ -35,20 +35,19 @@
     <div th:if="${employees != null and !#lists.isEmpty(employees)}">
       <div class="employee-results">
         <div th:each="employee : ${employees}" class="employee-card">
-          <h3 th:text="${employee.fullname}"></h3>
-          <p><strong>ID:</strong> <span th:text="${employee.employeeId}"></span></p>
-          <p><strong>Brugernavn:</strong> <span th:text="${employee.username}"></span></p>
-          <p><strong>Email:</strong> <span th:text="${employee.email}"></span></p>
-          <p><strong>Rolle:</strong> <span th:text="${employee.role}"></span></p>
+          <h3 th:text="${employee.fullName}"></h3>
+          <ul>
+            <li><strong>ID:</strong> <span th:text="${employee.employeeId}"></span></li>
+            <li><strong>Brugernavn:</strong> <span th:text="${employee.username}"></span></li>
+          </ul>
           <a th:href="@{/employees/{id}/details(id=${employee.employeeId})}" class="view-details">Se detaljer</a>
         </div>
       </div>
     </div>
 
-    <div>
+    <div class="back-to-search">
       <a th:href="@{/EmployeeLogin/searchEmployee}" class="back-btn">Tilbage til søgning af medarbejder</a>
     </div>
-
   </main>
 
   <div class="footer">

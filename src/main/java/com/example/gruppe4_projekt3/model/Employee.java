@@ -2,16 +2,16 @@ package com.example.gruppe4_projekt3.model;
 
 public class Employee {
     private int employeeId;
-    private String fullname;
+    private String fullName;
     private String username;
     private String password;
 
     public Employee() {
     }
 
-    public Employee(int employeeId, String fullname, String username, String password) {
+    public Employee(int employeeId, String fullName, String username, String password) {
         this.employeeId = employeeId;
-        this.fullname = fullname;
+        this.fullName = fullName;
         this.username = username;
         this.password = password;
     }
@@ -25,11 +25,11 @@ public class Employee {
     }
 
     public String getFullName() {
-        return fullname;
+        return fullName;
     }
 
     public void setFullName(String fullName) {
-        this.fullname = fullName;
+        this.fullName = fullName;
     }
 
     public String getUsername() {
