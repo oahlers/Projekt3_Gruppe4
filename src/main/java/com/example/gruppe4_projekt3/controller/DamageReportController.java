@@ -71,7 +71,7 @@ public class DamageReportController {
 
         car.setCarAvailable(true);
         car.setReadyForLoan(true);
-        carRepository.save(car);
+        carRepository.saveStatus(car);
 
         return "EmployeeLogin/damageReportDone";
     }

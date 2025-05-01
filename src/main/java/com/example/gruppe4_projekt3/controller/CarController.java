@@ -3,12 +3,12 @@ package com.example.gruppe4_projekt3.controller;
 import com.example.gruppe4_projekt3.model.Car;
 
 import com.example.gruppe4_projekt3.repository.CarRepository;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
  import java.util.List;
 
-@RestController
-@RequestMapping("/api/cars")
+@Controller
 public class CarController {
 
     private final CarRepository carRepository;
@@ -30,5 +30,17 @@ public class CarController {
     @GetMapping("/damage-report")
     public List<Car> getCarsForDamageReport() {
         return carRepository.findNotRentedAndNotReadyCars();
+    }
+
+    @GetMapping("/viewAllCarsAndAddCar")
+    public String viewAllCars(Model model) {
+        model.addAttribute("cars", carRepository.findAll());
+        return "EmployeeLogin/viewAllCarsAndAddCar";
+    }
+
+    @PostMapping("/cars/add")
+    public String addCar(@ModelAttribute Car car) {
+        carRepository.save(car);
+        return "redirect:/viewAllCarsAndAddCar";
     }
 }

@@ -4,6 +4,8 @@ import com.example.gruppe4_projekt3.model.Car;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +14,15 @@ import java.util.List;
 @Repository
 public class CarRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    private static JdbcTemplate jdbcTemplate;
 
     public CarRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<Car> findAll() {
+        String sql = "SELECT * FROM car";
+        return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     public Car findById(Long id) {
@@ -24,6 +31,18 @@ public class CarRepository {
     }
 
     public void save(Car car) {
+        String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, return_address, " +
+                "vehicle_number, chassis_number, price, registration_fee, is_car_available, ready_for_loan, " +
+                "payment_time, transport_time) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
+                car.getColor(), car.getEquipmentLevel(), car.getReturnAddress(), car.getVehicleNumber(),
+                car.getChassisNumber(), car.getPrice(), car.getRegistrationFee(),
+                car.isCarAvailable() ? 1 : 0, car.isReadyForLoan() ? 1 : 0,
+                car.getPaymentTime(), car.getTransportTime());
+    }
+
+    public void saveStatus(Car car) {
         String sql = "UPDATE car SET is_car_available = ?, ready_for_loan = ? WHERE car_id = ?";
         jdbcTemplate.update(sql, car.isCarAvailable(), car.isReadyForLoan(), car.getCarId());
     }
@@ -73,5 +92,4 @@ public class CarRepository {
             return car;
         }
     }
-
 }

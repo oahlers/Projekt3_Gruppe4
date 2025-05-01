@@ -23,31 +23,38 @@
 
   <section class="hero">
     <h1>Medarbejderresultater</h1>
+    <p>Herunder finder du resultatet af din søgning.</p>
   </section>
 
   <main class="main-content">
-    <h2>Resultater for søgningen</h2>
 
-    <div th:if="${employees != null and #lists.isEmpty(employees)}">
-      <p>Der blev ikke fundet nogen medarbejdere med de angivne oplysninger.</p>
-    </div>
-
-    <div th:if="${employees != null and !#lists.isEmpty(employees)}">
-      <div class="employee-results">
-        <div th:each="employee : ${employees}" class="employee-card">
-          <h3 th:text="${employee.fullName}"></h3>
-          <ul>
-            <li><strong>ID:</strong> <span th:text="${employee.employeeId}"></span></li>
-            <li><strong>Brugernavn:</strong> <span th:text="${employee.username}"></span></li>
-          </ul>
-          <a th:href="@{/employees/{id}/details(id=${employee.employeeId})}" class="view-details">Se detaljer</a>
+    <section class="dashboard">
+      <div th:if="${employees != null and #lists.isEmpty(employees)}">
+        <div class="card">
+          <h3>Ingen medarbejdere fundet</h3>
+          <p>Der blev ikke fundet nogen medarbejdere med de angivne oplysninger.</p>
         </div>
       </div>
-    </div>
 
-    <div class="back-to-search">
-      <a th:href="@{/EmployeeLogin/searchEmployee}" class="back-btn">Tilbage til søgning af medarbejder</a>
-    </div>
+      <div th:if="${employees != null and !#lists.isEmpty(employees)}">
+        <div class="employee-results">
+          <div th:each="employee : ${employees}" class="card employee-card">
+            <h3 th:text="${employee.fullName}"></h3>
+            <ul>
+              <li><strong>ID:</strong> <span th:text="${employee.employeeId}"></span></li>
+              <li><strong>Brugernavn:</strong> <span th:text="${employee.username}"></span></li>
+            </ul>
+            <a th:href="@{/employees/{id}/details(id=${employee.employeeId})}" class="btn-link">Se detaljer</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card back-to-search">
+        <h3>Søg igen</h3>
+        <a th:href="@{/EmployeeLogin/searchEmployee}" class="btn-link">Tilbage til søgning</a>
+      </div>
+    </section>
+
   </main>
 
   <div class="footer">

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add Car</title>
+    <title>All Cars & Add Car</title>
     <link rel="icon" href="/img/fav.png" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/style.css}" href="/style.css" />
 </head>
@@ -11,7 +11,7 @@
 <div class="navbarTop">
     <ul>
         <li><a th:href="@{/}">Home</a></li>
-        <li><a th:href="@{/cars/list}">Show all cars</a></li>
+        <li><a th:href="@{/viewAllCarsAndAddCar}">Show all cars</a></li>
     </ul>
 </div>
 
@@ -54,16 +54,57 @@
             <input type="number" step="0.01" name="registrationFee" required><br>
 
             <label>Is Car Available:</label>
-            <select name="isCarAvailable" required>
-                <option value="1">Yes</option>
-                <option value="0">No</option>
+            <select name="carAvailable" required>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
             </select><br>
+
+            <label>Ready For Loan:</label>
+            <select name="readyForLoan" required>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select><br>
+
+            <label>Payment Time:</label>
+            <input type="number" name="paymentTime" required><br>
+
+            <label>Transport Time:</label>
+            <input type="number" name="transportTime" required><br>
 
             <div class="button-group">
                 <button type="submit" class="submit">Save Car</button>
-                <a th:href="@{/cars/list}" class="submit">Back to Car List</a>
             </div>
         </form>
+    </div>
+
+    <hr>
+
+    <div class="container">
+        <h2>All Cars</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Color</th>
+                <th>Available</th>
+                <th>Ready</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="car : ${cars}">
+                <td th:text="${car.carId}">1</td>
+                <td th:text="${car.brand}">Brand</td>
+                <td th:text="${car.model}">Model</td>
+                <td th:text="${car.year}">2025</td>
+                <td th:text="${car.color}">Red</td>
+                <td th:text="${car.carAvailable} ? 'Yes' : 'No'">Yes</td>
+                <td th:text="${car.readyForLoan} ? 'Yes' : 'No'">Yes</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
