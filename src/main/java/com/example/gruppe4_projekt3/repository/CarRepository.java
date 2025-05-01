@@ -31,16 +31,17 @@ public class CarRepository {
     }
 
     public void save(Car car) {
-        String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, return_address, " +
+        String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, " +
                 "vehicle_number, chassis_number, price, registration_fee, is_car_available, ready_for_loan, " +
-                "payment_time, transport_time) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "payment_time) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
-                car.getColor(), car.getEquipmentLevel(), car.getReturnAddress(), car.getVehicleNumber(),
+                car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(),
                 car.getChassisNumber(), car.getPrice(), car.getRegistrationFee(),
                 car.isCarAvailable() ? 1 : 0, car.isReadyForLoan() ? 1 : 0,
-                car.getPaymentTime(), car.getTransportTime());
+                car.getPaymentTime());
     }
+
 
     public void saveStatus(Car car) {
         String sql = "UPDATE car SET is_car_available = ?, ready_for_loan = ? WHERE car_id = ?";
@@ -80,7 +81,6 @@ public class CarRepository {
             car.setModel(rs.getString("model"));
             car.setColor(rs.getString("color"));
             car.setEquipmentLevel(rs.getString("equipment_level"));
-            car.setReturnAddress(rs.getString("return_address"));
             car.setVehicleNumber(rs.getString("vehicle_number"));
             car.setChassisNumber(rs.getString("chassis_number"));
             car.setPrice(rs.getDouble("price"));
@@ -88,7 +88,6 @@ public class CarRepository {
             car.setCarAvailable(rs.getBoolean("is_car_available"));
             car.setReadyForLoan(rs.getBoolean("ready_for_loan"));
             car.setPaymentTime(rs.getInt("payment_time"));
-            car.setTransportTime(rs.getInt("transport_time"));
             return car;
         }
     }

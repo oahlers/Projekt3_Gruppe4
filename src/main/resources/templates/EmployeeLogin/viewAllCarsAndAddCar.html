@@ -32,13 +32,13 @@
       <div class="card">
         <h3>Tilføj Ny Bil</h3>
         <form th:action="@{/cars/add}" method="post">
-          <label>Biludledning:</label>
+          <label>Co2 udledning (0 hvis elbil):</label>
           <input type="number" name="carEmission" required><br>
 
           <label>År:</label>
           <input type="number" name="year" required><br>
 
-          <label>Brand:</label>
+          <label>Mærke:</label>
           <input type="text" name="brand" required><br>
 
           <label>Model:</label>
@@ -50,26 +50,17 @@
           <label>Udstyrsniveau:</label>
           <input type="text" name="equipmentLevel" required><br>
 
-          <label>Returneringsadresse:</label>
-          <input type="text" name="returnAddress" required><br>
-
           <label>Registreringsnummer:</label>
           <input type="text" name="vehicleNumber" required><br>
 
-          <label>Chassisnummer:</label>
+          <label>Nummerplade:</label>
           <input type="text" name="chassisNumber" required><br>
 
           <label>Pris:</label>
           <input type="number" step="0.01" name="price" required><br>
 
-          <label>Registreringsafgift:</label>
-          <input type="number" step="0.01" name="registrationFee" required><br>
-
-          <label>Betalingstid:</label>
+          <label>Betalingstid (løbetid i måneder):</label>
           <input type="number" name="paymentTime" required><br>
-
-          <label>Transporttid:</label>
-          <input type="number" name="transportTime" required><br>
 
           <div class="button-group">
             <button type="submit" class="submit">Gem Bil</button>
