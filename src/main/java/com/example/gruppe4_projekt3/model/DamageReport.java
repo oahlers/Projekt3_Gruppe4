@@ -6,11 +6,22 @@ public class DamageReport {
     private Employee employee;
     private String customerEmail;
 
-    public DamageReport(Car car, double price, Employee employee, String customerEmail) {
+    public String getReport() {
+        return report;
+    }
+
+    public void setReport(String report) {
+        this.report = report;
+    }
+
+    private String report;
+
+    public DamageReport(Car car, double price, Employee employee, String customerEmail, String report) {
         this.car = car;
         this.price = price;
         this.employee = employee;
         this.customerEmail = customerEmail;
+        this.report = report;
     }
 
     public Car getCar() {
@@ -44,4 +55,6 @@ public class DamageReport {
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
     }
+
+
 }

@@ -49,7 +49,11 @@ public class DamageReportController {
     }
 
     @PostMapping("/EmployeeLogin/damageReportFill/{id}")
-    public String submitDamageReport(@PathVariable Long id, @RequestParam String report, @RequestParam Double price, HttpSession session) {
+    public String submitDamageReport(@PathVariable Long id,
+                                     @RequestParam String report,
+                                     @RequestParam Double price,
+                                     @RequestParam String customerEmail,
+                                     HttpSession session) {
         Car car = carRepository.findById(id);
         if (car == null) {
             return "error";
@@ -61,7 +65,7 @@ public class DamageReportController {
             return "redirect:/auth";
         }
 
-        DamageReport damageReport = new DamageReport(car, price, loggedInEmployee, null);
+        DamageReport damageReport = new DamageReport(car, price, loggedInEmployee, customerEmail, report);
 
         damageReportRepository.save(damageReport);
 

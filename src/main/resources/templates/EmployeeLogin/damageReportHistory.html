@@ -35,19 +35,23 @@
                         <th>Mærke</th>
                         <th>Model</th>
                         <th>Skade Pris</th>
+                        <th>Beskrivelse</th>
                         <th>Kunde</th>
                         <th>Medarbejder</th>
                     </tr>
                     </thead>
+
                     <tbody>
                     <tr th:each="report : ${damageReports}">
                         <td th:text="${report.car.carId}">123</td>
                         <td th:text="${report.car.brand}">Volkswagen</td>
                         <td th:text="${report.car.model}">Golf</td>
                         <td th:text="${report.price}">5000</td>
-                        <td th:text="${report.customerEmail}">Kunde Email</td>
-                        <span th:text="${report.employee != null ? report.employee.fullName : 'Ukendt medarbejder'}"></span>
+                        <td th:text="${report.report}">Beskrivelse</td> <!-- NYT -->
+                        <td th:text="${report.customerEmail}">kunde@mail.dk</td>
+                        <td th:text="${report.employee != null ? report.employee.fullName : 'Ukendt medarbejder'}">Medarbejder</td>
                     </tr>
+
                     </tbody>
 
 

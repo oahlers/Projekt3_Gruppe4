@@ -21,16 +21,14 @@ public class PageController {
     @Autowired
     private CarRepository carRepository;
 
-    // Viser hjemmesiden (index)
     @GetMapping("/")
     public String showIndexPage() {
-        return "Homepage/index"; // Matcher templates/Homepage/index.html
+        return "Homepage/index";
     }
 
-    // Viser index-siden efter registrering
     @GetMapping("/auth")
     public String showAuthPage() {
-        return "Homepage/index"; // Matcher templates/Homepage/index.html
+        return "Homepage/index";
     }
 
     @GetMapping("EmployeeLogin/dashboard")

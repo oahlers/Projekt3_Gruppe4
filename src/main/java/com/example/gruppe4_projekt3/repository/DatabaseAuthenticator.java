@@ -18,7 +18,6 @@ public class DatabaseAuthenticator {
             databaseAuthenticator.dataSource = dataSource;
         }
 
-        // Udfører autentificering ved at validere brugernavn og adgangskode. Brugt i sammenhæng med at sikrer at brugere logger korrekt ind
         public static int authenticate(String username, String password) throws AuthenticationException, SQLException {
             try (Connection connection = dataSource.getConnection()) {
                 String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";

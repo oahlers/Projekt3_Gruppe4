@@ -48,7 +48,6 @@
             <p><strong>Navn:</strong> <span th:text="${employee.name}"></span></p>
             <p><strong>Email:</strong> <span th:text="${employee.email}"></span></p>
             <p><strong>Rolle:</strong> <span th:text="${employee.role}"></span></p>
-            <!-- Tilføj en dynamisk link til at vise mere information om medarbejderen -->
             <a th:href="@{/employees/{id}(id=${employee.employeeId})}">Se detaljer</a>
         </div>
 

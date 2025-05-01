@@ -72,7 +72,6 @@ public class EmployeeController {
     ) {
         Employee employee = null;
 
-        // Find medarbejder baseret på employeeId og/eller username
         if (employeeId != null && username != null) {
             employee = employeeRepository.findByEmployeeIdAndUsername(employeeId, username);
         } else if (employeeId != null) {
@@ -81,15 +80,12 @@ public class EmployeeController {
             employee = employeeRepository.findByUsername(username);
         }
 
-        // Hvis medarbejderen findes, vis oplysningerne
         if (employee != null) {
             model.addAttribute("employees", List.of(employee));
         } else {
-            // Hvis medarbejderen ikke findes, vis en fejlmeddelelse
             model.addAttribute("message", "Medarbejder blev ikke fundet.");
         }
 
-        // Returner viewet, der viser søgeresultaterne
-        return "EmployeeLogin/searchEmployeeResults";  // Returner den HTML-side, der viser resultaterne
+        return "EmployeeLogin/searchEmployeeResults";
     }
 }

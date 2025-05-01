@@ -24,66 +24,49 @@ public class DamageReportRepository {
         @Override
         public DamageReport mapRow(ResultSet rs, int rowNum) throws SQLException {
             int carId = rs.getInt("car_id");
+            String report = rs.getString("report");
             double price = rs.getDouble("price");
             int employeeId = rs.getInt("employee_id");
             String customerEmail = rs.getString("customer_email");
 
             Car car = new Car();
             car.setCarId(carId);
+            car.setBrand(rs.getString("brand"));
+            car.setModel(rs.getString("model"));
 
             Employee employee = new Employee();
             employee.setEmployeeId(employeeId);
-
-            return new DamageReport(car, price, employee, customerEmail);
+            employee.setFullName(rs.getString("employee_fullname"));
+            return new DamageReport(car, price, employee, customerEmail, report);
         }
     }
 
-
     public void save(DamageReport damageReport) {
-        String sql = "INSERT INTO damage_report (car_id, price, employee_id) VALUES (?, ?, ?)";
-
+        String sql = "INSERT INTO damage_report (car_id, price, employee_id, customer_email, report) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 damageReport.getCar().getCarId(),
                 damageReport.getPrice(),
-                damageReport.getEmployee() != null ? damageReport.getEmployee().getEmployeeId() : null);
+                damageReport.getEmployee() != null ? damageReport.getEmployee().getEmployeeId() : null,
+                damageReport.getCustomerEmail(),
+                damageReport.getReport());
     }
 
     public DamageReport findByCarId(int carId) {
-        String sql = "SELECT * FROM damage_report WHERE car_id = ?";
+        String sql = "SELECT dr.*, c.brand, c.model, e.fullname AS employee_fullname " +
+                "FROM damage_report dr " +
+                "JOIN car c ON dr.car_id = c.car_id " +
+                "JOIN employees e ON dr.employee_id = e.employee_id " +
+                "WHERE dr.car_id = ?";
+
         return jdbcTemplate.queryForObject(sql, new DamageReportRowMapper(), carId);
     }
 
     public List<DamageReport> findAll() {
-        String sql = "SELECT * FROM damage_report";
+        String sql = "SELECT dr.*, c.brand, c.model, e.fullname AS employee_fullname " +
+                "FROM damage_report dr " +
+                "JOIN car c ON dr.car_id = c.car_id " +
+                "JOIN employees e ON dr.employee_id = e.employee_id";
+
         return jdbcTemplate.query(sql, new DamageReportRowMapper());
     }
-
-    @Repository
-    public class CarRepository {
-
-        private final JdbcTemplate jdbcTemplate;
-
-        public CarRepository(JdbcTemplate jdbcTemplate) {
-            this.jdbcTemplate = jdbcTemplate;
-        }
-
-        public List<Car> findCarsWithDamageReports() {
-            String sql = "SELECT DISTINCT c.* FROM car c " +
-                    "JOIN damage_report dr ON c.car_id = dr.car_id";
-
-            return jdbcTemplate.query(sql, new RowMapper<Car>() {
-                @Override
-                public Car mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    Car car = new Car();
-                    car.setCarId(rs.getInt("car_id"));
-                    car.setBrand(rs.getString("brand"));
-                    car.setModel(rs.getString("model"));
-                    car.setColor(rs.getString("color"));
-                    car.setPrice(rs.getDouble("price"));
-                    return car;
-                }
-            });
-        }
-    }
-
 }

@@ -45,6 +45,8 @@ CREATE TABLE damage_report (
                                price DECIMAL(10,2) NOT NULL,
                                employee_id INT NOT NULL,
                                customer_email VARCHAR(100),
+                               report TEXT,
                                FOREIGN KEY (car_id) REFERENCES car(car_id),
                                FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
+
