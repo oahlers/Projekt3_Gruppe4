@@ -32,16 +32,16 @@ public class CarController {
         return carRepository.findNotRentedAndNotReadyCars();
     }
 
-    @GetMapping("/EmployeeLogin/viewAllCarsAndAddCar.html")
+    @GetMapping("/EmployeeLogin/viewAllCarsAndAddCar")
     public String viewAllCars(Model model) {
         model.addAttribute("cars", carRepository.findAll());
-        return "EmployeeLogin/viewAllCarsAndAddCar.html";
+        return "EmployeeLogin/viewAllCarsAndAddCar";
     }
 
 
     @PostMapping("/cars/add")
     public String addCar(@ModelAttribute Car car) {
         carRepository.save(car);
-        return "redirect:EmployeeLogin/viewAllCarsAndAddCar.html";
+        return "redirect:/EmployeeLogin/viewAllCarsAndAddCar";
     }
 }
