@@ -2,10 +2,6 @@ DROP DATABASE IF EXISTS bilabonnement;
 CREATE DATABASE bilabonnement;
 USE bilabonnement;
 
-DROP DATABASE IF EXISTS bilabonnement;
-CREATE DATABASE bilabonnement;
-USE bilabonnement;
-
 CREATE TABLE car (
                      car_id INT AUTO_INCREMENT PRIMARY KEY,
                      car_emission INT NOT NULL,
@@ -44,6 +40,15 @@ CREATE TABLE employees (
 INSERT INTO employees (employee_id, username, password, fullname)
 VALUES ('1', 'demo', 'demo', 'Demo demosen');
 
+CREATE TABLE rental (
+                        rental_id INT AUTO_INCREMENT PRIMARY KEY,
+                        car_id INT NOT NULL,
+                        start_date DATE NOT NULL,
+                        end_date DATE,
+                        customer_email VARCHAR(100),
+                        FOREIGN KEY (car_id) REFERENCES car(car_id)
+);
+
 CREATE TABLE damage_report (
                                report_id INT AUTO_INCREMENT PRIMARY KEY,
                                car_id INT NOT NULL,
@@ -54,4 +59,3 @@ CREATE TABLE damage_report (
                                FOREIGN KEY (car_id) REFERENCES car(car_id),
                                FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
-

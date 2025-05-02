@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Udlejede Biler - Bilabonnement</title>
     <link rel="icon" href="/img/fav.png" type="image/x-icon">
     <link rel="stylesheet" href="/style.css">
+    <style>
+        .car-card { display: block !important; }
+    </style>
 </head>
 <body>
 
@@ -24,30 +27,60 @@
     </div>
 
     <section class="hero">
-        <h1>Oversigt over Udlejede Biler</h1>
-        <p>Herunder ser du alle biler, som er udlejede lige nu.</p>
+        <h1>Oversigt over Biler</h1>
+        <p>Herunder ser du alle biler, inklusive udlejede og dem, der kræver skadesrapport.</p>
     </section>
 
     <main class="main-content">
         <section class="car-dashboard">
-
             <div class="filter-buttons">
                 <button onclick="filterCars('all')">Vis alle biler</button>
-                <button onclick="filterCars('available')">Vis udlejede biler</button>
-                <button onclick="filterCars('unavailable')">Vis biler der mangler skaderapport</button>
+                <button onclick="filterCars('rented')">Vis udlejede biler</button>
+                <button onclick="filterCars('not-ready')">Vis biler der mangler skadesrapport</button>
             </div>
 
-            <div class="car-card"
-                 th:each="car : ${rentedCars}"
-                 th:attr="data-available=${car.availableForLoan} ? 'true' : 'false'">
-                <h3 th:text="${car.brand + ' ' + car.model}"></h3>
-                <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
-                <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
-                <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
-                <p><strong>Udlejet:</strong> <span th:text="${car.availableForLoan} ? 'Ja' : 'Nej'"></span></p>
-                <p><strong>Mangler skaderapport :</strong> <span th:text="${car.readyForUse} ? 'Ja' : 'Nej'"></span></p>
+            <div th:if="${#lists.isEmpty(rentedCars) and #lists.isEmpty(availableCars) and #lists.isEmpty(notReadyCars)}">
+                <p>Ingen biler fundet. Tjek databasen eller repository-logikken.</p>
             </div>
 
+            <div th:if="${not #lists.isEmpty(rentedCars)}">
+                <h2>Udlejede biler</h2>
+                <div class="car-card" th:each="car : ${rentedCars}"
+                     th:attr="data-available=${car.availableForLoan} ? 'true' : 'false', data-ready=${car.readyForUse} ? 'true' : 'false'">
+                    <h3 th:text="${car.brand + ' ' + car.model}"></h3>
+                    <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
+                    <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
+                    <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
+                    <p><strong>Udlejet:</strong> <span th:text="${car.availableForLoan} ? 'Ja' : 'Nej'"></span></p>
+                    <p><strong>Mangler skadesrapport:</strong> <span th:text="${car.readyForUse} ? 'Ja' : 'Nej'"></span></p>
+                </div>
+            </div>
+
+            <div th:if="${not #lists.isEmpty(availableCars)}">
+                <h2>Tilgængelige biler</h2>
+                <div class="car-card" th:each="car : ${availableCars}"
+                     th:attr="data-available=${car.availableForLoan} ? 'true' : 'false', data-ready=${car.readyForUse} ? 'true' : 'false'">
+                    <h3 th:text="${car.brand + ' ' + car.model}"></h3>
+                    <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
+                    <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
+                    <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
+                    <p><strong>Udlejet:</strong> <span th:text="${car.availableForLoan} ? 'Ja' : 'Nej'"></span></p>
+                    <p><strong>Mangler skadesrapport:</strong> <span th:text="${car.readyForUse} ? 'Ja' : 'Nej'"></span></p>
+                </div>
+            </div>
+
+            <div th:if="${not #lists.isEmpty(notReadyCars)}">
+                <h2>Biler der mangler skadesrapport</h2>
+                <div class="car-card" th:each="car : ${notReadyCars}"
+                     th:attr="data-available=${car.availableForLoan} ? 'true' : 'false', data-ready=${car.readyForUse} ? 'true' : 'false'">
+                    <h3 th:text="${car.brand + ' ' + car.model}"></h3>
+                    <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
+                    <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
+                    <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
+                    <p><strong>Udlejet:</strong> <span th:text="${car.availableForLoan} ? 'Ja' : 'Nej'"></span></p>
+                    <p><strong>Mangler skadesrapport:</strong> <span th:text="${car.readyForUse} ? 'Ja' : 'Nej'"></span></p>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -61,17 +94,21 @@
         const cars = document.querySelectorAll('.car-card');
         cars.forEach(car => {
             const isAvailable = car.getAttribute('data-available') === 'true';
+            const isReady = car.getAttribute('data-ready') === 'true';
+
             if (filter === 'all') {
                 car.style.display = 'block';
-            } else if (filter === 'available' && isAvailable) {
+            } else if (filter === 'rented' && isAvailable) {
                 car.style.display = 'block';
-            } else if (filter === 'unavailable' && !isAvailable) {
+            } else if (filter === 'not-ready' && isReady) {
                 car.style.display = 'block';
             } else {
                 car.style.display = 'none';
             }
         });
     }
+
+    window.onload = () => filterCars('all');
 </script>
 
 </body>

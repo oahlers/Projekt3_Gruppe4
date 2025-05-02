@@ -32,7 +32,7 @@ public class DamageReportController {
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
-        List<Car> cars = carRepository.findNotRentedAndNotReadyCars();
+        List<Car> cars = carRepository.findCarsNeedingDamageReport();
         model.addAttribute("employee", loggedInEmployee);
         model.addAttribute("cars", cars);
         return "EmployeeLogin/damageReport";
@@ -41,7 +41,7 @@ public class DamageReportController {
     @GetMapping("/EmployeeLogin/damageReportFill/{id}")
     public String showFillReportPage(@PathVariable Long id, Model model) {
         Car car = carRepository.findById(id);
-        if (car == null) {
+        if (car == null || !car.isReadyForUse()) {
             return "error";
         }
         model.addAttribute("car", car);
@@ -55,7 +55,7 @@ public class DamageReportController {
                                      @RequestParam String customerEmail,
                                      HttpSession session) {
         Car car = carRepository.findById(id);
-        if (car == null) {
+        if (car == null || !car.isReadyForUse()) {
             return "error";
         }
 
@@ -66,8 +66,6 @@ public class DamageReportController {
 
         DamageReport damageReport = new DamageReport(car, price, loggedInEmployee, customerEmail, report);
         damageReportRepository.save(damageReport);
-
-        carRepository.resetCarAfterDamageReport(car.getCarId());
 
         return "EmployeeLogin/damageReportDone";
     }

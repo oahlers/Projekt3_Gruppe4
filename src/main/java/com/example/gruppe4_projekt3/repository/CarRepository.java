@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -31,44 +32,55 @@ public class CarRepository {
     public void save(Car car) {
         String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, " +
                 "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse, " +
-                "payment_time, transport_time, image) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "payment_time) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
                 car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(), car.getChassisNumber(),
                 car.getPrice(), car.getRegistrationFee(),
                 false,
                 false,
-                car.getPaymentTime(), car.getTransportTime(), car.getImage());
+                car.getPaymentTime());
     }
 
-    public void saveStatus(Car car) {
-        String sql = "UPDATE car SET isAvailableForLoan = ?, isReadyForUse = ? WHERE car_id = ?";
-        jdbcTemplate.update(sql, car.isAvailableForLoan(), car.isReadyForUse(), car.getCarId());
+    public void markAsRented(Long carId, LocalDate startDate, String customerEmail) {
+        String rentalSql = "INSERT INTO rental (car_id, start_date, customer_email) VALUES (?, ?, ?)";
+        jdbcTemplate.update(rentalSql, carId, startDate, customerEmail);
+
+        String carSql = "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?";
+        jdbcTemplate.update(carSql, carId);
     }
 
-    public void updateCarStatusAfterRental(Long carId) {
-        String sql = "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?";
-        jdbcTemplate.update(sql, carId);
+    public void markRentalEnded(Long carId) {
+        String rentalSql = "UPDATE rental SET end_date = ? WHERE car_id = ? AND end_date IS NULL";
+        jdbcTemplate.update(rentalSql, LocalDate.now(), carId);
+
+        String carSql = "UPDATE car SET isAvailableForLoan = 0, isReadyForUse = 1 WHERE car_id = ?";
+        jdbcTemplate.update(carSql, carId);
     }
 
-    public void resetCarAfterDamageReport(Long carId) {
+    public void resetAfterDamageReport(Long carId) {
         String sql = "UPDATE car SET isAvailableForLoan = 0, isReadyForUse = 0 WHERE car_id = ?";
         jdbcTemplate.update(sql, carId);
     }
 
-    public List<Car> findNotRentedAndNotReadyCars() {
-        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0";
+    public List<Car> findRentedCars() {
+        String sql = "SELECT c.* FROM car c JOIN rental r ON c.car_id = r.car_id WHERE r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     public List<Car> findAvailableForLoan() {
-        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 1 AND isReadyForUse = 0";
+        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-    public List<Car> findRentedCars() {
-        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 1 AND isReadyForUse = 0";
+    public List<Car> findCarsNeedingDamageReport() {
+        String sql = "SELECT * FROM car WHERE isReadyForUse = 1";
+        return jdbcTemplate.query(sql, new CarRowMapper());
+    }
+
+    public List<Car> findNotRentedAndNotReadyCars() {
+        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
