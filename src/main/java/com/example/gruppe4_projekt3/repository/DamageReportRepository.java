@@ -32,7 +32,6 @@ public class DamageReportRepository {
                 damageReport.getCustomerEmail(),
                 damageReport.getReport());
 
-        // Når en skadesrapport er oprettet, opdater bilens status
         carRepository.resetCarAfterDamageReport(damageReport.getCar().getCarId());
     }
 
