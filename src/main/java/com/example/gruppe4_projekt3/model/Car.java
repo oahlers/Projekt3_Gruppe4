@@ -1,7 +1,9 @@
 package com.example.gruppe4_projekt3.model;
 
+import java.time.LocalDate;
+
 public class Car {
-    private Integer carId;
+    private Long carId;
     private String image;
     private Integer carEmission;
     private Integer year;
@@ -15,33 +17,30 @@ public class Car {
     private double price;
     private double registrationFee;
 
-    public boolean isAvailableForLoan() {
-        return isAvailableForLoan;
-    }
-
-    public void setAvailableForLoan(boolean availableForLoan) {
-        isAvailableForLoan = availableForLoan;
-    }
-
-    public boolean isReadyForUse() {
-        return isReadyForUse;
-    }
-
-    public void setReadyForUse(boolean readyForUse) {
-        isReadyForUse = readyForUse;
-    }
-
     private boolean isAvailableForLoan;
     private boolean isReadyForUse;
+
     private int paymentTime;
     private int transportTime;
 
-    public Integer getCarId() {
+    private LocalDate rentalStartDate;
+    private LocalDate readyForUseDate;
+
+    // Getters and setters
+    public Long getCarId() {
         return carId;
     }
 
-    public void setCarId(Integer carId) {
+    public void setCarId(Long carId) {
         this.carId = carId;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Integer getCarEmission() {
@@ -124,6 +123,22 @@ public class Car {
         this.registrationFee = registrationFee;
     }
 
+    public boolean isAvailableForLoan() {
+        return isAvailableForLoan;
+    }
+
+    public void setAvailableForLoan(boolean availableForLoan) {
+        isAvailableForLoan = availableForLoan;
+    }
+
+    public boolean isReadyForUse() {
+        return isReadyForUse;
+    }
+
+    public void setReadyForUse(boolean readyForUse) {
+        isReadyForUse = readyForUse;
+    }
+
     public int getPaymentTime() {
         return paymentTime;
     }
@@ -140,11 +155,19 @@ public class Car {
         this.transportTime = transportTime;
     }
 
-    public String getImage() {
-        return image;
+    public LocalDate getRentalStartDate() {
+        return rentalStartDate;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setRentalStartDate(LocalDate rentalStartDate) {
+        this.rentalStartDate = rentalStartDate;
+    }
+
+    public LocalDate getReadyForUseDate() {
+        return readyForUseDate;
+    }
+
+    public void setReadyForUseDate(LocalDate readyForUseDate) {
+        this.readyForUseDate = readyForUseDate;
     }
 }
