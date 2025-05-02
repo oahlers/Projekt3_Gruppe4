@@ -38,7 +38,7 @@ public class CarRepository {
         jdbcTemplate.update(sql, car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
                 car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(),
                 car.getChassisNumber(), car.getPrice(), car.getRegistrationFee(),
-                car.isCarAvailable() ? 1 : 0, car.isReadyForLoan() ? 1 : 0,
+                car.isCarAvailable() ? 1 : 1, car.isReadyForLoan() ? 1 : 1,
                 car.getPaymentTime());
     }
 
