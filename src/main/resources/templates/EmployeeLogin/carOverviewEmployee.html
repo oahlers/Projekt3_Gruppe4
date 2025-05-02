@@ -31,14 +31,12 @@
     <main class="main-content">
         <section class="car-dashboard">
 
-            <!-- Filtreringsknapper -->
             <div class="filter-buttons">
                 <button onclick="filterCars('all')">Vis alle biler</button>
                 <button onclick="filterCars('available')">Vis udlejede biler</button>
                 <button onclick="filterCars('unavailable')">Vis biler der mangler skaderapport</button>
             </div>
 
-            <!-- Bilkort -->
             <div class="car-card"
                  th:each="car : ${rentedCars}"
                  th:attr="data-available=${car.availableForLoan} ? 'true' : 'false'">
@@ -58,7 +56,6 @@
     </div>
 </div>
 
-<!-- Filtreringsscript -->
 <script>
     function filterCars(filter) {
         const cars = document.querySelectorAll('.car-card');
