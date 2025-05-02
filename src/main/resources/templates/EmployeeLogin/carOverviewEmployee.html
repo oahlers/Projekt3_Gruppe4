@@ -26,19 +26,16 @@
     <section class="hero">
         <h1>Oversigt over Udlejede Biler</h1>
         <p>Herunder ser du alle biler, som er udlejede lige nu.</p>
+        <div class="filter-buttons">
+            <button onclick="filterCars('all')">Vis alle biler</button>
+            <button onclick="filterCars('available')">Vis tilgængelige</button>
+            <button onclick="filterCars('unavailable')">Vis udlejede</button>
+        </div>
     </section>
 
     <main class="main-content">
         <section class="car-dashboard">
 
-            <!-- Filtreringsknapper -->
-            <div class="filter-buttons">
-                <button onclick="filterCars('all')">Vis alle biler</button>
-                <button onclick="filterCars('available')">Vis tilgængelige</button>
-                <button onclick="filterCars('unavailable')">Vis udlejede</button>
-            </div>
-
-            <!-- Bilkort -->
             <div class="car-card"
                  th:each="car : ${rentedCars}"
                  th:attr="data-available=${car.availableForLoan} ? 'true' : 'false'">
