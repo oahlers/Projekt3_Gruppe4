@@ -4,8 +4,6 @@ import com.example.gruppe4_projekt3.model.Car;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,34 +30,34 @@ public class CarRepository {
 
     public void save(Car car) {
         String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, " +
-                "vehicle_number, chassis_number, price, registration_fee, is_car_available, ready_for_loan, " +
+                "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse, " +
                 "payment_time) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
                 car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(),
                 car.getChassisNumber(), car.getPrice(), car.getRegistrationFee(),
-                car.isCarAvailable() ? 1 : 1, car.isReadyForLoan() ? 1 : 1,
+                car.isAvailableForLoan() ? 1 : 1, car.isReadyForUse() ? 1 : 1,
                 car.getPaymentTime());
     }
 
 
     public void saveStatus(Car car) {
-        String sql = "UPDATE car SET is_car_available = ?, ready_for_loan = ? WHERE car_id = ?";
-        jdbcTemplate.update(sql, car.isCarAvailable(), car.isReadyForLoan(), car.getCarId());
+        String sql = "UPDATE car SET isAvailableForLoan = ?, isAvailableForUse = ? WHERE car_id = ?";
+        jdbcTemplate.update(sql, car.isAvailableForLoan(), car.isReadyForUse(), car.getCarId());
     }
 
     public List<Car> findRentedCars() {
-        String sql = "SELECT * FROM car WHERE is_car_available = 0";
+        String sql = "SELECT * FROM car WHERE isReadyForUse = 0";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     public List<Car> findRentedAndReadyCars() {
-        String sql = "SELECT * FROM car WHERE is_car_available = 0 AND ready_for_loan = 1";
+        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 1";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     public List<Car> findNotRentedAndNotReadyCars() {
-        String sql = "SELECT * FROM car WHERE is_car_available = 0 AND ready_for_loan = 0";
+        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
@@ -85,8 +83,8 @@ public class CarRepository {
             car.setChassisNumber(rs.getString("chassis_number"));
             car.setPrice(rs.getDouble("price"));
             car.setRegistrationFee(rs.getDouble("registration_fee"));
-            car.setCarAvailable(rs.getBoolean("is_car_available"));
-            car.setReadyForLoan(rs.getBoolean("ready_for_loan"));
+            car.setAvailableForLoan(rs.getBoolean("isAvailableForLoan"));
+            car.setReadyForUse(rs.getBoolean("isReadyForUse"));
             car.setPaymentTime(rs.getInt("payment_time"));
             return car;
         }

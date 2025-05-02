@@ -18,12 +18,12 @@ CREATE TABLE car (
                      chassis_number VARCHAR(100) NOT NULL UNIQUE,
                      price DECIMAL(10,2) NOT NULL,
                      registration_fee DECIMAL(10,2) NOT NULL,
-                     is_car_available BIT NOT NULL,
-                     ready_for_loan BIT NOT NULL,
+                     isAvailableForLoan BIT NOT NULL,
+                     isReadyForUse BIT NOT NULL,
                      payment_time INT NOT NULL
 );
 
-INSERT INTO car (car_emission, year, brand, model, color, equipment_level, vehicle_number, chassis_number, price, registration_fee, is_car_available, ready_for_loan, payment_time)
+INSERT INTO car (car_emission, year, brand, model, color, equipment_level, vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse, payment_time)
 VALUES
     (0, 2024, 'NAVOR', 'E5 ROCK 218 HK', 'Sort', 'Premium', 'EVN12345', 'NAVORE5ROCK12345678', 329995.00, 18420.00, b'0', b'0', 7),
     (0, 2023, 'Fiat', '500e Icon Pack 118 HK', 'Hvid', 'Icon Pack', 'EVF50001', 'FIAT500EICON12345678', 259995.00, 16230.00, b'0', b'0', 5),

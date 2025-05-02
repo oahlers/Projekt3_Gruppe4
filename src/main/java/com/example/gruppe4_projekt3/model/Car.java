@@ -14,8 +14,25 @@ public class Car {
     private String chassisNumber;
     private double price;
     private double registrationFee;
-    private boolean isCarAvailable;
-    private boolean readyForLoan;
+
+    public boolean isAvailableForLoan() {
+        return isAvailableForLoan;
+    }
+
+    public void setAvailableForLoan(boolean availableForLoan) {
+        isAvailableForLoan = availableForLoan;
+    }
+
+    public boolean isReadyForUse() {
+        return isReadyForUse;
+    }
+
+    public void setReadyForUse(boolean readyForUse) {
+        isReadyForUse = readyForUse;
+    }
+
+    private boolean isAvailableForLoan;
+    private boolean isReadyForUse;
     private int paymentTime;
     private int transportTime;
 
@@ -75,14 +92,6 @@ public class Car {
         this.equipmentLevel = equipmentLevel;
     }
 
-    public String getReturnAddress() {
-        return returnAddress;
-    }
-
-    public void setReturnAddress(String returnAddress) {
-        this.returnAddress = returnAddress;
-    }
-
     public String getVehicleNumber() {
         return vehicleNumber;
     }
@@ -113,22 +122,6 @@ public class Car {
 
     public void setRegistrationFee(double registrationFee) {
         this.registrationFee = registrationFee;
-    }
-
-    public boolean isCarAvailable() {
-        return isCarAvailable;
-    }
-
-    public void setCarAvailable(boolean carAvailable) {
-        isCarAvailable = carAvailable;
-    }
-
-    public boolean isReadyForLoan() {
-        return readyForLoan;
-    }
-
-    public void setReadyForLoan(boolean readyForLoan) {
-        this.readyForLoan = readyForLoan;
     }
 
     public int getPaymentTime() {
