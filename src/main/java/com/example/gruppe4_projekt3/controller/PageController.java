@@ -42,19 +42,14 @@ public class PageController {
     }
 
     @GetMapping("/EmployeeLogin/carOverviewEmployee")
-    public String showRentedCars(HttpSession session, Model model) {
+    public String showAllCars(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
 
-        List<Car> rentedCars = carRepository.findRentedCars();
-        List<Car> availableCars = carRepository.findAvailableForLoan();
-        List<Car> notReadyCars = carRepository.findCarsNeedingDamageReport();
-
-        model.addAttribute("rentedCars", rentedCars);
-        model.addAttribute("availableCars", availableCars);
-        model.addAttribute("notReadyCars", notReadyCars);
+        List<Car> allCars = carRepository.findAll();
+        model.addAttribute("allCars", allCars);
         model.addAttribute("employee", loggedInEmployee);
 
         return "EmployeeLogin/carOverviewEmployee";
