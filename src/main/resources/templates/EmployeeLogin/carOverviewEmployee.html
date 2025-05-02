@@ -34,8 +34,8 @@
             <!-- Filtreringsknapper -->
             <div class="filter-buttons">
                 <button onclick="filterCars('all')">Vis alle biler</button>
-                <button onclick="filterCars('available')">Vis tilgængelige</button>
-                <button onclick="filterCars('unavailable')">Vis udlejede</button>
+                <button onclick="filterCars('available')">Vis udlejede biler</button>
+                <button onclick="filterCars('unavailable')">Vis biler der mangler skaderapport</button>
             </div>
 
             <!-- Bilkort -->
@@ -46,8 +46,8 @@
                 <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
                 <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
                 <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
-                <p><strong>Tilgængelig:</strong> <span th:text="${car.availableForLoan} ? 'Ja' : 'Nej'"></span></p>
-                <p><strong>Klar Til udlejning:</strong> <span th:text="${car.readyForUse} ? 'Ja' : 'Nej'"></span></p>
+                <p><strong>Udlejet:</strong> <span th:text="${car.availableForLoan} ? 'Ja' : 'Nej'"></span></p>
+                <p><strong>Mangler skaderapport:</strong> <span th:text="${car.readyForUse} ? 'Ja' : 'Nej'"></span></p>
             </div>
 
         </section>

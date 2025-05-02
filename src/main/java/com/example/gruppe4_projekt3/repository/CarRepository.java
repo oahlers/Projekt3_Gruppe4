@@ -37,8 +37,8 @@ public class CarRepository {
                 car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
                 car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(), car.getChassisNumber(),
                 car.getPrice(), car.getRegistrationFee(),
-                false, // Udlejet = nej
-                false, // Ikke klar til brug endnu
+                false,
+                false,
                 car.getPaymentTime(), car.getTransportTime(), car.getImage());
     }
 
@@ -72,7 +72,6 @@ public class CarRepository {
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-    // Find biler der er udlejet og samtidig klar til brug
     public List<Car> findRentedAndReadyCars() {
         String sql = "SELECT * FROM car WHERE isAvailableForLoan = 1 AND isReadyForUse = 1";
         return jdbcTemplate.query(sql, new CarRowMapper());
