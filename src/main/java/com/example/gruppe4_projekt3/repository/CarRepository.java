@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class CarRepository {
 
-    private static JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public CarRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -31,29 +31,30 @@ public class CarRepository {
     public void save(Car car) {
         String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, " +
                 "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse, " +
-                "payment_time) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
-                car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(),
-                car.getChassisNumber(), car.getPrice(), car.getRegistrationFee(),
-                car.isAvailableForLoan() ? 1 : 1, car.isReadyForUse() ? 1 : 1,
-                car.getPaymentTime());
+                "payment_time, transport_time, image) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
+                car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(), car.getChassisNumber(),
+                car.getPrice(), car.getRegistrationFee(),
+                false, // Udlejet = nej
+                false, // Ikke klar til brug endnu
+                car.getPaymentTime(), car.getTransportTime(), car.getImage());
     }
 
-
     public void saveStatus(Car car) {
-        String sql = "UPDATE car SET isAvailableForLoan = ?, isAvailableForUse = ? WHERE car_id = ?";
+        String sql = "UPDATE car SET isAvailableForLoan = ?, isReadyForUse = ? WHERE car_id = ?";
         jdbcTemplate.update(sql, car.isAvailableForLoan(), car.isReadyForUse(), car.getCarId());
     }
 
-    public List<Car> findRentedCars() {
-        String sql = "SELECT * FROM car WHERE isReadyForUse = 0";
-        return jdbcTemplate.query(sql, new CarRowMapper());
+    public void updateCarStatusAfterRental(Long carId) {
+        String sql = "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?";
+        jdbcTemplate.update(sql, carId);
     }
 
-    public List<Car> findRentedAndReadyCars() {
-        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 1";
-        return jdbcTemplate.query(sql, new CarRowMapper());
+    public void resetCarAfterDamageReport(Long carId) {
+        String sql = "UPDATE car SET isAvailableForLoan = 0, isReadyForUse = 0 WHERE car_id = ?";
+        jdbcTemplate.update(sql, carId);
     }
 
     public List<Car> findNotRentedAndNotReadyCars() {
@@ -61,10 +62,19 @@ public class CarRepository {
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-    public List<Car> findCarsWithDamageReports() {
-        String sql = "SELECT car.* FROM car " +
-                "JOIN damage_report ON car.car_id = damage_report.car_id " +
-                "WHERE damage_report.report_id IS NOT NULL";
+    public List<Car> findAvailableForLoan() {
+        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 1 AND isReadyForUse = 0";
+        return jdbcTemplate.query(sql, new CarRowMapper());
+    }
+
+    public List<Car> findRentedCars() {
+        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 1 AND isReadyForUse = 0";
+        return jdbcTemplate.query(sql, new CarRowMapper());
+    }
+
+    // Find biler der er udlejet og samtidig klar til brug
+    public List<Car> findRentedAndReadyCars() {
+        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 1 AND isReadyForUse = 1";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
@@ -72,7 +82,7 @@ public class CarRepository {
         @Override
         public Car mapRow(ResultSet rs, int rowNum) throws SQLException {
             Car car = new Car();
-            car.setCarId(rs.getInt("car_id"));
+            car.setCarId(rs.getLong("car_id"));
             car.setCarEmission(rs.getInt("car_emission"));
             car.setYear(rs.getInt("year"));
             car.setBrand(rs.getString("brand"));

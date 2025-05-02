@@ -1,12 +1,11 @@
 package com.example.gruppe4_projekt3.controller;
 
 import com.example.gruppe4_projekt3.model.Car;
-
 import com.example.gruppe4_projekt3.repository.CarRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
- import java.util.List;
+import java.util.List;
 
 @Controller
 public class CarController {
@@ -37,7 +36,6 @@ public class CarController {
         model.addAttribute("cars", carRepository.findAll());
         return "EmployeeLogin/viewAllCarsAndAddCar";
     }
-
 
     @PostMapping("/cars/add")
     public String addCar(@ModelAttribute Car car) {

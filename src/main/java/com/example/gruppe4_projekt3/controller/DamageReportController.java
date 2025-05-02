@@ -60,22 +60,17 @@ public class DamageReportController {
         }
 
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
-
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
 
         DamageReport damageReport = new DamageReport(car, price, loggedInEmployee, customerEmail, report);
-
         damageReportRepository.save(damageReport);
 
-        car.setAvailableForLoan(true);
-        car.setReadyForUse(true);
-        carRepository.saveStatus(car);
+        carRepository.resetCarAfterDamageReport(car.getCarId());
 
         return "EmployeeLogin/damageReportDone";
     }
-
 
     @GetMapping("/EmployeeLogin/damageReportDone")
     public String showDamageReportDone() {
@@ -88,6 +83,4 @@ public class DamageReportController {
         model.addAttribute("damageReports", damageReports);
         return "EmployeeLogin/damageReportHistory";
     }
-
-
 }
