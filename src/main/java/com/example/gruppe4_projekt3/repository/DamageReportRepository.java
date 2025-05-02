@@ -32,10 +32,10 @@ public class DamageReportRepository {
                 damageReport.getCustomerEmail(),
                 damageReport.getReport());
 
-        carRepository.resetAfterDamageReport(damageReport.getCar().getCarId());
+        carRepository.resetCarAfterDamageReport(damageReport.getCar().getCarId());
     }
 
-    public DamageReport findByCarId(Long carId) {
+    public DamageReport findByCarId(int carId) {
         String sql = "SELECT dr.*, c.brand, c.model, e.fullname AS employee_fullname " +
                 "FROM damage_report dr " +
                 "JOIN car c ON dr.car_id = c.car_id " +

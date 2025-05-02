@@ -24,6 +24,7 @@ public class CarRepository {
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
+
     public Car findById(Long id) {
         String sql = "SELECT * FROM car WHERE car_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new CarRowMapper());
