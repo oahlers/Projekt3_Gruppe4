@@ -32,7 +32,7 @@ public class DamageReportRepository {
                 damageReport.getCustomerEmail(),
                 damageReport.getReport());
 
-        carRepository.resetCarAfterDamageReport(damageReport.getCar().getCarId());
+        carRepository.resetAfterDamageReport(damageReport.getCar().getCarId());
     }
 
     public DamageReport findByCarId(int carId) {
