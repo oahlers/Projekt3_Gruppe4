@@ -76,3 +76,11 @@ VALUES
     (8, 'emma_jones', 'emmapassword', 'Emma Jones'),
     (9, 'frank_white', 'frankpass', 'Frank White'),
     (10, 'george_clark', 'georgepass', 'George Clark');
+
+INSERT INTO rental (car_id, start_date, end_date, customer_name, customer_email, rental_months, ready_for_use_date, payment_time, transport_time)
+VALUES
+(1, '2024-01-10', '2024-07-10', 'Anna Jensen', 'anna.jensen@example.com', 6, '2024-01-05', 30, 5),
+(2, '2023-10-01', '2024-04-01', 'Mads Sørensen', 'mads.soerensen@example.com', 6, '2023-09-28', 25, 4),
+(3, '2024-03-15', '2025-03-15', 'Camilla Frederiksen', 'camilla.f@example.com', 12, '2024-03-10', 35, 6),
+(4, '2023-11-20', '2024-05-20', 'Lars Thomsen', 'lars.thomsen@example.com', 6, '2023-11-15', 28, 5),
+(5, '2024-04-01', NULL, 'Sofie Mikkelsen', 'sofie.m@example.com', 2, '2024-03-30', 22, 4);

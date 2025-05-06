@@ -1,13 +1,97 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Statistik</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilstatistik - Bilabonnement</title>
+  <link rel="icon" href="/img/fav.png" type="image/x-icon">
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->
 </head>
 <body>
-<h1>Bilstatistik</h1>
-<p>Gennemsnitlig betalingstid: <span th:text="${averagePaymentTime}">0</span> dage</p>
-<p>Gennemsnitlig transporttid: <span th:text="${averageTransportTime}">0</span> dage</p>
-<p>Gennemsnitlig udlejningsvarighed: <span th:text="${averageRentalDurationPerCar}">0</span> måneder</p>
+
+<div class="layout">
+
+  <div class="header">
+    <div class="logo">
+      <a th:href="@{/EmployeeLogin/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
+    </div>
+    <h3>Medarbejderportal</h3>
+    <nav>
+      <a th:href="@{/}" class="back-btn">Log ud</a>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <h1>Statistik</h1>
+    <p>Herunder finder du nøgletal for bilabonnementer.</p>
+  </section>
+
+  <main class="main-content">
+    <section class="dashboard">
+      <div class="card">
+        <h3>Gennemsnitlig betalingstid</h3>
+        <p><span id="paymentTime" th:text="${averagePaymentTime}">0</span> dage</p>
+        <canvas id="paymentChart" height="100"></canvas>
+      </div>
+
+      <div class="card">
+        <h3>Gennemsnitlig transporttid</h3>
+        <p><span id="transportTime" th:text="${averageTransportTime}">0</span> dage</p>
+        <canvas id="transportChart" height="100"></canvas>
+      </div>
+
+      <div class="card">
+        <h3>Gennemsnitlig udlejningsvarighed</h3>
+        <p><span id="rentalDuration" th:text="${averageRentalDurationPerCar}">0</span> måneder</p>
+        <canvas id="rentalChart" height="100"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">
+    <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
+  </div>
+
+</div>
+
+<script>
+  const payment = parseFloat(document.getElementById("paymentTime").innerText);
+  const transport = parseFloat(document.getElementById("transportTime").innerText);
+  const rental = parseFloat(document.getElementById("rentalDuration").innerText);
+
+  function renderChart(id, label, value, max = 30) {
+    new Chart(document.getElementById(id), {
+      type: 'bar',
+      data: {
+        labels: [label],
+        datasets: [{
+          label: label,
+          data: [value],
+          backgroundColor: '#0077cc',
+          borderColor: '#005fa3',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: max
+          }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  }
+
+  renderChart("paymentChart", "Betalingstid", payment);
+  renderChart("transportChart", "Transporttid", transport);
+  renderChart("rentalChart", "Udlejningstid", rental);
+</script>
+
 </body>
 </html>
