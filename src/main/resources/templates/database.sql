@@ -46,6 +46,8 @@ CREATE TABLE rental (
                         start_date DATE NOT NULL,
                         end_date DATE,
                         customer_email VARCHAR(100),
+                        rental_months INT NOT NULL,
+                        ready_for_use_date DATE,
                         FOREIGN KEY (car_id) REFERENCES car(car_id)
 );
 

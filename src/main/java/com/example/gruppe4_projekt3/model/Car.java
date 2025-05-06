@@ -17,8 +17,8 @@ public class Car {
     private double price;
     private double registrationFee;
 
-    private boolean isAvailableForLoan;
-    private boolean isReadyForUse;
+    private boolean isAvailableForLoan; // (Er bil udlejet)
+    private boolean isReadyForUse; // (Er bilen i brug, tidsbestemt variabel)
 
     private int paymentTime;
     private int transportTime;

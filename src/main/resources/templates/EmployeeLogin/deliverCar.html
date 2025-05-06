@@ -1,10 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrer og Levér Bil - Bilabonnement</title>
+    <link rel="icon" href="/img/fav.png" type="image/x-icon">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+<div class="layout">
+    <div class="header">
+        <div class="logo">
+            <a th:href="@{/EmployeeLogin/dashboard}">
+                <img src="/img/Logo.png" alt="BILABONNEMENT Logo">
+            </a>
+        </div>
+        <h3>Medarbejderportal</h3>
+        <nav>
+            <a th:href="@{/}" class="back-btn">Log ud</a>
+        </nav>
+    </div>
 
+    <section class="hero">
+        <h1>Registrer og Levér Bil</h1>
+        <p>Vælg en bil, der ikke er udlejet, og udfyld kundeoplysninger for at registrere udlejning.</p>
+    </section>
+
+    <main class="main-content">
+        <section class="car-dashboard">
+            <div id="cars-container">
+                <div class="car-card" th:each="car : ${availableCars}">
+                    <h3 th:text="${car.brand + ' ' + car.model}"></h3>
+                    <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
+                    <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
+                    <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
+                    <button class="select-car-btn" onclick="showForm(this, 'form-' + ${car.carId})">Vælg bil</button>
+                    <div class="form-container" th:id="'form-' + ${car.carId}">
+                        <form th:action="@{/EmployeeLogin/deliverCar}" method="post">
+                            <input type="hidden" name="carId" th:value="${car.carId}">
+                            <label for="name">Kundens navn:</label>
+                            <input type="text" id="name" name="name" required>
+                            <label for="deliveryAddress">Leveringsadresse:</label>
+                            <input type="text" id="deliveryAddress" name="deliveryAddress" required>
+                            <label for="rentalMonths">Lejeperiode (måneder):</label>
+                            <select id="rentalMonths" name="rentalMonths" required>
+                                <option value="1">1 måned</option>
+                                <option value="3">3 måneder</option>
+                                <option value="6">6 måneder</option>
+                                <option value="12">12 måneder</option>
+                            </select>
+                            <button type="submit">Registrer udlejning</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="footer">
+        <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
+    </div>
+</div>
+
+<script src="/js/deliver-car.js"></script>
 </body>
 </html>

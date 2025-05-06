@@ -44,7 +44,7 @@ public class CarRepository {
                 car.getPaymentTime());
     }
 
-    public void markAsRented(Long carId, LocalDate startDate, String customerEmail) {
+    public void markAsRented(Long carId, LocalDate startDate, String customerEmail, int rentalMonths) {
         String rentalSql = "INSERT INTO rental (car_id, start_date, customer_email) VALUES (?, ?, ?)";
         jdbcTemplate.update(rentalSql, carId, startDate, customerEmail);
 
