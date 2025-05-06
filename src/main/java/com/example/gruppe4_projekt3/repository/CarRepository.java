@@ -3,11 +3,13 @@ package com.example.gruppe4_projekt3.repository;
 import com.example.gruppe4_projekt3.model.Car;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Repository
@@ -20,13 +22,15 @@ public class CarRepository {
     }
 
     public List<Car> findAll() {
-        String sql = "SELECT * FROM car";
+        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
+                "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-
     public Car findById(Long id) {
-        String sql = "SELECT * FROM car WHERE car_id = ?";
+        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
+                "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
+                "WHERE c.car_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new CarRowMapper());
     }
 
@@ -39,14 +43,14 @@ public class CarRepository {
                 car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
                 car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(), car.getChassisNumber(),
                 car.getPrice(), car.getRegistrationFee(),
-                false,
-                false,
-                car.getPaymentTime());
+                car.isAvailableForLoan(), car.isReadyForUse(), car.getPaymentTime());
     }
 
-    public void markAsRented(Long carId, LocalDate startDate, String customerEmail, int rentalMonths) {
-        String rentalSql = "INSERT INTO rental (car_id, start_date, customer_email) VALUES (?, ?, ?)";
-        jdbcTemplate.update(rentalSql, carId, startDate, customerEmail);
+    public void markAsRented(Long carId, LocalDate startDate, String customerName, int rentalMonths) {
+        LocalDate readyForUseDate = startDate.plusMonths(rentalMonths);
+        String rentalSql = "INSERT INTO rental (car_id, start_date, customer_name, customer_email, rental_months, ready_for_use_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(rentalSql, carId, startDate, customerName, customerName, rentalMonths, readyForUseDate);
 
         String carSql = "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?";
         jdbcTemplate.update(carSql, carId);
@@ -66,7 +70,8 @@ public class CarRepository {
     }
 
     public List<Car> findRentedCars() {
-        String sql = "SELECT c.* FROM car c JOIN rental r ON c.car_id = r.car_id WHERE r.end_date IS NULL";
+        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
+                "FROM car c JOIN rental r ON c.car_id = r.car_id WHERE r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
@@ -76,7 +81,9 @@ public class CarRepository {
     }
 
     public List<Car> findCarsNeedingDamageReport() {
-        String sql = "SELECT * FROM car WHERE isReadyForUse = 1";
+        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
+                "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
+                "WHERE c.isReadyForUse = 1";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
@@ -86,8 +93,21 @@ public class CarRepository {
     }
 
     public List<Car> findRentedAndReadyCars() {
-        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 1 AND isReadyForUse = 1";
+        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
+                "FROM car c JOIN rental r ON c.car_id = r.car_id " +
+                "WHERE c.isAvailableForLoan = 1 AND c.isReadyForUse = 1 AND r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateReadyForUseStatus() {
+        String sql = "SELECT car_id FROM rental WHERE ready_for_use_date <= ? AND end_date IS NULL";
+        List<Long> carIds = jdbcTemplate.queryForList(sql, new Object[]{LocalDate.now()}, Long.class);
+
+        for (Long carId : carIds) {
+            String updateSql = "UPDATE car SET isReadyForUse = 1 WHERE car_id = ?";
+            jdbcTemplate.update(updateSql, carId);
+        }
     }
 
     private static class CarRowMapper implements RowMapper<Car> {
@@ -108,6 +128,26 @@ public class CarRepository {
             car.setAvailableForLoan(rs.getBoolean("isAvailableForLoan"));
             car.setReadyForUse(rs.getBoolean("isReadyForUse"));
             car.setPaymentTime(rs.getInt("payment_time"));
+
+            try {
+                String customerName = rs.getString("customer_name");
+                car.setCustomerName(customerName);
+            } catch (SQLException e) {
+                car.setCustomerName(null);
+            }
+
+            try {
+                java.sql.Date readyForUseDate = rs.getDate("ready_for_use_date");
+                if (readyForUseDate != null) {
+                    long days = ChronoUnit.DAYS.between(LocalDate.now(), readyForUseDate.toLocalDate());
+                    car.setRemainingRentalDays(days >= 0 ? days : 0);
+                } else {
+                    car.setRemainingRentalDays(null);
+                }
+            } catch (SQLException e) {
+                car.setRemainingRentalDays(null);
+            }
+
             return car;
         }
     }

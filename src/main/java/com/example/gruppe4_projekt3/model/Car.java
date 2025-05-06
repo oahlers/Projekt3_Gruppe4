@@ -1,30 +1,22 @@
 package com.example.gruppe4_projekt3.model;
 
-import java.time.LocalDate;
-
 public class Car {
     private Long carId;
-    private String image;
-    private Integer carEmission;
-    private Integer year;
+    private int carEmission;
+    private int year;
     private String brand;
     private String model;
     private String color;
     private String equipmentLevel;
-    private String returnAddress;
     private String vehicleNumber;
     private String chassisNumber;
     private double price;
     private double registrationFee;
-
-    private boolean isAvailableForLoan; // (Er bil udlejet)
-    private boolean isReadyForUse; // (Er bilen i brug, tidsbestemt variabel)
-
+    private boolean availableForLoan;
+    private boolean readyForUse;
     private int paymentTime;
-    private int transportTime;
-
-    private LocalDate rentalStartDate;
-    private LocalDate readyForUseDate;
+    private String customerName;
+    private Long remainingRentalDays;
 
     // Getters and setters
     public Long getCarId() {
@@ -35,27 +27,19 @@ public class Car {
         this.carId = carId;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Integer getCarEmission() {
+    public int getCarEmission() {
         return carEmission;
     }
 
-    public void setCarEmission(Integer carEmission) {
+    public void setCarEmission(int carEmission) {
         this.carEmission = carEmission;
     }
 
-    public Integer getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public void setYear(int year) {
         this.year = year;
     }
 
@@ -124,19 +108,19 @@ public class Car {
     }
 
     public boolean isAvailableForLoan() {
-        return isAvailableForLoan;
+        return availableForLoan;
     }
 
     public void setAvailableForLoan(boolean availableForLoan) {
-        isAvailableForLoan = availableForLoan;
+        this.availableForLoan = availableForLoan;
     }
 
     public boolean isReadyForUse() {
-        return isReadyForUse;
+        return readyForUse;
     }
 
     public void setReadyForUse(boolean readyForUse) {
-        isReadyForUse = readyForUse;
+        this.readyForUse = readyForUse;
     }
 
     public int getPaymentTime() {
@@ -147,27 +131,19 @@ public class Car {
         this.paymentTime = paymentTime;
     }
 
-    public int getTransportTime() {
-        return transportTime;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setTransportTime(int transportTime) {
-        this.transportTime = transportTime;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public LocalDate getRentalStartDate() {
-        return rentalStartDate;
+    public Long getRemainingRentalDays() {
+        return remainingRentalDays;
     }
 
-    public void setRentalStartDate(LocalDate rentalStartDate) {
-        this.rentalStartDate = rentalStartDate;
-    }
-
-    public LocalDate getReadyForUseDate() {
-        return readyForUseDate;
-    }
-
-    public void setReadyForUseDate(LocalDate readyForUseDate) {
-        this.readyForUseDate = readyForUseDate;
+    public void setRemainingRentalDays(Long remainingRentalDays) {
+        this.remainingRentalDays = remainingRentalDays;
     }
 }
