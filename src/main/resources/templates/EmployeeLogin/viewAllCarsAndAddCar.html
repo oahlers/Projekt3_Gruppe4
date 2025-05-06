@@ -23,13 +23,13 @@ RASMUS I MONGOL
 
   <section class="hero">
     <h1>Velkommen til Tilføj Bil</h1>
-    <p>Tilføj nye biler og se alle tilgængelige biler.</p>
+    <p>Tilføj nye biler</p>
   </section>
 
   <main class="main-content">
 
-    <section class="dashboard">
-      <div class="card">
+    <section class="viewCar-dashboard">
+      <div class="search-card">
         <h3>Tilføj Ny Bil</h3>
         <form th:action="@{/cars/add}" method="post">
           <label>Co2 udledning (0 hvis elbil):</label>
@@ -68,39 +68,12 @@ RASMUS I MONGOL
         </form>
       </div>
 
-      <div class="card">
-        <h3>Alle Biler</h3>
-        <table>
-          <thead>
-          <tr>
-            <th>ID</th>
-            <th>Brand</th>
-            <th>Model</th>
-            <th>År</th>
-            <th>Farve</th>
-            <th>Tilgængelig</th>
-            <th>Klar</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr th:each="car : ${cars}">
-            <td th:text="${car.carId}">1</td>
-            <td th:text="${car.brand}">Brand</td>
-            <td th:text="${car.model}">Model</td>
-            <td th:text="${car.year}">2025</td>
-            <td th:text="${car.color}">Rød</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
     </section>
   </main>
 
   <div class="footer">
-    <p>© 2025 Wishcloud</p>
-    <p>Projekt 3 - Gruppe 4</p>
+    <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
   </div>
-
 </div>
 
 </body>

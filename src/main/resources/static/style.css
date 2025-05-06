@@ -29,6 +29,8 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
+    padding: 20px;
+    margin: 30px auto;
 }
 
 .header {
@@ -152,59 +154,6 @@ body {
     background-color: #0056b3;
 }
 
-    /* Skaderapport Form Styling */
-.damage-report-form {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    margin: 0 auto;
-}
-
-.damage-report-form .form-group {
-    margin-bottom: 15px;
-}
-
-.damage-report-form label {
-    font-weight: bold;
-    color: #003087;
-}
-
-.damage-report-form input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-.damage-report-form button {
-    width: 100%;
-    padding: 10px;
-    background-color: #003087;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.damage-report-form button:hover {
-    background-color: #0056b3;
-}
-
-/* Detaljer sektion */
-.damage-report-details {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-}
-
-.damage-report-details div {
-    margin-bottom: 10px;
-}
 
 .car-dashboard {
     display: flex;
@@ -212,7 +161,6 @@ body {
     flex-wrap: wrap;
     gap: 30px;
     padding: 30px 20px;
-
 }
 
 .car-card {
@@ -236,3 +184,208 @@ body {
     color: #ffffff;
     border-radius: 5px;
 }
+
+.search-dashboard {
+    display: flex;
+}
+
+.viewCar-dashboard {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+}
+
+.cars-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.search-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.search-card h3 {
+    color: #003087;
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.search-card label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.search-card input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.search-card .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.search-card button {
+    padding: 10px 20px;
+    background-color: #003087;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.search-card button:hover {
+    background-color: #0056b3;
+}
+
+.search-card button {
+    padding: 10px 20px;
+    background-color: #003087;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.search-card button:hover {
+    background-color: #0056b3;
+}
+
+.hero-toggleBoard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+
+}
+
+.hero-toggleBoard label {
+    display: flex;
+    align-items: center; /* Aligns checkbox and text vertically */
+    gap: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #003087;
+    font-weight: bold;
+}
+
+.hero-toggleBoard input[type="checkbox"] {
+    display: none; /* Hide the default checkbox */
+}
+
+.hero-toggleBoard input[type="checkbox"] + a {
+    position: relative;
+    padding-left: 30px;
+}
+
+.hero-toggleBoard input[type="checkbox"] + a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; /* Match the height of the text */
+    height: 20px; /* Match the height of the text */
+    border: 2px solid #003087;
+    border-radius: 4px;
+    background-color: #ffffff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.hero-toggleBoard input[type="checkbox"]:checked + a::before {
+    background-color: #003087;
+    border-color: #0056b3;
+}
+
+.hero-toggleBoard input[type="checkbox"]:checked + a {
+    color: #0056b3;
+}
+
+/* General layout for the damage report dashboard */
+.damageReport-dashboard {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.damageReport-dashboard h1 {
+    color: #003087;
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.damageReport-dashboard p {
+    color: #555;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* Table styling */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table thead tr {
+    background-color: #003087;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: none;
+}
+
+.btn-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #003087;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-link:hover {
+    background-color: #0056b3;
+}
+

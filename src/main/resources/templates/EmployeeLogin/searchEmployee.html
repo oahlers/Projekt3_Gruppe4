@@ -22,14 +22,13 @@
     </div>
 
     <section class="hero">
-        <h1>Velkommen til Medarbejder Dashboard</h1>
-        <p>Her kan du opsøge medarbejdere.</p>
+        <h1>Medarbejderoplysninger</h1>
+        <p>Her kan du opsøge information om medarbejdere.</p>
     </section>
 
     <main class="main-content">
 
-        <h1>Medarbejderoplysninger</h1>
-
+        <div class="search-dashboard">
         <form action="/findEmployee" method="post">
             <label for="employeeId">Medarbejder ID:</label>
             <input type="number" id="employeeId" name="employeeId" />
@@ -51,6 +50,7 @@
             <a th:href="@{/employees/{id}(id=${employee.employeeId})}">Se detaljer</a>
         </div>
 
+        </div>
     </main>
 
     <div class="footer">
