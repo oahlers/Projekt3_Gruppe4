@@ -28,8 +28,8 @@
 
     <main class="main-content">
         <section class="car-dashboard">
-            <div id="cars-container">
-                <div class="car-card" th:each="car : ${availableCars}">
+
+                <div class="search-card" th:each="car : ${availableCars}">
                     <h3 th:text="${car.brand + ' ' + car.model}"></h3>
                     <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
                     <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
@@ -63,9 +63,7 @@
 
                         <button type="submit">Registrer udlejning</button>
                     </form>
-
                 </div>
-            </div>
         </section>
     </main>
 
