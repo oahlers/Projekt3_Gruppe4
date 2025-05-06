@@ -173,6 +173,12 @@ body {
     flex-direction: column;
 }
 
+.car-img {
+    scale: 100%;
+    width: 290px;
+    height: 180px;
+}
+
 .car-card h3 {
     color: #003087;
 }
