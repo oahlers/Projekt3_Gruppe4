@@ -19,6 +19,7 @@
   </div>
 
   <main class="main-content">
+    <section class="damageReportForm">
     <h2 th:text="'Laver skaderapport på bil ID: ' + ${car.carId} + ', Mærke: ' + ${car.brand} + ', Model: ' + ${car.model}">Bil-info</h2>
 
     <form th:action="@{/EmployeeLogin/damageReportFill/{id}(id=${car.carId})}" method="POST">
@@ -33,7 +34,9 @@
 
       <button type="submit">Indsend Rapport</button>
     </form>
+    </section>
   </main>
+
 
   <div class="footer">
     <p>Bilabonnement | Medarbejderportal</p>
