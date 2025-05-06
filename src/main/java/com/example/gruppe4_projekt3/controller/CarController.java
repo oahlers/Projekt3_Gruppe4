@@ -42,7 +42,7 @@ public class CarController {
             return "redirect:/auth";
         }
         carRepository.save(car);
-        return "redirect:/EmployeeLogin/rentedCars";
+        return "EmployeeLogin/dashboard";
     }
 
     @GetMapping("/rented")

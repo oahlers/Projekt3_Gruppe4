@@ -37,6 +37,11 @@
             <div id="cars-container">
                 <div class="car-card" th:each="car : ${allCars}"
                      th:attr="data-available=${car.availableForLoan}, data-ready=${car.readyForUse}">
+
+                    <div class="car-image">
+                        <img th:src="${car.image}" alt="Car image" class="car-img"/>
+                    </div>
+
                     <h3 th:text="${car.brand + ' ' + car.model}"></h3>
                     <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
                     <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
@@ -47,8 +52,7 @@
                     <div th:if="${car.availableForLoan}">
                         <p><strong>Kunde:</strong> <span th:text="${car.customerName}"></span></p>
                         <p><strong>Resterende udlejningstid:</strong>
-                            <span th:text="${car.remainingRentalDays != null} ?
-                           (${car.remainingRentalDays} + ' dage') : 'Ikke udlejet'"></span></p>
+                            <span th:text="${car.remainingRentalDays != null} ? (${car.remainingRentalDays} + ' dage') : 'Ikke udlejet'"></span></p>
                     </div>
                 </div>
             </div>
