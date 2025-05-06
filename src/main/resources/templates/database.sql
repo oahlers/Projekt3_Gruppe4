@@ -65,4 +65,14 @@ VALUES
     (0, 2024, 'Volkswagen', 'ID.4', 'Sort', 'Pro Performance', 'EVW20001', 'VOLKSWAGENID4123456789', 479995.00, 20750.00, '/img/civicSport.jpg', b'0', b'0', 25, 4);
 
 INSERT INTO employees (employee_id, username, password, fullname)
-VALUES (1, 'demo', 'demo', 'Demo demosen');
+VALUES
+    (1, 'demo', 'demo', 'Demo Demosen'),
+    (2, 'oahlers', 'oahlers', 'Oliver Ahlers'),
+    (3, 'Rasmusg', 'rasmusg', 'Rasmus Guldborg'),
+    (4, 'juliusg', 'juliusg', 'Julius Gissel'),
+    (5, 'bob_williams', 'bobpassword', 'Bob Williams'),
+    (6, 'charlie_brown', 'charlie123', 'Charlie Brown'),
+    (7, 'david_miller', 'davidd123', 'David Miller'),
+    (8, 'emma_jones', 'emmapassword', 'Emma Jones'),
+    (9, 'frank_white', 'frankpass', 'Frank White'),
+    (10, 'george_clark', 'georgepass', 'George Clark');
