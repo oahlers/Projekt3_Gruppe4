@@ -34,7 +34,6 @@
 
     <main class="main-content">
         <section class="car-dashboard">
-            <div id="cars-container">
                 <div class="car-card" th:each="car : ${allCars}"
                      th:attr="data-available=${car.availableForLoan}, data-ready=${car.readyForUse}">
 
@@ -55,7 +54,6 @@
                             <span th:text="${car.remainingRentalDays != null} ? (${car.remainingRentalDays} + ' dage') : 'Ikke udlejet'"></span></p>
                     </div>
                 </div>
-            </div>
         </section>
     </main>
 
