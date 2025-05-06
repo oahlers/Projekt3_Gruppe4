@@ -1,5 +1,7 @@
 package com.example.gruppe4_projekt3.model;
 
+import java.time.LocalDate;
+
 public class Car {
     private Long carId;
     private int carEmission;

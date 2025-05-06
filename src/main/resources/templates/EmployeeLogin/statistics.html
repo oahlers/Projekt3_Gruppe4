@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Statistik</title>
+</head>
+<body>
+<h1>Bilstatistik</h1>
+<p>Gennemsnitlig betalingstid: <span th:text="${averagePaymentTime}">0</span> dage</p>
+<p>Gennemsnitlig transporttid: <span th:text="${averageTransportTime}">0</span> dage</p>
+<p>Gennemsnitlig udlejningsvarighed: <span th:text="${averageRentalDurationPerCar}">0</span> måneder</p>
+</body>
+</html>

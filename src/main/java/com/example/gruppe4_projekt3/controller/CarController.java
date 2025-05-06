@@ -8,13 +8,11 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CarController {
@@ -99,5 +97,33 @@ public class CarController {
         carRepository.markAsRented(carId, LocalDate.now(), name, email, rentalMonths, paymentTime, transportTime);
 
         return "redirect:/EmployeeLogin/dashboard";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    @RequestMapping("/EmployeeLogin")
+    @GetMapping("")
+    public String redirectToStatistics() {
+        return "redirect:/EmployeeLogin/statistics";
+    }
+
+    @GetMapping("/EmployeeLogin/statistics")
+    public String showStatistics(Model model) {
+        double averagePaymentTime = carRepository.getAveragePaymentTime();
+        double averageTransportTime = carRepository.getAverageTransportTime();
+        double averageRentalDuration = carRepository.getAverageRentalDurationPerCar();
+        model.addAttribute("averagePaymentTime", carRepository.getAveragePaymentTime());
+        model.addAttribute("averageTransportTime", carRepository.getAverageTransportTime());
+        model.addAttribute("averageRentalDurationPerCar", carRepository.getAverageRentalDurationPerCar());
+        return "EmployeeLogin/statistics";
     }
 }
