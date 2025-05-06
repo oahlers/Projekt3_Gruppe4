@@ -14,11 +14,33 @@ public class Car {
     private double registrationFee;
     private boolean availableForLoan;
     private boolean readyForUse;
-    private int paymentTime;
     private String customerName;
     private Long remainingRentalDays;
 
-    // Getters and setters
+    private int paymentTime;
+    private int transportTime;
+
+    private double averagePaymentTime;
+    private double averageDeliveryTime;
+
+    // Getters and setters for all fields...
+
+    public double getAveragePaymentTime() {
+        return averagePaymentTime;
+    }
+
+    public void setAveragePaymentTime(double averagePaymentTime) {
+        this.averagePaymentTime = averagePaymentTime;
+    }
+
+    public double getAverageDeliveryTime() {
+        return averageDeliveryTime;
+    }
+
+    public void setAverageDeliveryTime(double averageDeliveryTime) {
+        this.averageDeliveryTime = averageDeliveryTime;
+    }
+
     public Long getCarId() {
         return carId;
     }
@@ -123,14 +145,6 @@ public class Car {
         this.readyForUse = readyForUse;
     }
 
-    public int getPaymentTime() {
-        return paymentTime;
-    }
-
-    public void setPaymentTime(int paymentTime) {
-        this.paymentTime = paymentTime;
-    }
-
     public String getCustomerName() {
         return customerName;
     }
@@ -145,5 +159,21 @@ public class Car {
 
     public void setRemainingRentalDays(Long remainingRentalDays) {
         this.remainingRentalDays = remainingRentalDays;
+    }
+
+    public int getPaymentTime() {
+        return paymentTime;
+    }
+
+    public void setPaymentTime(int paymentTime) {
+        this.paymentTime = paymentTime;
+    }
+
+    public int getTransportTime() {
+        return transportTime;
+    }
+
+    public void setTransportTime(int transportTime) {
+        this.transportTime = transportTime;
     }
 }

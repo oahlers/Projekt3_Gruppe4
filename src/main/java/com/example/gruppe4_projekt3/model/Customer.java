@@ -6,7 +6,6 @@ public class Customer {
     private String deliveryAddress;
     private int rentalMonths;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

@@ -86,13 +86,17 @@ public class CarController {
             @RequestParam Long carId,
             @RequestParam String name,
             @RequestParam String deliveryAddress,
-            @RequestParam int rentalMonths) {
+            @RequestParam int rentalMonths,
+            @RequestParam int paymentTime,
+            @RequestParam int transportTime,
+            @RequestParam String email) {
+
         Customer customer = new Customer();
         customer.setName(name);
         customer.setDeliveryAddress(deliveryAddress);
         customer.setRentalMonths(rentalMonths);
 
-        carRepository.markAsRented(carId, LocalDate.now(), customer.getName(), rentalMonths);
+        carRepository.markAsRented(carId, LocalDate.now(), name, email, rentalMonths, paymentTime, transportTime);
 
         return "redirect:/EmployeeLogin/dashboard";
     }

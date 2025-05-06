@@ -36,33 +36,25 @@ public class CarRepository {
 
     public void save(Car car) {
         String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, " +
-                "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse, " +
-                "payment_time) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
                 car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(), car.getChassisNumber(),
                 car.getPrice(), car.getRegistrationFee(),
-                car.isAvailableForLoan(), car.isReadyForUse(), car.getPaymentTime());
+                car.isAvailableForLoan(), car.isReadyForUse());
     }
 
-    public void markAsRented(Long carId, LocalDate startDate, String customerName, int rentalMonths) {
+    public void markAsRented(Long carId, LocalDate startDate, String customerName, String customerEmail, int rentalMonths, int paymentTime, int transportTime) {
         LocalDate readyForUseDate = startDate.plusMonths(rentalMonths);
-        String rentalSql = "INSERT INTO rental (car_id, start_date, customer_name, customer_email, rental_months, ready_for_use_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(rentalSql, carId, startDate, customerName, customerName, rentalMonths, readyForUseDate);
+        String rentalSql = "INSERT INTO rental (car_id, start_date, customer_name, customer_email, rental_months, ready_for_use_date, payment_time, transport_time) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(rentalSql, carId, startDate, customerName, customerEmail, rentalMonths, readyForUseDate, paymentTime, transportTime);
 
         String carSql = "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?";
         jdbcTemplate.update(carSql, carId);
     }
 
-    public void markRentalEnded(Long carId) {
-        String rentalSql = "UPDATE rental SET end_date = ? WHERE car_id = ? AND end_date IS NULL";
-        jdbcTemplate.update(rentalSql, LocalDate.now(), carId);
-
-        String carSql = "UPDATE car SET isAvailableForLoan = 0, isReadyForUse = 1 WHERE car_id = ?";
-        jdbcTemplate.update(carSql, carId);
-    }
 
     public void resetAfterDamageReport(Long carId) {
         String sql = "UPDATE car SET isAvailableForLoan = 0, isReadyForUse = 0 WHERE car_id = ?";
@@ -127,7 +119,6 @@ public class CarRepository {
             car.setRegistrationFee(rs.getDouble("registration_fee"));
             car.setAvailableForLoan(rs.getBoolean("isAvailableForLoan"));
             car.setReadyForUse(rs.getBoolean("isReadyForUse"));
-            car.setPaymentTime(rs.getInt("payment_time"));
 
             try {
                 String customerName = rs.getString("customer_name");
