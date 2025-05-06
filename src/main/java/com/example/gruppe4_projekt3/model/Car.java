@@ -12,6 +12,7 @@ public class Car {
     private String chassisNumber;
     private double price;
     private double registrationFee;
+    private String image;
     private boolean availableForLoan;
     private boolean readyForUse;
     private String customerName;
@@ -23,7 +24,13 @@ public class Car {
     private double averagePaymentTime;
     private double averageDeliveryTime;
 
-    // Getters and setters for all fields...
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public double getAveragePaymentTime() {
         return averagePaymentTime;

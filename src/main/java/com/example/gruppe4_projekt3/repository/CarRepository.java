@@ -36,13 +36,13 @@ public class CarRepository {
 
     public void save(Car car) {
         String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, " +
-                "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse, image) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
                 car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(), car.getChassisNumber(),
                 car.getPrice(), car.getRegistrationFee(),
-                car.isAvailableForLoan(), car.isReadyForUse());
+                car.isAvailableForLoan(), car.isReadyForUse(), car.getImage());
     }
 
     public void markAsRented(Long carId, LocalDate startDate, String customerName, String customerEmail, int rentalMonths, int paymentTime, int transportTime) {
@@ -54,7 +54,6 @@ public class CarRepository {
         String carSql = "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?";
         jdbcTemplate.update(carSql, carId);
     }
-
 
     public void resetAfterDamageReport(Long carId) {
         String sql = "UPDATE car SET isAvailableForLoan = 0, isReadyForUse = 0 WHERE car_id = ?";
@@ -119,6 +118,7 @@ public class CarRepository {
             car.setRegistrationFee(rs.getDouble("registration_fee"));
             car.setAvailableForLoan(rs.getBoolean("isAvailableForLoan"));
             car.setReadyForUse(rs.getBoolean("isReadyForUse"));
+            car.setImage(rs.getString("image"));
 
             try {
                 String customerName = rs.getString("customer_name");

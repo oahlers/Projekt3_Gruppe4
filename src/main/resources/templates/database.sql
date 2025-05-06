@@ -14,10 +14,11 @@ CREATE TABLE car (
                      chassis_number VARCHAR(100) NOT NULL UNIQUE,
                      price DECIMAL(10,2) NOT NULL,
                      registration_fee DECIMAL(10,2) NOT NULL,
+                    image VARCHAR(255),
                      isAvailableForLoan BIT NOT NULL,
                      isReadyForUse BIT NOT NULL,
-                     payment_time INT,  -- Ny kolonne
-                     transport_time INT -- Ny kolonne
+                     payment_time INT,
+                     transport_time INT
 );
 
 CREATE TABLE employees (
@@ -52,7 +53,6 @@ CREATE TABLE damage_report (
                                FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
 
--- Eksempel på indsættelse af data
 INSERT INTO car (car_emission, year, brand, model, color, equipment_level, vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse, payment_time, transport_time)
 VALUES
     (0, 2024, 'NAVOR', 'E5 ROCK 218 HK', 'Sort', 'Premium', 'EVN12345', 'NAVORE5ROCK12345678', 329995.00, 18420.00, b'0', b'0', 30, 5),
