@@ -154,30 +154,23 @@ public class CarRepository {
 
 
     public Double getAveragePaymentTime() {
-        String sql = "SELECT AVG(payment_time) FROM car";
+        String sql = "SELECT AVG(payment_time) FROM rental WHERE payment_time IS NOT NULL";
         Double result = jdbcTemplate.queryForObject(sql, Double.class);
         return (result != null) ? result : 0.0;
     }
 
+
     public Double getAverageTransportTime() {
         String sql = "SELECT AVG(r.transport_time) FROM rental r JOIN car c ON r.car_id = c.car_id WHERE r.transport_time IS NOT NULL";
-
         Double result = jdbcTemplate.queryForObject(sql, Double.class);
-
-
         return (result != null) ? result : 0.0;
     }
 
 
 
     public Double getAverageRentalDurationPerCar() {
-
         String sql = "SELECT AVG(r.rental_months) FROM rental r WHERE r.rental_months IS NOT NULL";
-
-
         Double result = jdbcTemplate.queryForObject(sql, Double.class);
-
-
         return (result != null) ? result : 0.0;
     }
 
