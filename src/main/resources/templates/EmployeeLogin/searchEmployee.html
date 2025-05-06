@@ -10,7 +10,6 @@
 <body>
 
 <div class="layout">
-
     <div class="header">
         <div class="logo">
             <a th:href="@{/EmployeeLogin/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
@@ -29,27 +28,31 @@
     <main class="main-content">
 
         <div class="search-dashboard">
-        <form action="/findEmployee" method="post">
-            <label for="employeeId">Medarbejder ID:</label>
-            <input type="number" id="employeeId" name="employeeId" />
-
-            <label for="username">Brugernavn:</label>
-            <input type="text" id="username" name="username" />
-
-            <button type="submit">Søg</button>
-        </form>
-
-
-        <div class="card" th:if="${employee != null}">
-            <h3>Medarbejderdetaljer</h3>
-            <p><strong>ID:</strong> <span th:text="${employee.employeeId}"></span></p>
-            <p><strong>Brugernavn:</strong> <span th:text="${employee.username}"></span></p>
-            <p><strong>Navn:</strong> <span th:text="${employee.name}"></span></p>
-            <p><strong>Email:</strong> <span th:text="${employee.email}"></span></p>
-            <p><strong>Rolle:</strong> <span th:text="${employee.role}"></span></p>
-            <a th:href="@{/employees/{id}(id=${employee.employeeId})}">Se detaljer</a>
-        </div>
-
+            <h2>Alle Medarbejdere</h2>
+            <table class="styled-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Brugernavn</th>
+                    <th>Navn</th>
+                    <th>Email</th>
+                    <th>Rolle</th>
+                    <th>Handling</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="employee : ${employees}">
+                    <td th:text="${employee.employeeId}"></td>
+                    <td th:text="${employee.username}"></td>
+                    <td th:text="${employee.name}"></td>
+                    <td th:text="${employee.email}"></td>
+                    <td th:text="${employee.role}"></td>
+                    <td>
+                        <a th:href="@{/employees/{id}(id=${employee.employeeId})}">Se detaljer</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </main>
 
