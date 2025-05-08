@@ -18,34 +18,12 @@ public class Car {
     private String customerName;
     private Long remainingRentalDays;
 
-    private int paymentTime;
-    private int transportTime;
-
-    private double averagePaymentTime;
-    private double averageDeliveryTime;
-
     public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public double getAveragePaymentTime() {
-        return averagePaymentTime;
-    }
-
-    public void setAveragePaymentTime(double averagePaymentTime) {
-        this.averagePaymentTime = averagePaymentTime;
-    }
-
-    public double getAverageDeliveryTime() {
-        return averageDeliveryTime;
-    }
-
-    public void setAverageDeliveryTime(double averageDeliveryTime) {
-        this.averageDeliveryTime = averageDeliveryTime;
     }
 
     public Long getCarId() {
@@ -166,21 +144,5 @@ public class Car {
 
     public void setRemainingRentalDays(Long remainingRentalDays) {
         this.remainingRentalDays = remainingRentalDays;
-    }
-
-    public int getPaymentTime() {
-        return paymentTime;
-    }
-
-    public void setPaymentTime(int paymentTime) {
-        this.paymentTime = paymentTime;
-    }
-
-    public int getTransportTime() {
-        return transportTime;
-    }
-
-    public void setTransportTime(int transportTime) {
-        this.transportTime = transportTime;
     }
 }

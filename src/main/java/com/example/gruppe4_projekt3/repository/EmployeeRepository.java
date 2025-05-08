@@ -6,8 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public class EmployeeRepository {
 
@@ -18,12 +16,6 @@ public class EmployeeRepository {
     public void save(Employee employee) {
         String sql = "INSERT INTO employees (employee_id, fullname, username, password) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, employee.getEmployeeId(), employee.getFullName(), employee.getUsername(), employee.getPassword());
-    }
-
-    // Henter en liste over alle medarbejdere fra databasen.
-    public List<Employee> findAll() {
-        String sql = "SELECT * FROM employees";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Employee.class));
     }
 
     // Finder en medarbejder ud fra deres ID.

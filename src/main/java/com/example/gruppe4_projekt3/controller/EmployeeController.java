@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
+// EmployeeController. håndterer POST- og GET anmodninger for medarbejder funktioner
+// login, register, findEmployee
+
 @Controller
 public class EmployeeController {
 
@@ -39,6 +42,7 @@ public class EmployeeController {
             return "Homepage/index";
         }
     }
+
     // Registrerer en ny medarbejder.
     @PostMapping("/register")
     public String register(@RequestParam("employeeId") int employeeId,
@@ -67,7 +71,7 @@ public class EmployeeController {
 
     // Søger efter en medarbejder ud fra ID og/eller brugernavn.
     @PostMapping("/findEmployee")
-    public String findEmployeePost(
+    public String findEmployee(
             @RequestParam(required = false) Integer employeeId,
             @RequestParam(required = false) String username,
             Model model
