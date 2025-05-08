@@ -26,6 +26,7 @@ public class DamageReportController {
         this.damageReportRepository = damageReportRepository;
     }
 
+    // Viser en liste over biler der mangler skadesrapport
     @GetMapping("/EmployeeLogin/damageReport")
     public String showDamageReportList(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -38,6 +39,7 @@ public class DamageReportController {
         return "EmployeeLogin/damageReport";
     }
 
+    // Viser siden for at udfylde en skadesrapport for en bestemt bil.
     @GetMapping("/EmployeeLogin/damageReportFill/{id}")
     public String showFillReportPage(@PathVariable Long id, Model model) {
         Car car = carRepository.findById(id);
@@ -48,6 +50,7 @@ public class DamageReportController {
         return "EmployeeLogin/damageReportConfirmation";
     }
 
+    // Behandler og gemmer den indsendte skadesrapport for en bil ud fra unik id.
     @PostMapping("/EmployeeLogin/damageReportFill/{id}")
     public String submitDamageReport(@PathVariable Long id,
                                      @RequestParam String report,
@@ -70,11 +73,13 @@ public class DamageReportController {
         return "EmployeeLogin/damageReportDone";
     }
 
+    // Viser bekræftelsessiden efter indsendelse af skadesrapport.
     @GetMapping("/EmployeeLogin/damageReportDone")
     public String showDamageReportDone() {
         return "EmployeeLogin/damageReportDone";
     }
 
+    // Viser historikken over alle tidligere skadesrapporter.
     @GetMapping("/EmployeeLogin/damageReportHistory")
     public String showDamageReportHistory(Model model) {
         List<DamageReport> damageReports = damageReportRepository.findAll();

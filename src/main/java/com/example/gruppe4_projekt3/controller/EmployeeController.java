@@ -22,6 +22,7 @@ public class EmployeeController {
     @Autowired
     private CarRepository carRepository;
 
+    // Håndterer login af medarbejder og gemmer session, hvis oplysningerne er korrekte.
     @PostMapping("/login")
     public String login(@RequestParam("employeeId") int employeeId,
                         @RequestParam("username") String username,
@@ -38,7 +39,7 @@ public class EmployeeController {
             return "Homepage/index";
         }
     }
-
+    // Registrerer en ny medarbejder.
     @PostMapping("/register")
     public String register(@RequestParam("employeeId") int employeeId,
                            @RequestParam("fullName") String fullName,
@@ -64,6 +65,7 @@ public class EmployeeController {
         return "HomePage/index";
     }
 
+    // Søger efter en medarbejder ud fra ID og/eller brugernavn.
     @PostMapping("/findEmployee")
     public String findEmployeePost(
             @RequestParam(required = false) Integer employeeId,

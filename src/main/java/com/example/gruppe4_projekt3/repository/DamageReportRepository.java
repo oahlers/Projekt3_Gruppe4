@@ -22,6 +22,7 @@ public class DamageReportRepository {
         this.carRepository = carRepository;
     }
 
+    // Gemmer en ny skadesrapport i databasen og opdaterer bilens status.
     public void save(DamageReport damageReport) {
         String sql = "INSERT INTO damage_report (car_id, price, employee_id, customer_email, report) " +
                 "VALUES (?, ?, ?, ?, ?)";
@@ -35,15 +36,7 @@ public class DamageReportRepository {
         carRepository.resetAfterDamageReport(damageReport.getCar().getCarId());
     }
 
-    public DamageReport findByCarId(int carId) {
-        String sql = "SELECT dr.*, c.brand, c.model, e.fullname AS employee_fullname " +
-                "FROM damage_report dr " +
-                "JOIN car c ON dr.car_id = c.car_id " +
-                "JOIN employees e ON dr.employee_id = e.employee_id " +
-                "WHERE dr.car_id = ?";
-        return jdbcTemplate.queryForObject(sql, new DamageReportRowMapper(), carId);
-    }
-
+    // Henter alle skadesrapporter med tilhørende bil- og medarbejderinformation.
     public List<DamageReport> findAll() {
         String sql = "SELECT dr.*, c.brand, c.model, e.fullname AS employee_fullname " +
                 "FROM damage_report dr " +
@@ -52,6 +45,7 @@ public class DamageReportRepository {
         return jdbcTemplate.query(sql, new DamageReportRowMapper());
     }
 
+    // Mapper en række fra ResultSet til et DamageReport-objekt med bil- og medarbejderoplysninger.
     private static class DamageReportRowMapper implements RowMapper<DamageReport> {
         @Override
         public DamageReport mapRow(ResultSet rs, int rowNum) throws SQLException {

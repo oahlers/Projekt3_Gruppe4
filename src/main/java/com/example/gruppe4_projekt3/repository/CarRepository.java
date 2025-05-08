@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class CarRepository {
@@ -22,12 +21,14 @@ public class CarRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // Henter alle biler med evt. tilknyttet udlejningsinformation.
     public List<Car> findAll() {
         String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
+    // Finder en bil ud fra dens ID med evt. tilknyttet udlejningsinformation.
     public Car findById(Long id) {
         String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
@@ -35,6 +36,7 @@ public class CarRepository {
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new CarRowMapper());
     }
 
+    // Gemmer en ny bil i databasen.
     public void save(Car car) {
         String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, " +
                 "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse, image) " +
@@ -46,6 +48,7 @@ public class CarRepository {
                 car.isAvailableForLoan(), car.isReadyForUse(), car.getImage());
     }
 
+    // Markerer en bil som udlejet og opretter en ny udlejning.
     public void markAsRented(Long carId, LocalDate startDate, String customerName, String customerEmail, int rentalMonths, int paymentTime, int transportTime) {
         LocalDate readyForUseDate = startDate.plusMonths(rentalMonths);
         String rentalSql = "INSERT INTO rental (car_id, start_date, customer_name, customer_email, rental_months, ready_for_use_date, payment_time, transport_time) " +
@@ -56,22 +59,26 @@ public class CarRepository {
         jdbcTemplate.update(carSql, carId);
     }
 
+    // Nulstiller en bils status efter en skadeanmeldelse.
     public void resetAfterDamageReport(Long carId) {
         String sql = "UPDATE car SET isAvailableForLoan = 0, isReadyForUse = 0 WHERE car_id = ?";
         jdbcTemplate.update(sql, carId);
     }
 
+    // Henter alle biler der er udlejede.
     public List<Car> findRentedCars() {
         String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
                 "FROM car c JOIN rental r ON c.car_id = r.car_id WHERE r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
+    // Henter alle biler der ikke er tilgængelige og ikke er klar til brug.
     public List<Car> findAvailableForLoan() {
         String sql = "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
+    // Henter alle biler mangler skaderapport men stadig er udlejede.
     public List<Car> findCarsNeedingDamageReport() {
         String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
@@ -79,11 +86,13 @@ public class CarRepository {
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
+    // Henter alle biler der hverken er tilgængelige for lån eller mangler skaderapport.
     public List<Car> findNotRentedAndNotReadyCars() {
         String sql = "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
+    // Henter alle biler som er udlejede og mangler skaderapport.
     public List<Car> findRentedAndReadyCars() {
         String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
                 "FROM car c JOIN rental r ON c.car_id = r.car_id " +
@@ -91,6 +100,7 @@ public class CarRepository {
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
+    // Cronjob der opdaterer hver dag ved midnat for at holde styr på udlejningsperioden.
     @Scheduled(cron = "0 0 0 * * ?")
     public void updateReadyForUseStatus() {
         String sql = "SELECT car_id FROM rental WHERE ready_for_use_date <= ? AND end_date IS NULL";
@@ -102,6 +112,28 @@ public class CarRepository {
         }
     }
 
+    // Beregner gennemsnitlig betalingstid for alle udlejninger.
+    public Double getAveragePaymentTime() {
+        String sql = "SELECT AVG(payment_time) FROM rental WHERE payment_time IS NOT NULL";
+        Double result = jdbcTemplate.queryForObject(sql, Double.class);
+        return (result != null) ? result : 0.0;
+    }
+
+    // Beregner gennemsnitlig transporttid for alle biler.
+    public Double getAverageTransportTime() {
+        String sql = "SELECT AVG(r.transport_time) FROM rental r JOIN car c ON r.car_id = c.car_id WHERE r.transport_time IS NOT NULL";
+        Double result = jdbcTemplate.queryForObject(sql, Double.class);
+        return (result != null) ? result : 0.0;
+    }
+
+    // Beregner gennemsnitlig lejeperiode pr. bil.
+    public Double getAverageRentalDurationPerCar() {
+        String sql = "SELECT AVG(r.rental_months) FROM rental r WHERE r.rental_months IS NOT NULL";
+        Double result = jdbcTemplate.queryForObject(sql, Double.class);
+        return (result != null) ? result : 0.0;
+    }
+
+    // Mapper en række fra ResultSet til et Car-objekt der inkluderer kundeinformation og resterende lejedage.
     private static class CarRowMapper implements RowMapper<Car> {
         @Override
         public Car mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -139,39 +171,7 @@ public class CarRepository {
             } catch (SQLException e) {
                 car.setRemainingRentalDays(null);
             }
-
             return car;
         }
     }
-
-
-
-
-
-
-
-
-
-
-    public Double getAveragePaymentTime() {
-        String sql = "SELECT AVG(payment_time) FROM rental WHERE payment_time IS NOT NULL";
-        Double result = jdbcTemplate.queryForObject(sql, Double.class);
-        return (result != null) ? result : 0.0;
-    }
-
-
-    public Double getAverageTransportTime() {
-        String sql = "SELECT AVG(r.transport_time) FROM rental r JOIN car c ON r.car_id = c.car_id WHERE r.transport_time IS NOT NULL";
-        Double result = jdbcTemplate.queryForObject(sql, Double.class);
-        return (result != null) ? result : 0.0;
-    }
-
-
-
-    public Double getAverageRentalDurationPerCar() {
-        String sql = "SELECT AVG(r.rental_months) FROM rental r WHERE r.rental_months IS NOT NULL";
-        Double result = jdbcTemplate.queryForObject(sql, Double.class);
-        return (result != null) ? result : 0.0;
-    }
-
 }

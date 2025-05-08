@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/* ((Kan være vi skal bruge den når vi hoster))
 public class DatabaseAuthenticator {
     @Repository
     public class databaseAuthenticator {
@@ -26,3 +27,5 @@ public class DatabaseAuthenticator {
         }
     }
 }
+
+ */

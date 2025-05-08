@@ -14,16 +14,19 @@ public class EmployeeRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    // Gemmer en ny medarbejder i databasen.
     public void save(Employee employee) {
         String sql = "INSERT INTO employees (employee_id, fullname, username, password) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, employee.getEmployeeId(), employee.getFullName(), employee.getUsername(), employee.getPassword());
     }
 
+    // Henter en liste over alle medarbejdere fra databasen.
     public List<Employee> findAll() {
         String sql = "SELECT * FROM employees";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Employee.class));
     }
 
+    // Finder en medarbejder ud fra deres ID.
     public Employee findByEmployeeId(int employeeId) {
         String sql = "SELECT * FROM employees WHERE employee_id = ?";
         try {
@@ -33,6 +36,7 @@ public class EmployeeRepository {
         }
     }
 
+    // Finder en medarbejder ud fra deres brugernavn.
     public Employee findByUsername(String username) {
         String sql = "SELECT * FROM employees WHERE username = ?";
         try {
@@ -42,6 +46,7 @@ public class EmployeeRepository {
         }
     }
 
+    // Finder en medarbejder ud fra både employee ID og brugernavn.
     public Employee findByEmployeeIdAndUsername(int employeeId, String username) {
         String sql = "SELECT * FROM employees WHERE employee_id = ? AND username = ?";
         try {
