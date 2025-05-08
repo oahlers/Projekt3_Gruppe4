@@ -68,7 +68,6 @@ public class PageController {
 
     // Omdirigerer root-URL for /EmployeeLogin til statistiksiden.
     @RequestMapping("/EmployeeLogin/statistics")
-    @GetMapping("")
     public String redirectToStatistics() {
         return "redirect:/EmployeeLogin/statistics";
     }
