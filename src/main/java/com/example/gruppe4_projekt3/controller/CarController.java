@@ -32,7 +32,7 @@ public class CarController {
             return "redirect:/auth";
         }
         carRepository.save(car);
-        return "EmployeeLogin/dashboard";
+        return "dashboard";
     }
 
     // Returnerer en liste over alle aktuelt udlejede biler.
@@ -48,13 +48,13 @@ public class CarController {
     }
 
     // Returnerer en liste over biler der ikke er udlejede og mangler skaderapport.
-    @GetMapping("/damage-report")
+    @GetMapping("/damage-Report")
     public List<Car> getCarsForDamageReport() {
         return carRepository.findNotRentedAndNotReadyCars();
     }
 
     // Registrerer udlejning af en bil til en kunde og opdaterer bilens status.
-    @PostMapping("/EmployeeLogin/deliverCar")
+    @PostMapping("/registerAndDeliverCar")
     public String registerDelivery(
             @RequestParam Long carId,
             @RequestParam String name,
@@ -71,6 +71,6 @@ public class CarController {
 
         carRepository.markAsRented(carId, LocalDate.now(), name, email, rentalMonths, paymentTime, transportTime);
 
-        return "redirect:/EmployeeLogin/dashboard";
+        return "dashboard";
     }
 }

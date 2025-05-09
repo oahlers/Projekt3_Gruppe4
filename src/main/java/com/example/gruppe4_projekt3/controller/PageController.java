@@ -44,28 +44,28 @@ public class PageController {
     // Viser startsiden.
     @GetMapping("/")
     public String showIndexPage() {
-        return "Homepage/index";
+        return "index";
     }
 
     // Viser login- og registreringssiden hvis bruger ikke er logget ind.
     @GetMapping("/auth")
     public String showAuthPage() {
-        return "Homepage/index";
+        return "index";
     }
 
     // Viser dashboardet.
-    @GetMapping("/EmployeeLogin/dashboard")
+    @GetMapping("/dashboard")
     public String showDashboard(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
         model.addAttribute("employee", loggedInEmployee);
-        return "EmployeeLogin/dashboard";
+        return "dashboard";
     }
 
     // Viser en oversigt over alle biler.
-    @GetMapping("/EmployeeLogin/carOverview")
+    @GetMapping("/carOverview")
     public String showAllCars(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
@@ -76,19 +76,19 @@ public class PageController {
         model.addAttribute("allCars", allCars);
         model.addAttribute("employee", loggedInEmployee);
 
-        return "EmployeeLogin/carOverviewEmployee";
+        return "carOverview";
     }
 
     // Viser formularen til søgning efter medarbejder.
-    @GetMapping("/EmployeeLogin/searchEmployee")
+    @GetMapping("/employeeOverview")
     public String getAllEmployees(Model model) {
         List<Employee> employees = employeeRepository.findAll();
         model.addAttribute("employees", employees);
-        return "EmployeeLogin/searchEmployee"; // Sørg for dette er din HTML-side
+        return "employeeOverview"; // Sørg for dette er din HTML-side
     }
 
     // Viser alle biler og formular til at tilføje ny bil.
-    @GetMapping("/EmployeeLogin/viewAllCarsAndAddCar")
+    @GetMapping("/addCars")
     public String viewAllCars(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
@@ -96,22 +96,22 @@ public class PageController {
         }
         model.addAttribute("cars", carRepository.findAll());
         model.addAttribute("employee", loggedInEmployee);
-        return "EmployeeLogin/viewAllCarsAndAddCar";
+        return "addCars";
     }
 
     // Viser leveringssiden med liste over tilgængelige biler.
-    @GetMapping("/EmployeeLogin/deliverCar")
+    @GetMapping("/registerAndDeliverCar")
     public String showDeliverCarPage(Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
         model.addAttribute("availableCars", carRepository.findAvailableForLoan());
-        return "EmployeeLogin/deliverCar";
+        return "registerAndDeliverCar";
     }
 
     // Viser statistik over gennemsnitlig betalingstid, transporttid og lejeperiode.
-    @GetMapping("/EmployeeLogin/statistics")
+    @GetMapping("/statistics")
     public String showStatistics(Model model) {
         double averagePaymentTime = carRepository.getAveragePaymentTime();
         double averageTransportTime = carRepository.getAverageTransportTime();
@@ -119,11 +119,11 @@ public class PageController {
         model.addAttribute("averagePaymentTime", carRepository.getAveragePaymentTime());
         model.addAttribute("averageTransportTime", carRepository.getAverageTransportTime());
         model.addAttribute("averageRentalDurationPerCar", carRepository.getAverageRentalDurationPerCar());
-        return "EmployeeLogin/statistics";
+        return "statistics";
     }
 
     // Viser en liste over biler der mangler skadesrapport.
-    @GetMapping("/EmployeeLogin/damageReport")
+    @GetMapping("/damageReport")
     public String showDamageReportList(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
@@ -132,31 +132,31 @@ public class PageController {
         List<Car> cars = carRepository.findCarsNeedingDamageReport();
         model.addAttribute("employee", loggedInEmployee);
         model.addAttribute("cars", cars);
-        return "EmployeeLogin/damageReport";
+        return "damageReport";
     }
 
     // Viser siden for at udfylde en skadesrapport for en bestemt bil.
-    @GetMapping("/EmployeeLogin/damageReportFill/{id}")
+    @GetMapping("/damageReportFill/{id}")
     public String showFillReportPage(@PathVariable Long id, Model model) {
         Car car = carRepository.findById(id);
         if (car == null || !car.isReadyForUse()) {
             return "error";
         }
         model.addAttribute("car", car);
-        return "EmployeeLogin/damageReportConfirmation";
+        return "damageReportConfirmation";
     }
 
     // Viser bekræftelsessiden efter indsendelse af skadesrapport.
-    @GetMapping("/EmployeeLogin/damageReportDone")
+    @GetMapping("/damageReportDone")
     public String showDamageReportDone() {
-        return "EmployeeLogin/damageReportDone";
+        return "damageReportDone";
     }
 
     // Viser historikken over alle tidligere skadesrapporter.
-    @GetMapping("/EmployeeLogin/damageReportHistory")
+    @GetMapping("/damageReportHistory")
     public String showDamageReportHistory(Model model) {
         List<DamageReport> damageReports = damageReportRepository.findAll();
         model.addAttribute("damageReports", damageReports);
-        return "EmployeeLogin/damageReportHistory";
+        return "damageReportHistory";
     }
 }

@@ -26,7 +26,7 @@ public class DamageReportController {
     }
 
     // Behandler og gemmer den indsendte skadesrapport for en bil ud fra unik id.
-    @PostMapping("/EmployeeLogin/damageReportFill/{id}")
+    @PostMapping("/damageReportFill/{id}")
     public String submitDamageReport(@PathVariable Long id,
                                      @RequestParam String report,
                                      @RequestParam Double price,
@@ -45,6 +45,6 @@ public class DamageReportController {
         DamageReport damageReport = new DamageReport(car, price, loggedInEmployee, customerEmail, report);
         damageReportRepository.save(damageReport);
 
-        return "EmployeeLogin/damageReportDone";
+        return "damageReportDone";
     }
 }

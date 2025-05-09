@@ -37,10 +37,10 @@ public class EmployeeController {
         if (employee != null && employee.getPassword().equals(password)) {
             session.setAttribute("loggedInEmployee", employee);
             model.addAttribute("loggedInEmployee", employee);
-            return "redirect:EmployeeLogin/dashboard";
+            return "redirect:/dashboard";
         } else {
             model.addAttribute("loginError", "Ugyldigt EmployeeID, brugernavn eller adgangskode");
-            return "Homepage/index";
+            return "index";
         }
     }
 
@@ -53,21 +53,21 @@ public class EmployeeController {
                            Model model) {
         if (password.length() < 8) {
             model.addAttribute("registerError", "Adgangskoden skal være mindst 8 tegn.");
-            return "Homepage/index";
+            return "index";
         }
         Employee existingEmployeeById = employeeRepository.findByEmployeeId(employeeId);
         Employee existingEmployeeByUsername = employeeRepository.findByUsername(username);
         if (existingEmployeeById != null) {
             model.addAttribute("registerError", "EmployeeID eksisterer allerede");
-            return "Homepage/index";
+            return "index";
         }
         if (existingEmployeeByUsername != null) {
             model.addAttribute("registerError", "Brugernavnet eksisterer allerede");
-            return "Homepage/index";
+            return "index";
         }
         Employee newEmployee = new Employee(employeeId, fullName, username, password);
         employeeRepository.save(newEmployee);
-        return "HomePage/index";
+        return "index";
     }
 
     // Søger efter en medarbejder ud fra ID og/eller brugernavn.
@@ -75,6 +75,6 @@ public class EmployeeController {
     public String getAllEmployees(Model model) {
         List<Employee> employees = employeeRepository.findAll();
         model.addAttribute("employees", employees);
-        return "EmployeeLogin/searchEmployee"; // Sørg for dette er din HTML-side
+        return "employeeOverView";
     }
 }
