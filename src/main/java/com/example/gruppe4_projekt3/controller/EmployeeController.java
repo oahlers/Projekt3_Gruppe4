@@ -71,5 +71,10 @@ public class EmployeeController {
     }
 
     // Søger efter en medarbejder ud fra ID og/eller brugernavn.
-
+    @GetMapping("/employees")
+    public String getAllEmployees(Model model) {
+        List<Employee> employees = employeeRepository.findAll();
+        model.addAttribute("employees", employees);
+        return "EmployeeLogin/searchEmployee"; // Sørg for dette er din HTML-side
+    }
 }
