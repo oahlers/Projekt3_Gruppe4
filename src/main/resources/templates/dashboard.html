@@ -13,7 +13,7 @@
 
     <div class="header">
         <div class="logo">
-            <a th:href="@{/EmployeeLogin/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
+            <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
         </div>
         <h3>Medarbejderportal</h3>
         <nav>
@@ -30,32 +30,32 @@
         <section class="dashboard">
             <div class="card">
                 <h3>Tilføj Bil</h3>
-                <a th:href="@{/EmployeeLogin/viewAllCarsAndAddCar}" class="btn-link">Tilføj Bil</a>
+                <a th:href="@{/addCars}" class="btn-link">Tilføj Bil</a>
             </div>
 
             <div class="card">
                 <h3>Levering Og Registrering</h3>
-                <a th:href="@{/EmployeeLogin/deliverCar}" class="btn-link">Lever Og Registrering</a>
+                <a th:href="@{/registerAndDeliverCar}" class="btn-link">Lever Og Registrering</a>
             </div>
 
             <div class="card">
                 <h3>Udlejede Biler</h3>
-                <a th:href="@{/EmployeeLogin/carOverviewEmployee}" class="btn-link">Se Oversigt</a>
+                <a th:href="@{/carOverview}" class="btn-link">Se Oversigt</a>
             </div>
 
             <div class="card">
                 <h3>Skaderapport</h3>
-                <a th:href="@{/EmployeeLogin/damageReport}" class="btn-link">Vis Skaderapporter</a>
+                <a th:href="@{/damageReport}" class="btn-link">Vis Skaderapporter</a>
             </div>
 
             <div class="card">
                 <h3>KPI Og Statisiker</h3>
-                <a th:href="@{/EmployeeLogin/statistics}" class="btn-link">KPI- og statistikker</a>
+                <a th:href="@{/statistics}" class="btn-link">KPI- og statistikker</a>
             </div>
 
             <div class="card">
                 <h3>Søg Medarbejder</h3>
-                <a th:href="@{/EmployeeLogin/searchEmployee}" class="btn-link">Søg medarbejder</a>
+                <a th:href="@{/employeeOverview}" class="btn-link">Søg medarbejder</a>
             </div>
         </section>
     </main>

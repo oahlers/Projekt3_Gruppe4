@@ -11,7 +11,7 @@
 <div class="layout">
     <div class="header">
         <div class="logo">
-            <a th:href="@{/EmployeeLogin/dashboard}">
+            <a th:href="@{/dashboard}">
                 <img src="/img/Logo.png" alt="BILABONNEMENT Logo">
             </a>
         </div>
@@ -35,7 +35,7 @@
                     <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
                     <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
 
-                    <form th:action="@{/EmployeeLogin/deliverCar}" method="post">
+                    <form th:action="@{/registerAndDeliverCar}" method="post">
                         <input type="hidden" name="carId" th:value="${car.carId}">
 
                         <label for="name">Kundens navn:</label>

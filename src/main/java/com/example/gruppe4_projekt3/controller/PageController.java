@@ -84,7 +84,7 @@ public class PageController {
     public String getAllEmployees(Model model) {
         List<Employee> employees = employeeRepository.findAll();
         model.addAttribute("employees", employees);
-        return "employeeOverview"; // Sørg for dette er din HTML-side
+        return "employeeOverview";
     }
 
     // Viser alle biler og formular til at tilføje ny bil.

@@ -10,7 +10,7 @@
 
   <div class="header">
     <div class="logo">
-      <a th:href="@{/EmployeeLogin/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
+      <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
     </div>
     <h3>Medarbejderportal</h3>
     <nav>
@@ -22,7 +22,7 @@
     <section class="damageReportForm">
     <h2 th:text="'Laver skaderapport på bil ID: ' + ${car.carId} + ', Mærke: ' + ${car.brand} + ', Model: ' + ${car.model}">Bil-info</h2>
 
-    <form th:action="@{/EmployeeLogin/damageReportFill/{id}(id=${car.carId})}" method="POST">
+    <form th:action="@{/damageReportFill/{id}(id=${car.carId})}" method="POST">
       <label for="report">Skaderapport:</label>
       <textarea name="report" id="report" required></textarea>
 
