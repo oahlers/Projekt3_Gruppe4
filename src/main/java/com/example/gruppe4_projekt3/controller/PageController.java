@@ -81,8 +81,10 @@ public class PageController {
 
     // Viser formularen til søgning efter medarbejder.
     @GetMapping("/EmployeeLogin/searchEmployee")
-    public String showSearchForm() {
-        return "EmployeeLogin/searchEmployee";
+    public String getAllEmployees(Model model) {
+        List<Employee> employees = employeeRepository.findAll();
+        model.addAttribute("employees", employees);
+        return "EmployeeLogin/searchEmployee"; // Sørg for dette er din HTML-side
     }
 
     // Viser alle biler og formular til at tilføje ny bil.

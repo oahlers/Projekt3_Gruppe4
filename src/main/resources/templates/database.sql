@@ -68,12 +68,13 @@ VALUES
     (2, 'oahlers', 'oahlers', 'Oliver Ahlers'),
     (3, 'Rasmusg', 'rasmusg', 'Rasmus Guldborg'),
     (4, 'juliusg', 'juliusg', 'Julius Gissel'),
-    (5, 'bob_williams', 'bobpassword', 'Bob Williams'),
-    (6, 'charlie_brown', 'charlie123', 'Charlie Brown'),
+    (5, 'sandral', 'sandraloveless', 'Sandra Loveless'),
+    (6, 'emiliaah', 'emiliah123', 'Emilia Air'),
     (7, 'david_miller', 'davidd123', 'David Miller'),
     (8, 'emma_jones', 'emmapassword', 'Emma Jones'),
     (9, 'frank_white', 'frankpass', 'Frank White'),
-    (10, 'george_clark', 'georgepass', 'George Clark');
+    (10, 'georginak', 'georgina123', 'Georgina Kaytranada');
+
 INSERT INTO rental (car_id, start_date, customer_name, customer_email, rental_months, ready_for_use_date, payment_time, transport_time)
 VALUES
     (1, '2025-05-01', 'John Doe', 'john.doe@example.com', 6, '2025-11-01', 30, 5),

@@ -6,6 +6,7 @@ import com.example.gruppe4_projekt3.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -70,28 +71,5 @@ public class EmployeeController {
     }
 
     // Søger efter en medarbejder ud fra ID og/eller brugernavn.
-    @PostMapping("/findEmployee")
-    public String findEmployee(
-            @RequestParam(required = false) Integer employeeId,
-            @RequestParam(required = false) String username,
-            Model model
-    ) {
-        Employee employee = null;
 
-        if (employeeId != null && username != null) {
-            employee = employeeRepository.findByEmployeeIdAndUsername(employeeId, username);
-        } else if (employeeId != null) {
-            employee = employeeRepository.findByEmployeeId(employeeId);
-        } else if (username != null) {
-            employee = employeeRepository.findByUsername(username);
-        }
-
-        if (employee != null) {
-            model.addAttribute("employees", List.of(employee));
-        } else {
-            model.addAttribute("message", "Medarbejder blev ikke fundet.");
-        }
-
-        return "EmployeeLogin/searchEmployeeResults";
-    }
 }
