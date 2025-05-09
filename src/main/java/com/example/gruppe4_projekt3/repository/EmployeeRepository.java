@@ -21,6 +21,7 @@ public class EmployeeRepository {
     }
 
 
+    // Viser en liste af samtlige medarbejdere.
     public List<Employee> findAll() {
         String sql = "SELECT * FROM employees";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Employee.class));
