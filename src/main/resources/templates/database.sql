@@ -8,7 +8,7 @@ CREATE TABLE subscription_type (
 );
 
 INSERT INTO subscription_type (type_name)
-VALUES ('unlimited'), ('limited');
+VALUES ('unlimited'),  ('limited');
 
 CREATE TABLE car (
                      car_id INT AUTO_INCREMENT PRIMARY KEY,
