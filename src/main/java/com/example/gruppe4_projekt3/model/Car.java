@@ -10,6 +10,7 @@ public class Car {
     private String equipmentLevel;
     private String vehicleNumber;
     private String chassisNumber;
+    private String licensePlate;
     private double price;
     private double registrationFee;
     private String image;
@@ -17,6 +18,14 @@ public class Car {
     private boolean readyForUse;
     private String customerName;
     private Long remainingRentalDays;
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
 
     public String getImage() {
         return image;
