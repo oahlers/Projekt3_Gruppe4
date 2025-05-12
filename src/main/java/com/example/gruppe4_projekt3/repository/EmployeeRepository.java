@@ -23,6 +23,17 @@ public class EmployeeRepository {
         jdbcTemplate.update(sql, employee.getFullName(), employee.getUsername(), employee.getPassword(), employee.getRole());
     }
 
+    // Opdaterer en eksisterende medarbejder i databasen.
+    public void update(Employee employee) {
+        String sql = "UPDATE employees SET fullname = ?, username = ?, password = ?, role = ? WHERE employee_id = ?";
+        jdbcTemplate.update(sql,
+                employee.getFullName(),
+                employee.getUsername(),
+                employee.getPassword(),
+                employee.getRole(),
+                employee.getEmployeeId());
+    }
+
 
     // Finder en medarbejder ud fra deres ID.
     public Employee findByEmployeeId(int employeeId) {
@@ -71,5 +82,4 @@ public class EmployeeRepository {
             return employee;
         }
     }
-
 }

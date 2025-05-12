@@ -46,7 +46,7 @@
           <td th:text="${employee.fullName}"></td>
           <td th:text="${employee.role}"></td>
           <td>
-            <a th:href="@{'/employee/' + ${employee.employeeId}}" class="btn-details">Detaljer</a>
+            <a th:href="@{'/employee/edit/' + ${employee.employeeId}}" class="btn-details">Detaljer</a>
           </td>
         </tr>
         </tbody>
