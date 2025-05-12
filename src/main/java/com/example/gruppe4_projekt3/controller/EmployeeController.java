@@ -31,12 +31,12 @@ public class EmployeeController {
     public String login(@RequestParam("employeeId") int employeeId,
                         @RequestParam("username") String username,
                         @RequestParam("password") String password,
+                        @RequestParam(value = "role", required = false) String role,
                         HttpSession session,
                         Model model) {
         Employee employee = employeeRepository.findByEmployeeIdAndUsername(employeeId, username);
         if (employee != null && employee.getPassword().equals(password)) {
             session.setAttribute("loggedInEmployee", employee);
-            model.addAttribute("loggedInEmployee", employee);
             return "redirect:/dashboard";
         } else {
             model.addAttribute("loginError", "Ugyldigt EmployeeID, brugernavn eller adgangskode");
@@ -45,29 +45,41 @@ public class EmployeeController {
     }
 
     // Registrerer en ny medarbejder.
-    @PostMapping("/register")
-    public String register(@RequestParam("employeeId") int employeeId,
-                           @RequestParam("fullName") String fullName,
+    @PostMapping("/employeeOverviewAdmin")
+    public String register(@RequestParam("fullName") String fullName,
                            @RequestParam("username") String username,
                            @RequestParam("password") String password,
-                           Model model) {
+                           @RequestParam("role") String role,
+                           Model model, HttpSession session) {
+
+        // Tjek om brugeren er administrator
+        if (!isAdmin(session)) {
+            model.addAttribute("registerError", "Du har ikke tilladelse til at oprette en medarbejder.");
+            return "employeeOverView"; // Eller den side, du ønsker at sende brugeren til
+        }
+
         if (password.length() < 8) {
             model.addAttribute("registerError", "Adgangskoden skal være mindst 8 tegn.");
-            return "index";
+            return "employeeOverView";
         }
-        Employee existingEmployeeById = employeeRepository.findByEmployeeId(employeeId);
+
         Employee existingEmployeeByUsername = employeeRepository.findByUsername(username);
-        if (existingEmployeeById != null) {
-            model.addAttribute("registerError", "EmployeeID eksisterer allerede");
-            return "index";
-        }
         if (existingEmployeeByUsername != null) {
             model.addAttribute("registerError", "Brugernavnet eksisterer allerede");
-            return "index";
+            return "employeeOverView";
         }
-        Employee newEmployee = new Employee(employeeId, fullName, username, password);
+
+        // Opret en ny Employee uden at bruge employeeId
+        Employee newEmployee = new Employee();
+        newEmployee.setFullName(fullName);
+        newEmployee.setUsername(username);
+        newEmployee.setPassword(password);
+        newEmployee.setRole(role);
+
+        // Gem den nye medarbejder i databasen
         employeeRepository.save(newEmployee);
-        return "index";
+
+        return "redirect:/employeeOverviewAdmin"; // Redirect for at vise den opdaterede liste
     }
 
     // Søger efter en medarbejder ud fra ID og/eller brugernavn.
@@ -77,4 +89,10 @@ public class EmployeeController {
         model.addAttribute("employees", employees);
         return "employeeOverView";
     }
+
+    private boolean isAdmin(HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("loggedInEmployee");
+        return employee != null && "ADMIN".equalsIgnoreCase(employee.getRole());
+    }
+
 }

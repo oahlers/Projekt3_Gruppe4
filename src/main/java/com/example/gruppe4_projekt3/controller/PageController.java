@@ -79,26 +79,6 @@ public class PageController {
         return "carOverview";
     }
 
-    // Viser formularen til søgning efter medarbejder.
-    @GetMapping("/employeeOverview")
-    public String getAllEmployees(Model model) {
-        List<Employee> employees = employeeRepository.findAll();
-        model.addAttribute("employees", employees);
-        return "employeeOverview";
-    }
-
-    // Viser alle biler og formular til at tilføje ny bil.
-    @GetMapping("/addCars")
-    public String viewAllCars(HttpSession session, Model model) {
-        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
-        if (loggedInEmployee == null) {
-            return "redirect:/auth";
-        }
-        model.addAttribute("cars", carRepository.findAll());
-        model.addAttribute("employee", loggedInEmployee);
-        return "addCars";
-    }
-
     // Viser leveringssiden med liste over tilgængelige biler.
     @GetMapping("/registerAndDeliverCar")
     public String showDeliverCarPage(Model model, HttpSession session) {
@@ -159,4 +139,55 @@ public class PageController {
         model.addAttribute("damageReports", damageReports);
         return "damageReportHistory";
     }
+
+    // Viser formularen til søgning efter medarbejder.
+    // For almindelige medarbejdere
+    @GetMapping("/employeeOverview")
+    public String getAllEmployees(Model model, HttpSession session) {
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        if (loggedInEmployee == null) {
+            return "redirect:/auth"; // Hvis ikke logget ind, omdiriger til login-siden
+        }
+
+        List<Employee> employees = employeeRepository.findAll();
+        model.addAttribute("employees", employees);
+
+        // Vis employeeOverview for almindelige brugere
+        return "employeeOverview";
+    }
+
+    // For administratorer
+    @GetMapping("/employeeOverviewAdmin")
+    public String getAllEmployeesAdmin(Model model, HttpSession session) {
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        if (loggedInEmployee == null || !isAdmin(session)) {
+            return "redirect:/auth"; // Hvis ikke logget ind eller ikke admin, omdiriger til login-siden
+        }
+
+        List<Employee> employees = employeeRepository.findAll();
+        model.addAttribute("employees", employees);
+
+        // Vis employeeOverviewAdmin for administratorer
+        return "employeeOverviewAdmin";
+    }
+
+    // Helper metode til at tjekke om brugeren er admin
+    private boolean isAdmin(HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("loggedInEmployee");
+        return employee != null && "ADMIN".equalsIgnoreCase(employee.getRole());
+    }
+
+
+    // Viser alle biler og formular til at tilføje ny bil.
+    @GetMapping("/addCars")
+    public String viewAllCars(HttpSession session, Model model) {
+        Employee employee = (Employee) session.getAttribute("loggedInEmployee");
+        if (employee == null) {
+            return "redirect:/";
+        }
+        if ("ADMIN".equals(employee.getRole())) {
+        }
+        return "addCars";
+    }
+
 }

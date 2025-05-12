@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,39 +23,43 @@
 
     <section class="hero">
         <h1>Velkommen til Medarbejder Dashboard</h1>
-        <p>Administrer bilabonnementer, skaderapporter og medarbejderdata.</p>
+        <p>Administrer bilabonnementer, skadesrapporter og medarbejderdata.</p>
     </section>
     <main class="main-content">
 
         <section class="dashboard">
             <div class="card">
                 <h3>Tilføj Bil</h3>
-                <a th:href="@{/addCars}" class="btn-link">Tryk her</a>
+                <a th:href="@{/addCars}" class="btn-link">Tilføj Bil</a>
             </div>
 
             <div class="card">
-                <h3>Levering & Registrering</h3>
-                <a th:href="@{/registerAndDeliverCar}" class="btn-link">Tryk her</a>
+                <h3>Levering Og Registrering</h3>
+                <a th:href="@{/registerAndDeliverCar}" class="btn-link">Lever Og Registrering</a>
             </div>
 
             <div class="card">
                 <h3>Udlejede Biler</h3>
-                <a th:href="@{/carOverview}" class="btn-link">Tryk her</a>
+                <a th:href="@{/carOverview}" class="btn-link">Se Oversigt</a>
             </div>
 
             <div class="card">
-                <h3>Skaderapport</h3>
-                <a th:href="@{/damageReport}" class="btn-link">Tryk her</a>
+                <h3>Skadesrapport</h3>
+                <a th:href="@{/damageReport}" class="btn-link">Vis Skadesrapporter</a>
             </div>
 
             <div class="card">
-                <h3>KPI- & Statisiker</h3>
-                <a th:href="@{/statistics}" class="btn-link">Tryk her</a>
+                <h3>KPI Og Statisiker</h3>
+                <a th:href="@{/statistics}" class="btn-link">KPI- og statistikker</a>
             </div>
 
+            <!-- Søg Medarbejder - Betinget link afhængigt af rolle -->
             <div class="card">
-                <h3>Se liste over medarbejdere</h3>
-                <a th:href="@{/employeeOverview}" class="btn-link">Tryk her</a>
+                <h3>Søg Medarbejder</h3>
+                <a th:if="${session.loggedInEmployee != null and session.loggedInEmployee.role == 'ADMIN'}"
+                   th:href="@{/employeeOverviewAdmin}" class="btn-link">Søg medarbejder & Registrer Ny Bruger</a>
+                <a th:unless="${session.loggedInEmployee != null and session.loggedInEmployee.role == 'ADMIN'}"
+                   th:href="@{/employeeOverview}" class="btn-link">Søg medarbejder</a>
             </div>
         </section>
     </main>
