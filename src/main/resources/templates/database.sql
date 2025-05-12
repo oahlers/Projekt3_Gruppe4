@@ -20,7 +20,7 @@ CREATE TABLE car (
                      equipment_level VARCHAR(100) NOT NULL,
                      vehicle_number VARCHAR(100) NOT NULL UNIQUE,
                      chassis_number VARCHAR(100) NOT NULL UNIQUE,
-                     license_plate VARCHAR(100) UNIQUE NOT NULL, -- Ny kolonne til nummerplade
+                     license_plate VARCHAR(100) UNIQUE NOT NULL,
                      price DECIMAL(10,2) NOT NULL,
                      registration_fee DECIMAL(10,2) NOT NULL,
                      image VARCHAR(255),
