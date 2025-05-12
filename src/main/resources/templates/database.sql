@@ -23,8 +23,13 @@ CREATE TABLE employees (
                            employee_id INT AUTO_INCREMENT PRIMARY KEY,
                            fullname VARCHAR(100) NOT NULL,
                            username VARCHAR(100) NOT NULL UNIQUE,
-                           password VARCHAR(255) NOT NULL
+                           password VARCHAR(255) NOT NULL,
+                           role VARCHAR(20) NOT NULL DEFAULT 'EMPLOYEE'
 );
+
+UPDATE employees SET role = 'ADMIN' WHERE username = 'demo';
+
+
 
 CREATE TABLE rental (
                         rental_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -62,18 +67,18 @@ VALUES
     (0, 2023, 'Audi', 'Q4 e-tron', 'Blå', 'S Line', 'EVA40001', 'AUDIQ4ETRON12345678', 619995.00, 23400.00, '/img/civicTechno.jpg', b'0', b'0'),
     (0, 2024, 'Volkswagen', 'ID.4', 'Sort', 'Pro Performance', 'EVW20001', 'VOLKSWAGENID4123456789', 479995.00, 20750.00, '/img/civicSport.jpg', b'0', b'0');
 
-INSERT INTO employees (employee_id, username, password, fullname)
+INSERT INTO employees (employee_id, username, password, fullname, role)
 VALUES
-    (1, 'demo', 'demo', 'Demo Demosen'),
-    (2, 'oahlers', 'oahlers', 'Oliver Ahlers'),
-    (3, 'Rasmusg', 'rasmusg', 'Rasmus Guldborg'),
-    (4, 'juliusg', 'juliusg', 'Julius Gissel'),
-    (5, 'sandral', 'sandraloveless', 'Sandra Loveless'),
-    (6, 'emiliaah', 'emiliah123', 'Emilia Air'),
-    (7, 'david_miller', 'davidd123', 'David Miller'),
-    (8, 'emma_jones', 'emmapassword', 'Emma Jones'),
-    (9, 'frank_white', 'frankpass', 'Frank White'),
-    (10, 'georginak', 'georgina123', 'Georgina Kaytranada');
+    (1, 'demo', 'demo', 'Demo Demosen', 'ADMIN'),
+    (2, 'oahlers', 'oahlers', 'Oliver Ahlers', 'EMPLOYEE'),
+    (3, 'Rasmusg', 'rasmusg', 'Rasmus Guldborg', 'EMPLOYEE'),
+    (4, 'juliusg', 'juliusg', 'Julius Gissel', 'EMPLOYEE'),
+    (5, 'sandral', 'sandraloveless', 'Sandra Loveless', 'EMPLOYEE'),
+    (6, 'emiliaah', 'emiliah123', 'Emilia Air', 'EMPLOYEE'),
+    (7, 'david_miller', 'davidd123', 'David Miller', 'EMPLOYEE'),
+    (8, 'emma_jones', 'emmapassword', 'Emma Jones', 'EMPLOYEE'),
+    (9, 'frank_white', 'frankpass', 'Frank White', 'EMPLOYEE'),
+    (10, 'georginak', 'georgina123', 'Georgina Kaytranada', 'EMPLOYEE');
 
 INSERT INTO rental (car_id, start_date, customer_name, customer_email, rental_months, ready_for_use_date, payment_time, transport_time)
 VALUES

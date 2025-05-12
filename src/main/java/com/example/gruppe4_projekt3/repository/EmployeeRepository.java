@@ -4,8 +4,11 @@ import com.example.gruppe4_projekt3.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -16,9 +19,10 @@ public class EmployeeRepository {
 
     // Gemmer en ny medarbejder i databasen.
     public void save(Employee employee) {
-        String sql = "INSERT INTO employees (employee_id, fullname, username, password) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, employee.getEmployeeId(), employee.getFullName(), employee.getUsername(), employee.getPassword());
+        String sql = "INSERT INTO employees (fullname, username, password, role) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, employee.getFullName(), employee.getUsername(), employee.getPassword(), employee.getRole());
     }
+
 
     // Finder en medarbejder ud fra deres ID.
     public Employee findByEmployeeId(int employeeId) {
@@ -54,4 +58,18 @@ public class EmployeeRepository {
         String sql = "SELECT * FROM employees";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Employee.class));
     }
+
+    public class EmployeeRowMapper implements RowMapper<Employee> {
+        @Override
+        public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Employee employee = new Employee();
+            employee.setEmployeeId(rs.getInt("employee_id"));
+            employee.setFullName(rs.getString("fullname"));
+            employee.setUsername(rs.getString("username"));
+            employee.setPassword(rs.getString("password"));
+            employee.setRole(rs.getString("role"));
+            return employee;
+        }
+    }
+
 }

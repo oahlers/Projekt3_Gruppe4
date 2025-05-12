@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +23,7 @@
 
     <section class="hero">
         <h1>Velkommen til Medarbejder Dashboard</h1>
-        <p>Administrer bilabonnementer, skaderapporter og medarbejderdata.</p>
+        <p>Administrer bilabonnementer, skadesrapporter og medarbejderdata.</p>
     </section>
     <main class="main-content">
 
@@ -44,8 +44,8 @@
             </div>
 
             <div class="card">
-                <h3>Skaderapport</h3>
-                <a th:href="@{/damageReport}" class="btn-link">Vis Skaderapporter</a>
+                <h3>Skadesrapport</h3>
+                <a th:href="@{/damageReport}" class="btn-link">Vis Skadesrapporter</a>
             </div>
 
             <div class="card">
@@ -53,9 +53,13 @@
                 <a th:href="@{/statistics}" class="btn-link">KPI- og statistikker</a>
             </div>
 
+            <!-- Søg Medarbejder - Betinget link afhængigt af rolle -->
             <div class="card">
                 <h3>Søg Medarbejder</h3>
-                <a th:href="@{/employeeOverview}" class="btn-link">Søg medarbejder</a>
+                <a th:if="${session.loggedInEmployee != null and session.loggedInEmployee.role == 'ADMIN'}"
+                   th:href="@{/employeeOverviewAdmin}" class="btn-link">Søg medarbejder & Registrer Ny Bruger</a>
+                <a th:unless="${session.loggedInEmployee != null and session.loggedInEmployee.role == 'ADMIN'}"
+                   th:href="@{/employeeOverview}" class="btn-link">Søg medarbejder</a>
             </div>
         </section>
     </main>
