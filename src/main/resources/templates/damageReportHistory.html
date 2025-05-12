@@ -25,25 +25,12 @@
         <p>Se tidligere oprettede skadesrapporter i systemet.</p>
     </section>
 
-    <main class="main-content">
-        <section class="dashboard">
-            <div class="card">
-                <h3>Tidligere rapporter</h3>
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Bil ID</th>
-                        <th>Mærke</th>
-                        <th>Model</th>
-                        <th>Skade Pris</th>
-                        <th>Beskrivelse</th>
-                        <th>Kunde</th>
-                        <th>Medarbejder</th>
-                    </tr>
-                    </thead>
+    <a th:href="@{/damageReport}" class="btn-link">Tilbage til Skaderapporter</a>
 
-                    <tbody>
-                    <tr th:each="report : ${damageReports}">
+    <main class="main-content">
+        <section class="dashboard" id="damageReportDashboard">
+                <h3>Tidligere rapporter</h3>
+                <div class="Card" id="reportCard" th:each="report : ${damageReports}">
                         <td th:text="${report.car.carId}">123</td>
                         <td th:text="${report.car.brand}">Volkswagen</td>
                         <td th:text="${report.car.model}">Golf</td>
@@ -51,14 +38,7 @@
                         <td th:text="${report.report}">Beskrivelse</td> <!-- NYT -->
                         <td th:text="${report.customerEmail}">kunde@mail.dk</td>
                         <td th:text="${report.employee != null ? report.employee.fullName : 'Ukendt medarbejder'}">Medarbejder</td>
-                    </tr>
-
-                    </tbody>
-
-
-                </table>
-            </div>
-            <a th:href="@{/damageReport}" class="btn-link">Tilbage til Skaderapporter</a>
+                </div>
         </section>
     </main>
 
