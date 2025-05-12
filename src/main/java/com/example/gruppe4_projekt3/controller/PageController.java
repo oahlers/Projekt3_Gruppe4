@@ -190,4 +190,11 @@ public class PageController {
         return "addCars";
     }
 
+    @GetMapping("/employee/{id}")
+    public String showEmployeeDetails(@PathVariable Long id, Model model) {
+        Employee employee = employeeRepository.findByEmployeeId(Math.toIntExact(id));
+        model.addAttribute("employee", employee);
+        return "employeeDetails"; // HTML-side til visning af detaljer
+    }
+
 }

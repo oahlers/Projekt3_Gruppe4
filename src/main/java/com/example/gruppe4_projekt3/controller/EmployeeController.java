@@ -6,9 +6,7 @@ import com.example.gruppe4_projekt3.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -93,6 +91,18 @@ public class EmployeeController {
     private boolean isAdmin(HttpSession session) {
         Employee employee = (Employee) session.getAttribute("loggedInEmployee");
         return employee != null && "ADMIN".equalsIgnoreCase(employee.getRole());
+    }
+
+    @GetMapping("/employee/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        model.addAttribute("employee", employeeRepository.findByEmployeeId(Math.toIntExact(id)));
+        return "employeeEdit";
+    }
+
+    @PostMapping("/employee/edit/{id}")
+    public String updateEmployee(@ModelAttribute Employee employee) {
+        employeeRepository.save(employee);
+        return "redirect:/dashboard";
     }
 
 }

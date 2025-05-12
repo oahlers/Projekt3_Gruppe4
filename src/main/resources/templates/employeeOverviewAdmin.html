@@ -36,6 +36,7 @@
           <th>Brugernavn</th>
           <th>Navn</th>
           <th>Rolle</th>
+          <th>Handling</th> <!-- Tilføjet kolonne -->
         </tr>
         </thead>
         <tbody>
@@ -44,6 +45,9 @@
           <td th:text="${employee.username}"></td>
           <td th:text="${employee.fullName}"></td>
           <td th:text="${employee.role}"></td>
+          <td>
+            <a th:href="@{'/employee/' + ${employee.employeeId}}" class="btn-details">Se detaljer</a>
+          </td>
         </tr>
         </tbody>
       </table>

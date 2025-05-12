@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>Rediger Medarbejder</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="layout">
+  <div class="header">
+    <div class="logo">
+      <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
+    </div>
+    <h3>Medarbejderportal</h3>
+    <nav>
+
+      <a th:href="@{/dashboard}" class="back-btn">Tilbage</a>
+      <a th:href="@{/employeeEdit.html}" class="back-btn">Log ud</a>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <h1>Rediger Medarbejder</h1>
+  </section>
+
+  <main class="main-content">
+    <form th:action="@{/employee/edit/{id}(id=${employee.employeeId})}" th:object="${employee}" method="post">
+      <label for="username">Brugernavn:</label>
+      <input type="text" id="username" th:field="*{username}" required />
+
+      <label for="fullName">Fulde navn:</label>
+      <input type="text" id="fullName" th:field="*{fullName}" required />
+
+      <label for="role">Rolle:</label>
+      <input type="text" id="role" th:field="*{role}" required />
+
+      <button type="submit">Gem ændringer</button>
+    </form>
+  </main>
+
+  <div class="footer">
+    <p>
+      Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk
+    </p>
+  </div>
+</div>
+
+</body>
+</html>
