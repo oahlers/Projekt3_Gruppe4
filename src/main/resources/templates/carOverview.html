@@ -43,8 +43,8 @@
                     </div>
 
                     <h3 th:text="${car.brand + ' ' + car.model}"></h3>
-                    <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
-                    <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
+                    <p><strong>Stelnummer:</strong> <span th:text="${car.chassisNumber}"></span></p>
+                    <p><strong>Nummerplade:</strong> <span th:text="${car.licensePlate}"></span></p>
                     <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
                     <p><strong>Udlejet:</strong> <span th:text="${car.availableForLoan} ? 'Ja' : 'Nej'"></span></p>
                     <p><strong>Mangler skadesrapport:</strong> <span th:text="${car.readyForUse} ? 'Ja' : 'Nej'"></span></p>

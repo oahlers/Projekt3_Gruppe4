@@ -29,42 +29,42 @@
 
     <main class="main-content">
         <section class="car-dashboard">
+            <div class="search-card" th:each="car : ${availableCars}">
+                <h3 th:text="${car.brand + ' ' + car.model}"></h3>
+                <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
+                <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
+                <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
 
-                <div class="search-card" th:each="car : ${availableCars}">
-                    <h3 th:text="${car.brand + ' ' + car.model}"></h3>
-                    <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
-                    <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
-                    <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
+                <form th:action="@{/registerAndDeliverCar}" method="post" id="carForm_${car.carId}">
+                    <input type="hidden" name="carId" th:value="${car.carId}">
 
-                    <form th:action="@{/registerAndDeliverCar}" method="post">
-                        <input type="hidden" name="carId" th:value="${car.carId}">
+                    <label for="name">Kundens navn:</label>
+                    <input type="text" id="name" name="name" required>
 
-                        <label for="name">Kundens navn:</label>
-                        <input type="text" id="name" name="name" required>
+                    <label for="deliveryAddress">Leveringsadresse:</label>
+                    <input type="text" id="deliveryAddress" name="deliveryAddress" required>
 
-                        <label for="deliveryAddress">Leveringsadresse:</label>
-                        <input type="text" id="deliveryAddress" name="deliveryAddress" required>
+                    <label for="subscriptionType_${car.carId}">Abonnementstype:</label>
+                    <select id="subscriptionType_${car.carId}" name="subscriptionType" class="subscriptionType" required>
+                        <option value="unlimited">Unlimited</option>
+                        <option value="limited">Limited</option>
+                    </select>
 
-                        <label for="rentalMonths">Lejeperiode (måneder):</label>
-                        <select id="rentalMonths" name="rentalMonths" required>
-                            <option value="1">1 måned</option>
-                            <option value="3">3 måneder</option>
-                            <option value="6">6 måneder</option>
-                            <option value="12">12 måneder</option>
-                        </select>
+                    <label for="rentalMonths_${car.carId}">Lejeperiode (måneder):</label>
+                    <select id="rentalMonths_${car.carId}" name="rentalMonths" required></select>
 
-                        <label for="paymentTime">Betalingstid (1-30 dage):</label>
-                        <input type="number" id="paymentTime" name="paymentTime" min="1" max="30" required>
+                    <label for="paymentTime">Betalingstid (1-30 dage):</label>
+                    <input type="number" id="paymentTime" name="paymentTime" min="1" max="30" required>
 
-                        <label for="transportTime">Transporttid (1-30 dage):</label>
-                        <input type="number" id="transportTime" name="transportTime" min="1" max="30" required>
+                    <label for="transportTime">Transporttid (1-30 dage):</label>
+                    <input type="number" id="transportTime" name="transportTime" min="1" max="30" required>
 
-                        <label for="email">Kundens email:</label>
-                        <input type="email" id="email" name="email" required>
+                    <label for="email">Kundens email:</label>
+                    <input type="email" id="email" name="email" required>
 
-                        <button type="submit">Registrer udlejning</button>
-                    </form>
-                </div>
+                    <button type="submit">Registrer udlejning</button>
+                </form>
+            </div>
         </section>
     </main>
 
@@ -72,5 +72,32 @@
         <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const cars = document.querySelectorAll('.search-card');
+
+        cars.forEach(carElement => {
+            const subscriptionSelect = carElement.querySelector('.subscriptionType');
+            const rentalSelect = carElement.querySelector('select[name="rentalMonths"]');
+
+            function updateOptions() {
+                const type = subscriptionSelect.value;
+                const options = {
+                    unlimited: [3, 6, 9, 12, 24, 36],
+                    limited: [5]
+                }[type] || [];
+
+                rentalSelect.innerHTML = options.map(month =>
+                    `<option value="${month}">${month} måned${month !== 1 ? 'er' : ''}</option>`
+                ).join('');
+            }
+
+            subscriptionSelect.addEventListener('change', updateOptions);
+            updateOptions();
+        });
+    });
+</script>
+
 </body>
 </html>

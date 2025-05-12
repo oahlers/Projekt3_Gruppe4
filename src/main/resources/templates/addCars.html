@@ -32,33 +32,48 @@
       <div class="search-card">
         <h3>Tilføj Ny Bil</h3>
         <form th:action="@{/cars/add}" method="post">
-          <label>Co2 udledning (0 hvis elbil):</label>
-          <input type="number" name="carEmission" required><br>
 
-          <label>År:</label>
-          <input type="number" name="year" required><br>
+          <!-- Stelnummer (chassisNumber) -->
+          <label>Stelnummer:</label>
+          <input type="text" name="chassisNumber" required><br>
 
-          <label>Mærke:</label>
-          <input type="text" name="brand" required><br>
+          <!-- Nummerplade (licensePlate) -->
+          <label>Nummerplade:</label>
+          <input type="text" name="licensePlate" required><br>
 
-          <label>Model:</label>
-          <input type="text" name="model" required><br>
-
-          <label>Farve:</label>
-          <input type="text" name="color" required><br>
-
-          <label>Udstyrsniveau:</label>
-          <input type="text" name="equipmentLevel" required><br>
-
+          <!-- Registreringsnummer (vehicleNumber) -->
           <label>Registreringsnummer:</label>
           <input type="text" name="vehicleNumber" required><br>
 
-          <label>Nummerplade:</label>
-          <input type="text" name="chassisNumber" required><br>
+          <!-- Co2 udledning (carEmission) -->
+          <label>Co2 udledning (kg CO2 per. 1000 km):</label>
+          <input type="number" name="carEmission" required><br>
 
+          <!-- År (year) -->
+          <label>År:</label>
+          <input type="number" name="year" required><br>
+
+          <!-- Mærke (brand) -->
+          <label>Mærke:</label>
+          <input type="text" name="brand" required><br>
+
+          <!-- Model -->
+          <label>Model:</label>
+          <input type="text" name="model" required><br>
+
+          <!-- Farve (color) -->
+          <label>Farve:</label>
+          <input type="text" name="color" required><br>
+
+          <!-- Udstyrsniveau (equipmentLevel) -->
+          <label>Udstyrsniveau:</label>
+          <input type="text" name="equipmentLevel" required><br>
+
+          <!-- Pris (price) -->
           <label>Pris:</label>
           <input type="number" step="0.01" name="price" required><br>
 
+          <!-- URL til billede (image) -->
           <label>URL til billede:</label>
           <input type="url" name="image" required><br>
 

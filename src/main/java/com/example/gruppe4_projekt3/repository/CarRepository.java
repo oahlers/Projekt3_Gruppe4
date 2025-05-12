@@ -23,14 +23,13 @@ public class CarRepository {
 
     // Henter alle biler med evt. tilknyttet udlejningsinformation.
     public List<Car> findAll() {
-        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
+        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date, c.license_plate " + // Added license_plate
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-    // Finder en bil ud fra dens ID med evt. tilknyttet udlejningsinformation.
     public Car findById(Long id) {
-        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
+        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date, c.license_plate " + // Added license_plate
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
                 "WHERE c.car_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new CarRowMapper());
@@ -39,25 +38,39 @@ public class CarRepository {
     // Gemmer en ny bil i databasen.
     public void save(Car car) {
         String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, " +
-                "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse, image) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse, image, license_plate) " + // Added license_plate
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // Added license_plate
         jdbcTemplate.update(sql,
                 car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
                 car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(), car.getChassisNumber(),
                 car.getPrice(), car.getRegistrationFee(),
-                car.isAvailableForLoan(), car.isReadyForUse(), car.getImage());
+                car.isAvailableForLoan(), car.isReadyForUse(), car.getImage(), car.getLicensePlate()); // Added car.getLicensePlate()
     }
 
+
     // Markerer en bil som udlejet og opretter en ny udlejning.
-    public void markAsRented(Long carId, LocalDate startDate, String customerName, String customerEmail, int rentalMonths, int paymentTime, int transportTime) {
+    public void markAsRented(Long carId, LocalDate startDate, String customerName, String customerEmail,
+                             int rentalMonths, int paymentTime, int transportTime, String subscriptionType) {
+
         LocalDate readyForUseDate = startDate.plusMonths(rentalMonths);
-        String rentalSql = "INSERT INTO rental (car_id, start_date, customer_name, customer_email, rental_months, ready_for_use_date, payment_time, transport_time) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(rentalSql, carId, startDate, customerName, customerEmail, rentalMonths, readyForUseDate, paymentTime, transportTime);
+
+        String findSubscriptionIdSql = "SELECT id FROM subscription_type WHERE type_name = ?";
+        Integer subscriptionTypeId = jdbcTemplate.queryForObject(
+                findSubscriptionIdSql,
+                new Object[]{subscriptionType},
+                Integer.class
+        );
+
+        String rentalSql = "INSERT INTO rental (car_id, start_date, customer_name, customer_email, " +
+                "rental_months, ready_for_use_date, payment_time, transport_time, subscription_type_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(rentalSql, carId, startDate, customerName, customerEmail,
+                rentalMonths, readyForUseDate, paymentTime, transportTime, subscriptionTypeId);
 
         String carSql = "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?";
         jdbcTemplate.update(carSql, carId);
     }
+
 
     // Nulstiller en bils status efter en skadeanmeldelse.
     public void resetAfterDamageReport(Long carId) {
@@ -152,6 +165,7 @@ public class CarRepository {
             car.setAvailableForLoan(rs.getBoolean("isAvailableForLoan"));
             car.setReadyForUse(rs.getBoolean("isReadyForUse"));
             car.setImage(rs.getString("image"));
+            car.setLicensePlate(rs.getString("license_plate")); // Set the license plate
 
             try {
                 String customerName = rs.getString("customer_name");
@@ -174,4 +188,5 @@ public class CarRepository {
             return car;
         }
     }
+
 }
