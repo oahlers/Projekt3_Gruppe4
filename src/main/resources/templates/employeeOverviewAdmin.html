@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medarbejderopslag - Bilabonnement</title>
+  <link rel="icon" href="/img/fav.png" type="image/x-icon" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<div class="layout">
+  <div class="header">
+    <div class="logo">
+      <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
+    </div>
+    <h3>Medarbejderportal</h3>
+    <nav>
+      <a th:href="@{/dashboard}" class="back-btn">Tilbage</a>
+      <a th:href="@{/}" class="back-btn">Log ud</a>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <h1>Medarbejderoplysninger</h1>
+  </section>
+
+  <main class="main-content">
+
+    <div class="search-dashboard">
+      <h2>Alle Medarbejdere</h2>
+      <table class="styled-table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Brugernavn</th>
+          <th>Navn</th>
+          <th>Rolle</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}" class="card employee-card">
+          <td th:text="${employee.employeeId}"></td>
+          <td th:text="${employee.username}"></td>
+          <td th:text="${employee.fullName}"></td>
+          <td th:text="${employee.role}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="search-dashboard">
+      <h2>Opret ny medarbejder</h2>
+      <p th:if="${registerError}" th:text="${registerError}" style="color: red;"></p>
+      <form th:action="@{/employeeOverviewAdmin}" method="post">
+
+        <label for="signup-full-name">Fulde navn</label>
+        <input type="text" id="signup-full-name" name="fullName" placeholder="Indtast fulde navn" required>
+
+        <label for="signup-username">Brugernavn</label>
+        <input type="text" id="signup-username" name="username" placeholder="Indtast brugernavn" required>
+
+        <label for="signup-password">Adgangskode</label>
+        <input type="password" id="signup-password" name="password" placeholder="Indtast adgangskode" required minlength="8"
+               title="Adgangskoden skal være mindst 8 tegn lang.">
+
+        <label for="signup-role">Rolle</label>
+        <select id="signup-role" name="role" required>
+          <option value="">-- Vælg rolle --</option>
+          <option value="EMPLOYEE">Employee</option>
+          <option value="ADMIN">Admin</option>
+        </select>
+
+        <button type="submit">Opret bruger</button>
+      </form>
+    </div>
+
+  </main>
+
+
+  <div class="footer">
+    <p>
+      Bilabonnement | Medarbejderportal | Kontakt os på
+      support@bilabonnement.dk
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>

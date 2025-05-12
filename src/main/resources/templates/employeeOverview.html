@@ -16,6 +16,7 @@
         </div>
         <h3>Medarbejderportal</h3>
         <nav>
+            <a th:href="@{/dashboard}" class="back-btn">Tilbage</a>
             <a th:href="@{/}" class="back-btn">Log ud</a>
         </nav>
     </div>
@@ -34,17 +35,18 @@
                     <th>ID</th>
                     <th>Brugernavn</th>
                     <th>Navn</th>
+                    <th>Rolle</th>
                 </tr>
                 </thead>
                 <tbody>
-                <div>
                 <tr th:each="employee : ${employees}" class="card employee-card">
                     <td th:text="${employee.employeeId}"></td>
                     <td th:text="${employee.username}"></td>
                     <td th:text="${employee.fullName}"></td>
+                    <td th:text="${employee.role}"></td>
                 </tr>
-                </div>
                 </tbody>
+
             </table>
         </div>
     </main>
