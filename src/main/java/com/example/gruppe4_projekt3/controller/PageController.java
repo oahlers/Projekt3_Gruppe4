@@ -85,7 +85,7 @@ public class PageController {
         return "carOverviewEdit";
     }
 
-    @GetMapping("/carOverviewDetails/{id}")
+    @GetMapping("/cars/details/{id}")
     public String showCarOverviewDetails(@PathVariable Long id, Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {

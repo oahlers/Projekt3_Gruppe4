@@ -5,6 +5,7 @@ body {
     background-color: #f5f7fa;
     display: flex;
     flex-direction: column;
+    text-decoration: none;
 }
 
 .footer {
@@ -32,6 +33,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
+    text-decoration: none;
 }
 
 .header {
