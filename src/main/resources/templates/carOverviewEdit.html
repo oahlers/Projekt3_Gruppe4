@@ -21,16 +21,11 @@
         </nav>
     </div>
 
-    <section class="hero">
-        <h1>Velkommen til Tilføj Bil</h1>
-        <p>Tilføj nye biler</p>
-    </section>
-
     <main class="main-content">
 
         <section class="viewCar-dashboard">
             <div class="search-card">
-                <h3>Tilføj Ny Bil</h3>
+                <h3>Rediger Bil</h3>
                 <form th:action="@{/carOverviewEdit/{carId}(carId=${car.carId})}" method="post">
                     <input type="text" name="chassisNumber" th:value="${car.chassisNumber}" required><br>
 
