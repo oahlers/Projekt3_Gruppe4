@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>Rediger Medarbejder</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="layout">
+  <div class="header">
+    <div class="logo">
+      <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
+    </div>
+    <h3>Medarbejderportal</h3>
+    <nav>
+
+      <a th:href="@{/dashboard}" class="back-btn">Tilbage</a>
+      <a th:href="@{/employeeEdit.html}" class="back-btn">Log ud</a>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <h1>Rediger Medarbejder</h1>
+  </section>
+
+  <main class="main-content">
+
+    <div class="search-dashboard">
+    <form th:action="@{/employee/edit/{id}(id=${employee.employeeId})}" th:object="${employee}" method="post">
+      <label for="username">Brugernavn:</label>
+      <input type="text" id="username" th:field="*{username}" required readonly />
+
+      <label for="password" >Ny adgangskode:</label>
+      <input type="text" id="password" th:field="*{password}" required />
+
+      <label for="fullName">Fulde navn:</label>
+      <input type="text" id="fullName" th:field="*{fullName}" required />
+
+      <label for="signup-role">Rolle</label>
+      <select id="signup-role" name="role" required>
+        <option value="EMPLOYEE">Employee</option>
+        <option value="ADMIN">Admin</option>
+      </select>
+
+      <button type="submit">Gem ændringer</button>
+    </form>
+    </div>
+  </main>
+
+  <div class="footer">
+    <p>
+      Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk
+    </p>
+  </div>
+</div>
+
+</body>
+</html>

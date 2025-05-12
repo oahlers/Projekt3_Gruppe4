@@ -36,6 +36,7 @@
           <th>Brugernavn</th>
           <th>Navn</th>
           <th>Rolle</th>
+          <th>Handling</th> <!-- Tilføjet kolonne -->
         </tr>
         </thead>
         <tbody>
@@ -44,6 +45,9 @@
           <td th:text="${employee.username}"></td>
           <td th:text="${employee.fullName}"></td>
           <td th:text="${employee.role}"></td>
+          <td>
+            <a th:href="@{'/employee/' + ${employee.employeeId}}" class="btn-details">Detaljer</a>
+          </td>
         </tr>
         </tbody>
       </table>
@@ -63,6 +67,7 @@
         <label for="signup-password">Adgangskode</label>
         <input type="password" id="signup-password" name="password" placeholder="Indtast adgangskode" required minlength="8"
                title="Adgangskoden skal være mindst 8 tegn lang.">
+
 
         <label for="signup-role">Rolle</label>
         <select id="signup-role" name="role" required>
