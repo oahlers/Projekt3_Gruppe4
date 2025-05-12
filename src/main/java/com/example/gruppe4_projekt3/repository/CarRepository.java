@@ -47,6 +47,19 @@ public class CarRepository {
                 car.isAvailableForLoan(), car.isReadyForUse(), car.getImage(), car.getLicensePlate()); // Added car.getLicensePlate()
     }
 
+    public void update(Car car) {
+        String sql = "UPDATE car SET car_emission = ?, year = ?, brand = ?, model = ?, color = ?, " +
+                "equipment_level = ?, vehicle_number = ?, chassis_number = ?, license_plate = ?, " +
+                "price = ?, registration_fee = ?, image = ?, isAvailableForLoan = ?, isReadyForUse = ? " +
+                "WHERE car_id = ?";  // Vi bruger car_id til at identificere den bil, der skal opdateres
+
+        jdbcTemplate.update(sql,
+                car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
+                car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(), car.getChassisNumber(),
+                car.getLicensePlate(), car.getPrice(), car.getRegistrationFee(),
+                car.getImage(), car.isAvailableForLoan(), car.isReadyForUse(), car.getCarId());
+    }
+
 
     // Markerer en bil som udlejet og opretter en ny udlejning.
     public void markAsRented(Long carId, LocalDate startDate, String customerName, String customerEmail,

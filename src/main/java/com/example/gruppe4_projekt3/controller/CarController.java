@@ -7,13 +7,12 @@ import com.example.gruppe4_projekt3.repository.CarRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CarController {
@@ -29,21 +28,6 @@ public class CarController {
         }
         carRepository.save(car);
         return "dashboard";
-    }
-
-    @GetMapping("/rented")
-    public List<Car> getRentedCars() {
-        return carRepository.findRentedCars();
-    }
-
-    @GetMapping("/rented/ready")
-    public List<Car> getRentedAndReadyCars() {
-        return carRepository.findRentedAndReadyCars();
-    }
-
-    @GetMapping("/damage-Report")
-    public List<Car> getCarsForDamageReport() {
-        return carRepository.findNotRentedAndNotReadyCars();
     }
 
     @PostMapping("/registerAndDeliverCar")
@@ -66,4 +50,45 @@ public class CarController {
 
         return "dashboard";
     }
+
+    // Denne metode håndterer at vise bilens redigeringsformular
+    @GetMapping("/carOverviewEdit/{carId}")
+    public String showEditForm(@PathVariable Long carId, Model model) {
+        Optional<Car> carOpt = Optional.ofNullable(carRepository.findById(carId));
+        if (carOpt.isPresent()) {
+            model.addAttribute("car", carOpt.get());
+            return "carOverviewEdit";
+        } else {
+            return "carOverviewDetails";
+        }
+    }
+
+    @PostMapping("/carOverviewEdit/{carId}")
+    public String updateCar(@PathVariable Long carId, @ModelAttribute Car car, HttpSession session) {
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        if (loggedInEmployee == null) {
+            return "redirect:/auth";
+        }
+
+        Car existingCar = carRepository.findById(carId);
+
+        if (existingCar != null) {
+            existingCar.setChassisNumber(car.getChassisNumber());
+            existingCar.setLicensePlate(car.getLicensePlate());
+            existingCar.setVehicleNumber(car.getVehicleNumber());
+            existingCar.setCarEmission(car.getCarEmission());
+            existingCar.setYear(car.getYear());
+            existingCar.setBrand(car.getBrand());
+            existingCar.setModel(car.getModel());
+            existingCar.setColor(car.getColor());
+            existingCar.setPrice(car.getPrice());
+            existingCar.setImage(car.getImage());
+
+            carRepository.update(existingCar);
+        }
+
+        return "redirect:/carOverview";
+    }
+
+
 }

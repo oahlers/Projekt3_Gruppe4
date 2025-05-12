@@ -26,35 +26,36 @@
     <section class="hero">
         <h1>Oversigt over Biler</h1>
         <p>Herunder ser du alle biler, inklusive udlejede og dem, der kræver skadesrapport.</p>
-        <div class="filter-buttons">
-            <button onclick="setActiveFilter(this, 'all')">Vis alle biler</button>
-            <button onclick="setActiveFilter(this, 'rented')">Vis udlejede biler</button>
-            <button onclick="setActiveFilter(this, 'needs-report')">Vis biler der mangler skadesrapport</button>
-        </div>
     </section>
 
     <main class="main-content">
         <section class="car-dashboard">
-                <div class="car-card" th:each="car : ${allCars}"
-                     th:attr="data-available=${car.availableForLoan}, data-ready=${car.readyForUse}">
+            <div class="car-card" th:each="car : ${allCars}"
+                 th:attr="data-available=${car.availableForLoan}, data-ready=${car.readyForUse}">
 
-                    <div class="car-image">
-                        <img th:src="${car.image}" alt="Car image" class="car-img"/>
-                    </div>
-
-                    <h3 th:text="${car.brand + ' ' + car.model}"></h3>
-                    <p><strong>Stelnummer:</strong> <span th:text="${car.chassisNumber}"></span></p>
-                    <p><strong>Nummerplade:</strong> <span th:text="${car.licensePlate}"></span></p>
-                    <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
-                    <p><strong>Udlejet:</strong> <span th:text="${car.availableForLoan} ? 'Ja' : 'Nej'"></span></p>
-                    <p><strong>Mangler skadesrapport:</strong> <span th:text="${car.readyForUse} ? 'Ja' : 'Nej'"></span></p>
-
-                    <div th:if="${car.availableForLoan}">
-                        <p><strong>Kunde:</strong> <span th:text="${car.customerName}"></span></p>
-                        <p><strong>Resterende udlejningstid:</strong>
-                            <span th:text="${car.remainingRentalDays != null} ? (${car.remainingRentalDays} + ' dage') : 'Ikke udlejet'"></span></p>
-                    </div>
+                <div class="car-image">
+                    <img th:src="${car.image}" alt="Car image" class="car-img"/>
                 </div>
+
+                <h3 th:text="${car.brand} + ' ' + ${car.model}"></h3>
+                <p><strong>Stelnummer:</strong> <span th:text="${car.chassisNumber}"></span></p>
+                <p><strong>Nummerplade:</strong> <span th:text="${car.licensePlate}"></span></p>
+                <p><strong>Pris:</strong> <span th:text="${car.price} + ' DKK'"></span></p>
+                <p><strong>Udlejet:</strong> <span th:text="${car.availableForLoan} ? 'Ja' : 'Nej'"></span></p>
+                <p><strong>Mangler skadesrapport:</strong> <span th:text="${car.readyForUse} ? 'Ja' : 'Nej'"></span></p>
+
+                <div th:if="${car.availableForLoan}">
+                    <p><strong>Kunde:</strong> <span th:text="${car.customerName}"></span></p>
+                    <p><strong>Resterende udlejningstid:</strong>
+                        <span th:text="${car.remainingRentalDays != null} ? (${car.remainingRentalDays} + ' dage') : 'Ikke udlejet'"></span></p>
+                </div>
+
+                <div class="car-actions">
+                    <a th:href="@{/cars/details/{id}(id=${car.carId})}" class="button-link">Se detaljer</a>
+                    <a th:href="@{/cars/edit/{id}(id=${car.carId})}" class="button-link">Rediger bil</a>
+
+                </div>
+            </div>
         </section>
     </main>
 
@@ -64,6 +65,7 @@
 </div>
 
 <script>
+    // Hvis du ønsker at fortsætte med at filtrere i frontend, kan du implementere filterfunktionen som før
     function setActiveFilter(button, filter) {
         document.querySelectorAll('.filter-buttons button').forEach(btn => {
             btn.classList.remove('active');

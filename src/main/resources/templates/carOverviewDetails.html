@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bil Detaljer - Bilabonnement</title>
+    <link rel="icon" href="/img/fav.png" type="image/x-icon">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="layout">
+    <div class="header">
+        <div class="logo">
+            <a th:href="@{/dashboard}">
+                <img src="/img/Logo.png" alt="BILABONNEMENT Logo">
+            </a>
+        </div>
+        <h3>Medarbejderportal</h3>
+        <nav>
+            <a th:href="@{/dashboard}" class="back-btn">Tilbage</a>
+            <a th:href="@{/}" class="back-btn">Log ud</a>
+        </nav>
+    </div>
+
+    <section class="hero">
+        <h1>Bil Detaljer</h1>
+        <p>Detaljeret information om den valgte bil.</p>
+    </section>
+
+    <main class="main-content">
+        <div class="car-details" th:if="${car != null}">
+            <p><strong>Mærke:</strong> <span th:text="${car.brand}"></span></p>
+            <p><strong>Model:</strong> <span th:text="${car.model}"></span></p>
+            <p><strong>Årgang:</strong> <span th:text="${car.year}"></span></p>
+            <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
+            <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
+            <p><strong>Nummerplade:</strong> <span th:text="${car.licensePlate}"></span></p>
+            <p><strong>Tilgængelig:</strong> <span th:text="${car.availableForLoan ? 'Ja' : 'Nej'}"></span></p>
+            <p><strong>Klar til brug:</strong> <span th:text="${car.readyForUse ? 'Ja' : 'Nej'}"></span></p>
+            <p><strong>Kunde:</strong> <span th:text="${car.customerName} ?: 'Ingen'"></span></p>
+            <p><strong>Lejedage tilbage:</strong> <span th:text="${car.remainingRentalDays} ?: 'Ikke tilgængelig'"></span></p>
+
+            <a th:href="@{'/carOverviewEdit/' + ${car.carId}}" class="btn">Rediger bil</a>
+        </div>
+
+        <div th:if="${car == null}">
+            <p>Bil ikke fundet.</p>
+        </div>
+    </main>
+
+    <div class="footer">
+        <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
+    </div>
+</div>
+
+</body>
+</html>
