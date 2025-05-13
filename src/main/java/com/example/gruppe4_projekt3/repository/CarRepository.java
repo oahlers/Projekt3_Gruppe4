@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Repository
-public class CarRepository {
+public class  CarRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

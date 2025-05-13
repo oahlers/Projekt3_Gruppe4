@@ -1,6 +1,6 @@
 package com.example.gruppe4_projekt3.model;
 
-public class DamageReport {
+public class  DamageReport {
     private Car car;
     private double price;
     private Employee employee;

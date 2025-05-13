@@ -1,6 +1,6 @@
 package com.example.gruppe4_projekt3.model;
 
-public class Car {
+public class  Car {
     private Long carId;
     private int carEmission;
     private int year;

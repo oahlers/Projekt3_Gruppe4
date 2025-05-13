@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 // submitDamageReport
 
 @Controller
-public class DamageReportController {
+public class  DamageReportController {
 
     private final CarRepository carRepository;
     private final DamageReportRepository damageReportRepository;

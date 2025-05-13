@@ -30,7 +30,7 @@ import java.util.List;
 // showSearchForm, showStatistics
 
 @Controller
-public class PageController {
+public class  PageController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
