@@ -138,6 +138,53 @@ public class  CarRepository {
         }
     }
 
+    @Scheduled(cron = "0 0 0 * * ?") // Kører hver midnat
+    public void trackAvailability() {
+        List<Car> allCars = findAll();
+
+        for (Car car : allCars) {
+            Long carId = car.getCarId();
+            boolean isAvailable = car.isAvailableForLoan();
+
+            String checkSql = "SELECT COUNT(*) FROM availability_tracking WHERE car_id = ?";
+            int count = jdbcTemplate.queryForObject(checkSql, Integer.class, carId);
+
+            if (isAvailable && count == 0) {
+                String insertSql = "INSERT INTO availability_tracking (car_id, start_date) VALUES (?, ?)";
+                jdbcTemplate.update(insertSql, carId, LocalDate.now());
+
+            } else if (!isAvailable && count > 0) {
+                String selectSql = "SELECT start_date FROM availability_tracking WHERE car_id = ?";
+                LocalDate startDate = jdbcTemplate.queryForObject(selectSql, (rs, rowNum) -> rs.getDate("start_date").toLocalDate(), carId);
+                long duration = ChronoUnit.DAYS.between(startDate, LocalDate.now());
+
+                String insertLogSql = "INSERT INTO availability_log (car_id, start_date, end_date, duration_days) VALUES (?, ?, ?, ?)";
+                jdbcTemplate.update(insertLogSql, carId, startDate, LocalDate.now(), duration);
+
+                String deleteSql = "DELETE FROM availability_tracking WHERE car_id = ?";
+                jdbcTemplate.update(deleteSql, carId);
+            }
+        }
+    }
+
+    public Double getAverageAvailabilityPerCar(Long carId) {
+        String sql = "SELECT AVG(a.duration_days) FROM availability_log a WHERE a.car_id = ?";
+        Double result = jdbcTemplate.queryForObject(sql, new Object[]{carId}, Double.class);
+
+        return (result != null) ? result : 0.0;
+    }
+
+
+    public Double getAverageRentalDurationPerCar(Long carId) {
+        String sql = "SELECT AVG(r.rental_months) FROM rental r WHERE r.car_id = ?";
+        Double result = jdbcTemplate.queryForObject(sql, new Object[]{carId}, Double.class);
+
+        return (result != null) ? result : 0.0;
+    }
+
+
+
+
     // Beregner gennemsnitlig betalingstid for alle udlejninger.
     public Double getAveragePaymentTime() {
         String sql = "SELECT AVG(payment_time) FROM rental WHERE payment_time IS NOT NULL";

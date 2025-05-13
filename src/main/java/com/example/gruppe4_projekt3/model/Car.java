@@ -19,6 +19,25 @@ public class  Car {
     private String customerName;
     private Long remainingRentalDays;
 
+    public Double getAverageAvailabilityDays() {
+        return averageAvailabilityDays;
+    }
+
+    public void setAverageAvailabilityDays(Double averageAvailabilityDays) {
+        this.averageAvailabilityDays = averageAvailabilityDays;
+    }
+
+    public Double getAverageRentalDuration() {
+        return averageRentalDuration;
+    }
+
+    public void setAverageRentalDuration(Double averageRentalDuration) {
+        this.averageRentalDuration = averageRentalDuration;
+    }
+
+    private Double averageAvailabilityDays;
+    private Double averageRentalDuration;
+
     public String getLicensePlate() {
         return licensePlate;
     }
