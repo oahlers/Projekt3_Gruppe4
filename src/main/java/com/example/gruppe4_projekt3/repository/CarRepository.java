@@ -47,6 +47,12 @@ public class  CarRepository {
                 car.isAvailableForLoan(), car.isReadyForUse(), car.getImage(), car.getLicensePlate()); // Added car.getLicensePlate()
     }
 
+    public void deleteById(Long carId) {
+        String sql = "DELETE FROM car WHERE car_id = ?";
+        jdbcTemplate.update(sql, carId);
+    }
+
+
     public void update(Car car) {
         String sql = "UPDATE car SET car_emission = ?, year = ?, brand = ?, model = ?, color = ?, " +
                 "equipment_level = ?, vehicle_number = ?, chassis_number = ?, license_plate = ?, " +
@@ -201,5 +207,18 @@ public class  CarRepository {
             return car;
         }
     }
+
+
+
+    public void buyCar(Long carId, String customerName, String customerEmail) {
+        // Først opdateres bilens status til at den er købt
+        String updateCarStatusSql = "UPDATE car SET isAvailableForLoan = 0, isReadyForUse = 0 WHERE car_id = ?";
+        jdbcTemplate.update(updateCarStatusSql, carId);
+
+        // Indsæt information om købet i car_purchase-tabellen
+        String insertPurchaseSql = "INSERT INTO car_purchase (car_id, customer_name, customer_email, purchase_date) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(insertPurchaseSql, carId, customerName, customerEmail, LocalDate.now());
+    }
+
 
 }

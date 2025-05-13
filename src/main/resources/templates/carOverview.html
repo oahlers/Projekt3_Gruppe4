@@ -1,4 +1,4 @@
-<!DOCTYPE  html>
+<!DOCTYPE html>
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -53,8 +53,19 @@
                 <div class="car-actions">
                     <a th:href="@{/cars/details/{id}(id=${car.carId})}" class="button-link">Se detaljer</a>
                     <a th:href="@{/cars/edit/{id}(id=${car.carId})}" class="button-link">Rediger bil</a>
+                    <br><br><br>
+                    <a th:href="@{'/cars/delete/' + ${car.carId}}" class="button-link"
+                       onclick="return confirm('Er du sikker på, at du vil slette denne bil?')">Slet</a>
+
+                    <!-- fix knap -->
+                    <form th:action="@{/cars/buy/{carId}(carId=${car.carId})}" method="post" style="display:inline;">
+                        <button type="submit" class="button-link" onclick="return confirm('Er du sikker på, at du vil købe denne bil?')">
+                            Køb bil
+                        </button>
+                    </form>
 
                 </div>
+
             </div>
         </section>
     </main>

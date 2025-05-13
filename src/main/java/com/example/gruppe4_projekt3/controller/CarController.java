@@ -90,5 +90,29 @@ public class CarController {
         return "redirect:/carOverview";
     }
 
+    @PostMapping("/cars/delete/{id}")
+    public String deleteCar(@PathVariable("id") Long carId) {
+        carRepository.deleteById(carId);
+        return "redirect:/carOverview";
+    }
+
+
+    @PostMapping("/cars/buy/{carId}")
+    public String buyCar(@PathVariable Long carId,
+                         @RequestParam String customerName,
+                         @RequestParam String customerEmail) {
+        // Find bilen i databasen
+        Car car = carRepository.findById(carId);
+
+        // Tjek om bilen findes
+        if (car != null) {
+            // Kald repository-metoden for at gennemføre købet
+            carRepository.buyCar(carId, customerName, customerEmail);
+        }
+
+        return "redirect:/purchaseCar"; // For eksempel til en oversigt over biler
+    }
+
+
 
 }

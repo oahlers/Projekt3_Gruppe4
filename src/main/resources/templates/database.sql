@@ -95,3 +95,13 @@ INSERT INTO damage_report (car_id, price, employee_id, customer_email, report)
 VALUES
     (1, 5000.00, 1, 'john.doe@example.com', 'Ridse på højre dør'),
     (2, 3000.00, 2, 'jane.smith@example.com', 'Skade på forrude');
+
+
+CREATE TABLE car_purchase (
+                              purchase_id INT AUTO_INCREMENT PRIMARY KEY,
+                              car_id INT NOT NULL,
+                              customer_name VARCHAR(100) NOT NULL,
+                              customer_email VARCHAR(100) NOT NULL,
+                              purchase_date DATE NOT NULL,
+                              FOREIGN KEY (car_id) REFERENCES car(car_id)
+);
