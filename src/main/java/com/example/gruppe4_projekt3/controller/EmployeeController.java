@@ -93,16 +93,24 @@ public class EmployeeController {
         return employee != null && "ADMIN".equalsIgnoreCase(employee.getRole());
     }
 
+
+
     @GetMapping("/employee/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        model.addAttribute("employee", employeeRepository.findByEmployeeId(Math.toIntExact(id)));
-        return "employeeEdit";
+    public String showEditForm(@PathVariable int id, Model model) {
+        Employee employee = employeeRepository.findByEmployeeId(id);
+        if (employee != null) {
+            model.addAttribute("employee", employee);
+            return "employeeEdit";
+        }
+        return "redirect:/employee/list";
     }
 
     @PostMapping("/employee/edit/{id}")
-    public String updateEmployee(@ModelAttribute Employee employee) {
-        employeeRepository.save(employee);
-        return "redirect:/dashboard";
+    public String updateEmployee(@PathVariable int id, @ModelAttribute Employee employee) {
+        employee.setEmployeeId(id);
+        employeeRepository.update(employee);
+        return "redirect:/employeeOverviewAdmin";
     }
+
 
 }
