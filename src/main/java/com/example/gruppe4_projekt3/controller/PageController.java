@@ -123,6 +123,22 @@ public class  PageController {
         return "statistics";
     }
 
+    @GetMapping("/statisticsCarList")
+    public String getStatisticsCarList(Model model) {
+        List<Car> cars = carRepository.findAll();
+
+        for (Car car : cars) {
+            Double averageAvailabilityDays = carRepository.getAverageAvailabilityPerCar(car.getCarId());
+            car.setAverageAvailabilityDays(averageAvailabilityDays != null ? averageAvailabilityDays : 0.0);
+
+            Double averageRentalDuration = carRepository.getAverageRentalDurationPerCar(car.getCarId());
+            car.setAverageRentalDuration(averageRentalDuration != null ? averageRentalDuration : 0.0);
+        }
+
+        model.addAttribute("cars", cars);
+        return "statisticsCarList";
+    }
+
     @GetMapping("/damageReport")
     public String showDamageReportList(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");

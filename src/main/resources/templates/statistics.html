@@ -1,4 +1,4 @@
-<!DOCTYPE  html>
+<!DOCTYPE html>
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
@@ -48,6 +48,14 @@
         <canvas id="rentalChart" height="100"></canvas>
       </div>
     </section>
+
+    <!-- Knap til at opdatere statistik -->
+    <div class="update-statistics">
+      <form th:action="@{/statisticsCarList}" method="get">
+        <button type="submit" class="btn-update">Opdater Statistik</button>
+      </form>
+    </div>
+
   </main>
 
   <div class="footer">
