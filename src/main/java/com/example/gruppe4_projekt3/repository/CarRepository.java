@@ -64,7 +64,6 @@ public class  CarRepository {
     // Markerer en bil som udlejet og opretter en ny udlejning.
     public void markAsRented(Long carId, LocalDate startDate, String customerName, String customerEmail,
                              int rentalMonths, int paymentTime, int transportTime, String subscriptionType) {
-
         LocalDate readyForUseDate = startDate.plusMonths(rentalMonths);
 
         String findSubscriptionIdSql = "SELECT id FROM subscription_type WHERE type_name = ?";
@@ -182,9 +181,6 @@ public class  CarRepository {
         return (result != null) ? result : 0.0;
     }
 
-
-
-
     // Beregner gennemsnitlig betalingstid for alle udlejninger.
     public Double getAveragePaymentTime() {
         String sql = "SELECT AVG(payment_time) FROM rental WHERE payment_time IS NOT NULL";
@@ -199,14 +195,19 @@ public class  CarRepository {
         return (result != null) ? result : 0.0;
     }
 
-    // Beregner gennemsnitlig lejeperiode pr. bil.
-    public Double getAverageRentalDurationPerCar() {
-        String sql = "SELECT AVG(r.rental_months) FROM rental r WHERE r.rental_months IS NOT NULL";
-        Double result = jdbcTemplate.queryForObject(sql, Double.class);
-        return (result != null) ? result : 0.0;
+    public List<Car> findRentedCarsWithDetails() {
+        String sql = "SELECT c.*, r.customer_name, r.customer_email, r.start_date, r.transport_time, " +
+                "r.delivery_address, r.ready_for_use_date " +
+                "FROM car c " +
+                "JOIN rental r ON c.car_id = r.car_id " +
+                "WHERE r.end_date IS NULL " +
+                "AND (r.start_date + INTERVAL r.transport_time DAY) >= CURRENT_DATE " +
+                "ORDER BY (r.start_date + INTERVAL r.transport_time DAY) ASC";
+
+        return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-    // Mapper en række fra ResultSet til et Car-objekt der inkluderer kundeinformation og resterende lejedage.
+    // Mapper en række fra ResultSet til et Car-objekt der inkluderer kundeinformation og antal dage til levering.
     private static class CarRowMapper implements RowMapper<Car> {
         @Override
         public Car mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -225,28 +226,52 @@ public class  CarRepository {
             car.setAvailableForLoan(rs.getBoolean("isAvailableForLoan"));
             car.setReadyForUse(rs.getBoolean("isReadyForUse"));
             car.setImage(rs.getString("image"));
-            car.setLicensePlate(rs.getString("license_plate")); // Set the license plate
+            car.setLicensePlate(rs.getString("license_plate"));
 
             try {
-                String customerName = rs.getString("customer_name");
-                car.setCustomerName(customerName);
+                car.setCustomerName(rs.getString("customer_name"));
             } catch (SQLException e) {
                 car.setCustomerName(null);
             }
 
             try {
-                java.sql.Date readyForUseDate = rs.getDate("ready_for_use_date");
-                if (readyForUseDate != null) {
-                    long days = ChronoUnit.DAYS.between(LocalDate.now(), readyForUseDate.toLocalDate());
-                    car.setRemainingRentalDays(days >= 0 ? days : 0);
-                } else {
-                    car.setRemainingRentalDays(null);
+                car.setCustomerEmail(rs.getString("customer_email"));
+            } catch (SQLException e) {
+                car.setCustomerEmail(null);
+            }
+
+            try {
+                java.sql.Date startDate = rs.getDate("start_date");
+                if (startDate != null) {
+                    car.setStartDate(startDate.toLocalDate());
                 }
             } catch (SQLException e) {
+                car.setStartDate(null);
+            }
+
+            try {
+                car.setTransportTime(rs.getInt("transport_time"));
+            } catch (SQLException e) {
+                car.setTransportTime(null);
+            }
+
+            try {
+                car.setDeliveryAddress(rs.getString("delivery_address"));
+            } catch (SQLException e) {
+                car.setDeliveryAddress(null);
+            }
+
+            LocalDate startDate = car.getStartDate();
+            Integer transportTime = car.getTransportTime();
+            if (startDate != null && transportTime != null) {
+                LocalDate deliveryDate = startDate.plusDays(transportTime);
+                long daysUntilDelivery = ChronoUnit.DAYS.between(LocalDate.now(), deliveryDate);
+                car.setRemainingRentalDays(daysUntilDelivery >= 0 ? daysUntilDelivery : null);
+            } else {
                 car.setRemainingRentalDays(null);
             }
+
             return car;
         }
     }
-
 }

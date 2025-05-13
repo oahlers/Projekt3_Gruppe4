@@ -75,13 +75,14 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const cars = document.querySelectorAll('.search-card');
+        const forms = document.querySelectorAll('form[id^="carForm_"]');
 
-        cars.forEach(carElement => {
-            const subscriptionSelect = carElement.querySelector('.subscriptionType');
-            const rentalSelect = carElement.querySelector('select[name="rentalMonths"]');
+        forms.forEach(form => {
+            const carId = form.id.split('_')[1];
+            const subscriptionSelect = document.getElementById(`subscriptionType_${carId}`);
+            const rentalSelect = document.getElementById(`rentalMonths_${carId}`);
 
-            function updateOptions() {
+            function updateRentalOptions() {
                 const type = subscriptionSelect.value;
                 const options = {
                     unlimited: [3, 6, 9, 12, 24, 36],
@@ -93,8 +94,11 @@
                 ).join('');
             }
 
-            subscriptionSelect.addEventListener('change', updateOptions);
-            updateOptions();
+            // Initialiser ved load
+            updateRentalOptions();
+
+            // Tilføj event listener
+            subscriptionSelect.addEventListener('change', updateRentalOptions);
         });
     });
 </script>
