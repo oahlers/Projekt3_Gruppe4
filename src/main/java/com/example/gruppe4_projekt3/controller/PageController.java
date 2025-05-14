@@ -114,9 +114,8 @@ public class  PageController {
 
     @GetMapping("/statistics")
     public String showStatistics(Model model) {
-        // Hvis du har et carId, f.eks. fra en parameter i URL'en, kan du få det sådan:
-        Long carId = 1L; // Eksempelvis, vælg et bil-ID
-        double averageRentalDuration = carRepository.getAverageRentalDurationPerCar(carId); // Send carId til metoden
+        Long carId = 1L;
+        double averageRentalDuration = carRepository.getAverageRentalDurationPerCar(carId);
         model.addAttribute("averagePaymentTime", carRepository.getAveragePaymentTime());
         model.addAttribute("averageTransportTime", carRepository.getAverageTransportTime());
         model.addAttribute("averageRentalDurationPerCar", averageRentalDuration);
