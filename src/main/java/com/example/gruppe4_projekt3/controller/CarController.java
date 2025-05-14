@@ -46,7 +46,7 @@ public class CarController {
         customer.setDeliveryAddress(deliveryAddress);
         customer.setRentalMonths(rentalMonths);
 
-        carRepository.markAsRented(carId, LocalDate.now(), name, email, rentalMonths, paymentTime, transportTime, subscriptionType);
+        carRepository.markAsRented(carId, LocalDate.now(), name, email, rentalMonths, paymentTime, transportTime, subscriptionType, deliveryAddress);
 
         return "dashboard";
     }

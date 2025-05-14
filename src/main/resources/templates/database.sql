@@ -111,11 +111,11 @@ VALUES
 
 INSERT INTO rental (car_id, start_date, customer_name, customer_email, delivery_address, rental_months, ready_for_use_date, payment_time, transport_time, subscription_type_id)
 VALUES
-    (1, '2025-05-01', 'John Doe', 'john.doe@example.com', 'Roskildevej 12, 2000 Frederiksberg', 6, '2025-11-01', 30, 5, 1),
-    (2, '2025-04-15', 'Jane Smith', 'jane.smith@example.com', 'Nørrebrogade 84, 2200 København N', 3, '2025-07-15', 25, 4, 2),
-    (3, '2025-03-01', 'Robert Evans', 'robert.evans@example.com', 'Hovedgaden 45, 4000 Roskilde', 12, '2025-03-01', 35, 7, 1),
-    (4, '2025-04-01', 'Laura Black', 'laura.black@example.com', 'Østerbrogade 100, 2100 København Ø', 24, '2025-04-01', 40, 10, 2),
-    (5, '2025-05-01', 'Sara Green', 'sara.green@example.com', 'Amagerbrogade 200, 2300 København S', 6, '2025-05-01', 20, 6, 1);
+    (1, '2025-06-01', 'John Doe', 'john.doe@example.com', 'Roskildevej 12, 2000 Frederiksberg', 6, '2025-12-01', 30, 5, 1),
+    (2, '2025-06-15', 'Jane Smith', 'jane.smith@example.com', 'Nørrebrogade 84, 2200 København N', 3, '2025-09-15', 25, 4, 2),
+    (3, '2025-07-01', 'Robert Evans', 'robert.evans@example.com', 'Hovedgaden 45, 4000 Roskilde', 12, '2026-07-01', 35, 7, 1),
+    (4, '2025-08-01', 'Laura Black', 'laura.black@example.com', 'Østerbrogade 100, 2100 København Ø', 24, '2027-08-01', 40, 10, 2),
+    (5, '2025-06-01', 'Sara Green', 'sara.green@example.com', 'Amagerbrogade 200, 2300 København S', 6, '2025-12-01', 20, 6, 1);
 
 INSERT INTO damage_report (car_id, price, employee_id, customer_email, report)
 VALUES

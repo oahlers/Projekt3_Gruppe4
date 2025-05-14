@@ -63,7 +63,9 @@ public class  CarRepository {
 
     // Markerer en bil som udlejet og opretter en ny udlejning.
     public void markAsRented(Long carId, LocalDate startDate, String customerName, String customerEmail,
-                             int rentalMonths, int paymentTime, int transportTime, String subscriptionType) {
+                             int rentalMonths, int paymentTime, int transportTime, String subscriptionType,
+                             String deliveryAddress) {
+
         LocalDate readyForUseDate = startDate.plusMonths(rentalMonths);
 
         String findSubscriptionIdSql = "SELECT id FROM subscription_type WHERE type_name = ?";
@@ -73,15 +75,17 @@ public class  CarRepository {
                 Integer.class
         );
 
-        String rentalSql = "INSERT INTO rental (car_id, start_date, customer_name, customer_email, " +
+        String rentalSql = "INSERT INTO rental (car_id, start_date, customer_name, customer_email, delivery_address, " +
                 "rental_months, ready_for_use_date, payment_time, transport_time, subscription_type_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(rentalSql, carId, startDate, customerName, customerEmail,
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        jdbcTemplate.update(rentalSql, carId, startDate, customerName, customerEmail, deliveryAddress,
                 rentalMonths, readyForUseDate, paymentTime, transportTime, subscriptionTypeId);
 
         String carSql = "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?";
         jdbcTemplate.update(carSql, carId);
     }
+
 
 
     // Nulstiller en bils status efter en skadeanmeldelse.
