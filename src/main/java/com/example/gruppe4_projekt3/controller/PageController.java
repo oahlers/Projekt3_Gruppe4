@@ -114,14 +114,15 @@ public class  PageController {
 
     @GetMapping("/statistics")
     public String showStatistics(Model model) {
-        double averagePaymentTime = carRepository.getAveragePaymentTime();
-        double averageTransportTime = carRepository.getAverageTransportTime();
-        double averageRentalDuration = carRepository.getAverageRentalDurationPerCar();
+        // Hvis du har et carId, f.eks. fra en parameter i URL'en, kan du få det sådan:
+        Long carId = 1L; // Eksempelvis, vælg et bil-ID
+        double averageRentalDuration = carRepository.getAverageRentalDurationPerCar(carId); // Send carId til metoden
         model.addAttribute("averagePaymentTime", carRepository.getAveragePaymentTime());
         model.addAttribute("averageTransportTime", carRepository.getAverageTransportTime());
-        model.addAttribute("averageRentalDurationPerCar", carRepository.getAverageRentalDurationPerCar());
+        model.addAttribute("averageRentalDurationPerCar", averageRentalDuration);
         return "statistics";
     }
+
 
     @GetMapping("/statisticsCarList")
     public String getStatisticsCarList(Model model) {
@@ -129,15 +130,16 @@ public class  PageController {
 
         for (Car car : cars) {
             Double averageAvailabilityDays = carRepository.getAverageAvailabilityPerCar(car.getCarId());
-            car.setAverageAvailabilityDays(averageAvailabilityDays != null ? averageAvailabilityDays : 0.0);
+            car.setAverageAvailabilityDays(averageAvailabilityDays != null ? averageAvailabilityDays.intValue() : 0);
 
             Double averageRentalDuration = carRepository.getAverageRentalDurationPerCar(car.getCarId());
-            car.setAverageRentalDuration(averageRentalDuration != null ? averageRentalDuration : 0.0);
+            car.setAverageRentalDuration(averageRentalDuration != null ? averageRentalDuration.intValue() : 0);
         }
 
         model.addAttribute("cars", cars);
         return "statisticsCarList";
     }
+
 
     @GetMapping("/damageReport")
     public String showDamageReportList(HttpSession session, Model model) {
@@ -213,5 +215,13 @@ public class  PageController {
         if ("ADMIN".equals(employee.getRole())) {
         }
         return "addCars";
+    }
+
+    // Denne metode henter de biler der er udlejet og viser deres leveringsdato og tilhørende information
+    @GetMapping("/carDeliveryCalendar")
+    public String showCarDeliveryCalendar(Model model) {
+        List<Car> rentedCars = carRepository.findRentedCarsWithDetails();
+        model.addAttribute("rentedCars", rentedCars);
+        return "carDeliveryCalendar";
     }
 }

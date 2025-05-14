@@ -1,6 +1,8 @@
 package com.example.gruppe4_projekt3.model;
 
-public class  Car {
+import java.time.LocalDate;
+
+public class Car {
     private Long carId;
     private int carEmission;
     private int year;
@@ -10,167 +12,98 @@ public class  Car {
     private String equipmentLevel;
     private String vehicleNumber;
     private String chassisNumber;
-    private String licensePlate;
     private double price;
     private double registrationFee;
+    private boolean isAvailableForLoan;
+    private boolean isReadyForUse;
     private String image;
-    private boolean availableForLoan;
-    private boolean readyForUse;
+    private String licensePlate;
     private String customerName;
+    private String customerEmail;
+    private LocalDate startDate;
+    private Integer transportTime;
+    private String deliveryAddress;
     private Long remainingRentalDays;
+    private Integer averageAvailabilityDays;
+    private Integer averageRentalDuration;
+    private LocalDate readyForUseDate;
 
-    public Double getAverageAvailabilityDays() {
-        return averageAvailabilityDays;
+    public LocalDate getDeliveryDate() {
+        if (startDate != null && transportTime != null) {
+            return startDate.plusDays(transportTime);
+        }
+        return null;
     }
 
-    public void setAverageAvailabilityDays(Double averageAvailabilityDays) {
-        this.averageAvailabilityDays = averageAvailabilityDays;
-    }
+    public Long getCarId() { return carId; }
+    public void setCarId(Long carId) { this.carId = carId; }
 
-    public Double getAverageRentalDuration() {
-        return averageRentalDuration;
-    }
+    public int getCarEmission() { return carEmission; }
+    public void setCarEmission(int carEmission) { this.carEmission = carEmission; }
 
-    public void setAverageRentalDuration(Double averageRentalDuration) {
-        this.averageRentalDuration = averageRentalDuration;
-    }
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
 
-    private Double averageAvailabilityDays;
-    private Double averageRentalDuration;
+    public String getBrand() { return brand; }
+    public void setBrand(String brand) { this.brand = brand; }
 
-    public String getLicensePlate() {
-        return licensePlate;
-    }
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
 
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
+    public String getColor() { return color; }
+    public void setColor(String color) { this.color = color; }
 
-    public String getImage() {
-        return image;
-    }
+    public String getEquipmentLevel() { return equipmentLevel; }
+    public void setEquipmentLevel(String equipmentLevel) { this.equipmentLevel = equipmentLevel; }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
+    public String getVehicleNumber() { return vehicleNumber; }
+    public void setVehicleNumber(String vehicleNumber) { this.vehicleNumber = vehicleNumber; }
 
-    public Long getCarId() {
-        return carId;
-    }
+    public String getChassisNumber() { return chassisNumber; }
+    public void setChassisNumber(String chassisNumber) { this.chassisNumber = chassisNumber; }
 
-    public void setCarId(Long carId) {
-        this.carId = carId;
-    }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 
-    public int getCarEmission() {
-        return carEmission;
-    }
+    public double getRegistrationFee() { return registrationFee; }
+    public void setRegistrationFee(double registrationFee) { this.registrationFee = registrationFee; }
 
-    public void setCarEmission(int carEmission) {
-        this.carEmission = carEmission;
-    }
+    public boolean isAvailableForLoan() { return isAvailableForLoan; }
+    public void setAvailableForLoan(boolean availableForLoan) { isAvailableForLoan = availableForLoan; }
 
-    public int getYear() {
-        return year;
-    }
+    public boolean isReadyForUse() { return isReadyForUse; }
+    public void setReadyForUse(boolean readyForUse) { isReadyForUse = readyForUse; }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
 
-    public String getBrand() {
-        return brand;
-    }
+    public String getLicensePlate() { return licensePlate; }
+    public void setLicensePlate(String licensePlate) { this.licensePlate = licensePlate; }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
 
-    public String getModel() {
-        return model;
-    }
+    public String getCustomerEmail() { return customerEmail; }
+    public void setCustomerEmail(String customerEmail) { this.customerEmail = customerEmail; }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
+    public LocalDate getStartDate() { return startDate; }
+    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
 
-    public String getColor() {
-        return color;
-    }
+    public Integer getTransportTime() { return transportTime; }
+    public void setTransportTime(Integer transportTime) { this.transportTime = transportTime; }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
+    public String getDeliveryAddress() { return deliveryAddress; }
+    public void setDeliveryAddress(String deliveryAddress) { this.deliveryAddress = deliveryAddress; }
 
-    public String getEquipmentLevel() {
-        return equipmentLevel;
-    }
+    public Long getRemainingRentalDays() { return remainingRentalDays; }
+    public void setRemainingRentalDays(Long remainingRentalDays) { this.remainingRentalDays = remainingRentalDays; }
 
-    public void setEquipmentLevel(String equipmentLevel) {
-        this.equipmentLevel = equipmentLevel;
-    }
+    public Integer getAverageAvailabilityDays() { return averageAvailabilityDays; }
+    public void setAverageAvailabilityDays(Integer averageAvailabilityDays) { this.averageAvailabilityDays = averageAvailabilityDays; }
 
-    public String getVehicleNumber() {
-        return vehicleNumber;
-    }
+    public Integer getAverageRentalDuration() { return averageRentalDuration; }
+    public void setAverageRentalDuration(Integer averageRentalDuration) { this.averageRentalDuration = averageRentalDuration; }
 
-    public void setVehicleNumber(String vehicleNumber) {
-        this.vehicleNumber = vehicleNumber;
-    }
-
-    public String getChassisNumber() {
-        return chassisNumber;
-    }
-
-    public void setChassisNumber(String chassisNumber) {
-        this.chassisNumber = chassisNumber;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public double getRegistrationFee() {
-        return registrationFee;
-    }
-
-    public void setRegistrationFee(double registrationFee) {
-        this.registrationFee = registrationFee;
-    }
-
-    public boolean isAvailableForLoan() {
-        return availableForLoan;
-    }
-
-    public void setAvailableForLoan(boolean availableForLoan) {
-        this.availableForLoan = availableForLoan;
-    }
-
-    public boolean isReadyForUse() {
-        return readyForUse;
-    }
-
-    public void setReadyForUse(boolean readyForUse) {
-        this.readyForUse = readyForUse;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public Long getRemainingRentalDays() {
-        return remainingRentalDays;
-    }
-
-    public void setRemainingRentalDays(Long remainingRentalDays) {
-        this.remainingRentalDays = remainingRentalDays;
-    }
+    public LocalDate getReadyForUseDate() { return readyForUseDate; }
+    public void setReadyForUseDate(LocalDate readyForUseDate) { this.readyForUseDate = readyForUseDate; }
 }

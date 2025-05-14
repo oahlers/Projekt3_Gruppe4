@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+        <html lang="da">
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Leveringskalender - Bilabonnement</title>
+    <link rel="icon" href="/img/fav.png" type="image/x-icon">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="layout">
+    <div class="header">
+        <div class="logo">
+            <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
+        </div>
+        <h3>Medarbejderportal</h3>
+        <nav>
+            <a th:href="@{/dashboard}" class="back-btn">Tilbage</a>
+            <a th:href="@{/}" class="back-btn">Log ud</a>
+        </nav>
+    </div>
+
+    <section class="hero">
+        <h1>Leveringskalender</h1>
+    </section>
+
+    <main class="main-content">
+        <div class="search-dashboard">
+            <h2>Kommende Leveringer</h2>
+            <table class="styled-table">
+                <thead>
+                <tr>
+                    <th>Bil ID</th>
+                    <th>Kunde</th>
+                    <th>Startdato</th>
+                    <th>Leveringsdato</th>
+                    <th>Dage til levering</th>
+                    <th>Leveringsadresse</th>
+                    <th>Email</th>
+                    <th>Transporttid (dage)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="car : ${rentedCars}">
+                    <td th:text="${car.carId}"></td>
+                    <td th:text="${car.customerName}"></td>
+                    <td th:text="${#temporals.format(car.startDate, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${#temporals.format(car.startDate.plusDays(car.transportTime), 'dd-MM-yyyy')}"></td>
+                    <td th:text="${car.remainingRentalDays}"></td>
+                    <td th:text="${car.deliveryAddress}"></td>
+                    <td th:text="${car.customerEmail}"></td>
+                    <td th:text="${car.transportTime}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+
+    <div class="footer">
+        <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
+    </div>
+</div>
+
+</body>
+</html></title>
+</head>
+<body>
+
+</body>
+</html>
