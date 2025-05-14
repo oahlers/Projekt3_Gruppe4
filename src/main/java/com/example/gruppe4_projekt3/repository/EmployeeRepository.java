@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class  EmployeeRepository {
+public class EmployeeRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -33,7 +33,6 @@ public class  EmployeeRepository {
                 employee.getRole(),
                 employee.getEmployeeId());
     }
-
 
     // Finder en medarbejder ud fra deres ID.
     public Employee findByEmployeeId(int employeeId) {
@@ -64,6 +63,7 @@ public class  EmployeeRepository {
             return null;
         }
     }
+
     // Viser en liste af samtlige medarbejdere.
     public List<Employee> findAll() {
         String sql = "SELECT * FROM employees";

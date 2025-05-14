@@ -53,6 +53,18 @@
                     <label for="rentalMonths_${car.carId}">Lejeperiode (måneder):</label>
                     <select id="rentalMonths_${car.carId}" name="rentalMonths" required></select>
 
+                    <label for="kilometersPerMonth_${car.carId}">Kilometer pr. måned:</label>
+                    <select id="kilometersPerMonth_${car.carId}" name="kilometersPerMonth" required>
+                        <option value="1500">1.500 km</option>
+                        <option value="1750">1.750 km</option>
+                        <option value="2000">2.000 km</option>
+                        <option value="2500">2.500 km</option>
+                        <option value="3000">3.000 km</option>
+                        <option value="3500">3.500 km</option>
+                        <option value="4000">4.000 km</option>
+                        <option value="4500">4.500 km</option>
+                    </select>
+
                     <label for="paymentTime">Betalingstid (1-30 dage):</label>
                     <input type="number" id="paymentTime" name="paymentTime" min="1" max="30" required>
 

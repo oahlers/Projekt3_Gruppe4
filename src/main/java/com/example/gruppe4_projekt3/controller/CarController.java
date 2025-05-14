@@ -1,7 +1,6 @@
 package com.example.gruppe4_projekt3.controller;
 
 import com.example.gruppe4_projekt3.model.Car;
-import com.example.gruppe4_projekt3.model.Customer;
 import com.example.gruppe4_projekt3.model.Employee;
 import com.example.gruppe4_projekt3.repository.CarRepository;
 import jakarta.servlet.http.HttpSession;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -39,17 +37,16 @@ public class CarController {
             @RequestParam int paymentTime,
             @RequestParam int transportTime,
             @RequestParam String email,
-            @RequestParam String subscriptionType) {
+            @RequestParam String subscriptionType,
+            @RequestParam int kilometersPerMonth) {
 
-        Customer customer = new Customer();
-        customer.setName(name);
-        customer.setDeliveryAddress(deliveryAddress);
-        customer.setRentalMonths(rentalMonths);
-
-        carRepository.markAsRented(carId, LocalDate.now(), name, email, rentalMonths, paymentTime, transportTime, subscriptionType, deliveryAddress);
+        carRepository.markAsRented(
+                carId, LocalDate.now(), name, email, rentalMonths, paymentTime,
+                transportTime, subscriptionType, deliveryAddress, kilometersPerMonth);
 
         return "dashboard";
     }
+
 
     // Denne metode håndterer at vise bilens redigeringsformular
     @GetMapping("/carOverviewEdit/{carId}")

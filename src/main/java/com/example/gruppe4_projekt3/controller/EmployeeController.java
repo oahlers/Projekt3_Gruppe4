@@ -16,7 +16,7 @@ import java.util.List;
 // login, register, findEmployee
 
 @Controller
-public class  EmployeeController {
+public class EmployeeController {
 
     @Autowired
     private EmployeeRepository employeeRepository;

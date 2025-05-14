@@ -1,18 +1,17 @@
-<!DOCTYPE  html>
+<!DOCTYPE html>
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Færdig med Skaderapport</title>
+    <title>Skaderapport Bekræftelse</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
 <div class="layout">
 
     <div class="header">
         <div class="logo">
-            <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
+            <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="Logo"></a>
         </div>
         <h3>Medarbejderportal</h3>
         <nav>
@@ -23,8 +22,35 @@
 
     <main class="main-content">
         <section class="confirmation">
-            <h1>Færdig med Skaderapport</h1>
-            <p>Din skaderapport er blevet gemt korrekt.</p>
+            <h1>Skaderapport</h1>
+
+            <h3>Kundeinformation</h3>
+            <p><strong>Navn:</strong> <span th:text="${rental.customerName}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${rental.customerEmail}"></span></p>
+            <p><strong>Adresse:</strong> <span th:text="${rental.deliveryAddress}"></span></p>
+
+            <h3>Overordnet Beskrivelse</h3>
+            <p th:text="${overallDescription}">Ingen skader</p>
+
+            <h3>Skader</h3>
+            <div th:each="damage, iterStat : ${damageList}">
+                <p><strong>Skade [[${iterStat.index + 1}]]:</strong></p>
+                <p>Beskrivelse: <span th:text="${damage.description}"></span></p>
+                <p>Pris: <span th:text="${#numbers.formatDecimal(damage.price, 1, 'COMMA', 2, 'POINT')}"></span> kr.</p>
+                <hr>
+            </div>
+
+            <h3>Afregning</h3>
+            <p>Overkørte kilometer: <span th:text="${mileage}"></span> km</p>
+            <p>Pris pr. km: 0,75 kr</p>
+            <p><strong>Km-gebyr:</strong>
+                <span th:text="${#numbers.formatDecimal(mileage * 0.75, 1, 'COMMA', 2, 'POINT')}"></span> kr</p>
+
+            <p><strong>Samlet skadebeløb:</strong>
+                <span th:text="${#numbers.formatDecimal(totalDamagePrice, 1, 'COMMA', 2, 'POINT')}"></span> kr</p>
+
+            <p><strong>Samlet beløb:</strong>
+                <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}"></span> kr</p>
 
             <div style="margin-top: 2rem;">
                 <a th:href="@{/damageReport}" class="btn-link">Gå tilbage til skaderapporter</a>
@@ -33,10 +59,8 @@
     </main>
 
     <div class="footer">
-        <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
+        <p>Bilabonnement | Medarbejderportal | support@bilabonnement.dk</p>
     </div>
-
 </div>
-
 </body>
 </html>

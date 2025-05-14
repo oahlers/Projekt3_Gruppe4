@@ -13,46 +13,44 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Repository
-public class  CarRepository {
-
+public class CarRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public CarRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Henter alle biler med evt. tilknyttet udlejningsinformation.
     public List<Car> findAll() {
-        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date, c.license_plate " + // Added license_plate
+        String sql = "SELECT c.*, r.customer_name, r.start_date, r.transport_time, " +
+                "r.ready_for_use_date, r.customer_email, r.delivery_address " +
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     public Car findById(Long id) {
-        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date, c.license_plate " + // Added license_plate
+        String sql = "SELECT c.*, r.customer_name, r.start_date, r.transport_time, " +
+                "r.ready_for_use_date, r.customer_email, r.delivery_address " +
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
                 "WHERE c.car_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new CarRowMapper());
     }
 
-    // Gemmer en ny bil i databasen.
     public void save(Car car) {
         String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, " +
-                "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, isReadyForUse, image, license_plate) " + // Added license_plate
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // Added license_plate
+                "vehicle_number, chassis_number, price, registration_fee, isAvailableForLoan, " +
+                "isReadyForUse, image, license_plate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
                 car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(), car.getChassisNumber(),
                 car.getPrice(), car.getRegistrationFee(),
-                car.isAvailableForLoan(), car.isReadyForUse(), car.getImage(), car.getLicensePlate()); // Added car.getLicensePlate()
+                car.isAvailableForLoan(), car.isReadyForUse(), car.getImage(), car.getLicensePlate());
     }
 
     public void update(Car car) {
         String sql = "UPDATE car SET car_emission = ?, year = ?, brand = ?, model = ?, color = ?, " +
                 "equipment_level = ?, vehicle_number = ?, chassis_number = ?, license_plate = ?, " +
                 "price = ?, registration_fee = ?, image = ?, isAvailableForLoan = ?, isReadyForUse = ? " +
-                "WHERE car_id = ?";  // Vi bruger car_id til at identificere den bil, der skal opdateres
-
+                "WHERE car_id = ?";
         jdbcTemplate.update(sql,
                 car.getCarEmission(), car.getYear(), car.getBrand(), car.getModel(),
                 car.getColor(), car.getEquipmentLevel(), car.getVehicleNumber(), car.getChassisNumber(),
@@ -60,158 +58,153 @@ public class  CarRepository {
                 car.getImage(), car.isAvailableForLoan(), car.isReadyForUse(), car.getCarId());
     }
 
-
-    // Markerer en bil som udlejet og opretter en ny udlejning.
     public void markAsRented(Long carId, LocalDate startDate, String customerName, String customerEmail,
                              int rentalMonths, int paymentTime, int transportTime, String subscriptionType,
-                             String deliveryAddress) {
-
+                             String deliveryAddress, int kilometersPerMonth) {
         LocalDate readyForUseDate = startDate.plusMonths(rentalMonths);
 
-        String findSubscriptionIdSql = "SELECT id FROM subscription_type WHERE type_name = ?";
         Integer subscriptionTypeId = jdbcTemplate.queryForObject(
-                findSubscriptionIdSql,
+                "SELECT id FROM subscription_type WHERE type_name = ?",
                 new Object[]{subscriptionType},
                 Integer.class
         );
 
-        String rentalSql = "INSERT INTO rental (car_id, start_date, customer_name, customer_email, delivery_address, " +
-                "rental_months, ready_for_use_date, payment_time, transport_time, subscription_type_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(
+                "INSERT INTO rental (car_id, start_date, customer_name, customer_email, delivery_address, " +
+                        "rental_months, ready_for_use_date, payment_time, transport_time, subscription_type_id, " +
+                        "kilometers_per_month) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                carId, startDate, customerName, customerEmail, deliveryAddress,
+                rentalMonths, readyForUseDate, paymentTime, transportTime, subscriptionTypeId, kilometersPerMonth);
 
-        jdbcTemplate.update(rentalSql, carId, startDate, customerName, customerEmail, deliveryAddress,
-                rentalMonths, readyForUseDate, paymentTime, transportTime, subscriptionTypeId);
-
-        String carSql = "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?";
-        jdbcTemplate.update(carSql, carId);
+        jdbcTemplate.update(
+                "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?",
+                carId);
     }
 
-
-
-    // Nulstiller en bils status efter en skadeanmeldelse.
     public void resetAfterDamageReport(Long carId) {
-        String sql = "UPDATE car SET isAvailableForLoan = 0, isReadyForUse = 0 WHERE car_id = ?";
-        jdbcTemplate.update(sql, carId);
+        jdbcTemplate.update(
+                "UPDATE car SET isAvailableForLoan = 0, isReadyForUse = 0 WHERE car_id = ?",
+                carId);
     }
 
-    // Henter alle biler der er udlejede.
     public List<Car> findRentedCars() {
-        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
+        String sql = "SELECT c.*, r.customer_name, r.start_date, r.transport_time, " +
+                "r.ready_for_use_date, r.customer_email, r.delivery_address " +
                 "FROM car c JOIN rental r ON c.car_id = r.car_id WHERE r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-    // Henter alle biler der ikke er tilgængelige og ikke er klar til brug.
     public List<Car> findAvailableForLoan() {
-        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0";
-        return jdbcTemplate.query(sql, new CarRowMapper());
+        return jdbcTemplate.query(
+                "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0",
+                new CarRowMapper());
     }
 
-    // Henter alle biler mangler skaderapport men stadig er udlejede.
     public List<Car> findCarsNeedingDamageReport() {
-        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
+        String sql = "SELECT c.*, r.customer_name, r.start_date, r.transport_time, " +
+                "r.ready_for_use_date, r.customer_email, r.delivery_address " +
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
                 "WHERE c.isReadyForUse = 1";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-    // Henter alle biler der hverken er tilgængelige for lån eller mangler skaderapport.
     public List<Car> findNotRentedAndNotReadyCars() {
-        String sql = "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0";
-        return jdbcTemplate.query(sql, new CarRowMapper());
+        return jdbcTemplate.query(
+                "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0",
+                new CarRowMapper());
     }
 
-    // Henter alle biler som er udlejede og mangler skaderapport.
     public List<Car> findRentedAndReadyCars() {
-        String sql = "SELECT c.*, r.customer_name, r.ready_for_use_date " +
+        String sql = "SELECT c.*, r.customer_name, r.start_date, r.transport_time, " +
+                "r.ready_for_use_date, r.customer_email, r.delivery_address " +
                 "FROM car c JOIN rental r ON c.car_id = r.car_id " +
                 "WHERE c.isAvailableForLoan = 1 AND c.isReadyForUse = 1 AND r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-    // Cronjob der opdaterer hver dag ved midnat for at holde styr på udlejningsperioden.
     @Scheduled(cron = "0 0 0 * * ?")
     public void updateReadyForUseStatus() {
-        String sql = "SELECT car_id FROM rental WHERE ready_for_use_date <= ? AND end_date IS NULL";
-        List<Long> carIds = jdbcTemplate.queryForList(sql, new Object[]{LocalDate.now()}, Long.class);
+        List<Long> carIds = jdbcTemplate.queryForList(
+                "SELECT car_id FROM rental WHERE ready_for_use_date <= ? AND end_date IS NULL",
+                new Object[]{LocalDate.now()},
+                Long.class);
 
-        for (Long carId : carIds) {
-            String updateSql = "UPDATE car SET isReadyForUse = 1 WHERE car_id = ?";
-            jdbcTemplate.update(updateSql, carId);
-        }
+        carIds.forEach(carId -> jdbcTemplate.update(
+                "UPDATE car SET isReadyForUse = 1 WHERE car_id = ?",
+                carId));
     }
 
-    @Scheduled(cron = "0 0 0 * * ?") // Kører hver midnat
+    @Scheduled(cron = "0 0 0 * * ?")
     public void trackAvailability() {
-        List<Car> allCars = findAll();
-
-        for (Car car : allCars) {
+        findAll().forEach(car -> {
             Long carId = car.getCarId();
             boolean isAvailable = car.isAvailableForLoan();
-
-            String checkSql = "SELECT COUNT(*) FROM availability_tracking WHERE car_id = ?";
-            int count = jdbcTemplate.queryForObject(checkSql, Integer.class, carId);
+            int count = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM availability_tracking WHERE car_id = ?",
+                    Integer.class,
+                    carId);
 
             if (isAvailable && count == 0) {
-                String insertSql = "INSERT INTO availability_tracking (car_id, start_date) VALUES (?, ?)";
-                jdbcTemplate.update(insertSql, carId, LocalDate.now());
-
+                jdbcTemplate.update(
+                        "INSERT INTO availability_tracking (car_id, start_date) VALUES (?, ?)",
+                        carId, LocalDate.now());
             } else if (!isAvailable && count > 0) {
-                String selectSql = "SELECT start_date FROM availability_tracking WHERE car_id = ?";
-                LocalDate startDate = jdbcTemplate.queryForObject(selectSql, (rs, rowNum) -> rs.getDate("start_date").toLocalDate(), carId);
+                LocalDate startDate = jdbcTemplate.queryForObject(
+                        "SELECT start_date FROM availability_tracking WHERE car_id = ?",
+                        (rs, rowNum) -> rs.getDate("start_date").toLocalDate(),
+                        carId);
                 long duration = ChronoUnit.DAYS.between(startDate, LocalDate.now());
 
-                String insertLogSql = "INSERT INTO availability_log (car_id, start_date, end_date, duration_days) VALUES (?, ?, ?, ?)";
-                jdbcTemplate.update(insertLogSql, carId, startDate, LocalDate.now(), duration);
+                jdbcTemplate.update(
+                        "INSERT INTO availability_log (car_id, start_date, end_date, duration_days) VALUES (?, ?, ?, ?)",
+                        carId, startDate, LocalDate.now(), duration);
 
-                String deleteSql = "DELETE FROM availability_tracking WHERE car_id = ?";
-                jdbcTemplate.update(deleteSql, carId);
+                jdbcTemplate.update(
+                        "DELETE FROM availability_tracking WHERE car_id = ?",
+                        carId);
             }
-        }
+        });
     }
 
     public Double getAverageAvailabilityPerCar(Long carId) {
-        String sql = "SELECT AVG(a.duration_days) FROM availability_log a WHERE a.car_id = ?";
-        Double result = jdbcTemplate.queryForObject(sql, new Object[]{carId}, Double.class);
-
-        return (result != null) ? result : 0.0;
+        Double result = jdbcTemplate.queryForObject(
+                "SELECT AVG(a.duration_days) FROM availability_log a WHERE a.car_id = ?",
+                new Object[]{carId},
+                Double.class);
+        return result != null ? result : 0.0;
     }
-
 
     public Double getAverageRentalDurationPerCar(Long carId) {
-        String sql = "SELECT AVG(r.rental_months) FROM rental r WHERE r.car_id = ?";
-        Double result = jdbcTemplate.queryForObject(sql, new Object[]{carId}, Double.class);
-
-        return (result != null) ? result : 0.0;
+        Double result = jdbcTemplate.queryForObject(
+                "SELECT AVG(r.rental_months) FROM rental r WHERE r.car_id = ?",
+                new Object[]{carId},
+                Double.class);
+        return result != null ? result : 0.0;
     }
 
-    // Beregner gennemsnitlig betalingstid for alle udlejninger.
     public Double getAveragePaymentTime() {
-        String sql = "SELECT AVG(payment_time) FROM rental WHERE payment_time IS NOT NULL";
-        Double result = jdbcTemplate.queryForObject(sql, Double.class);
-        return (result != null) ? result : 0.0;
+        Double result = jdbcTemplate.queryForObject(
+                "SELECT AVG(payment_time) FROM rental WHERE payment_time IS NOT NULL",
+                Double.class);
+        return result != null ? result : 0.0;
     }
 
-    // Beregner gennemsnitlig transporttid for alle biler.
     public Double getAverageTransportTime() {
-        String sql = "SELECT AVG(r.transport_time) FROM rental r JOIN car c ON r.car_id = c.car_id WHERE r.transport_time IS NOT NULL";
-        Double result = jdbcTemplate.queryForObject(sql, Double.class);
-        return (result != null) ? result : 0.0;
+        Double result = jdbcTemplate.queryForObject(
+                "SELECT AVG(r.transport_time) FROM rental r JOIN car c ON r.car_id = c.car_id WHERE r.transport_time IS NOT NULL",
+                Double.class);
+        return result != null ? result : 0.0;
     }
 
     public List<Car> findRentedCarsWithDetails() {
         String sql = "SELECT c.*, r.customer_name, r.customer_email, r.start_date, r.transport_time, " +
                 "r.delivery_address, r.ready_for_use_date " +
-                "FROM car c " +
-                "JOIN rental r ON c.car_id = r.car_id " +
-                "WHERE r.end_date IS NULL " +
-                "AND (r.start_date + INTERVAL r.transport_time DAY) >= CURRENT_DATE " +
+                "FROM car c JOIN rental r ON c.car_id = r.car_id " +
+                "WHERE r.end_date IS NULL AND (r.start_date + INTERVAL r.transport_time DAY) >= CURRENT_DATE " +
                 "ORDER BY (r.start_date + INTERVAL r.transport_time DAY) ASC";
-
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
-    // Mapper en række fra ResultSet til et Car-objekt der inkluderer kundeinformation og antal dage til levering.
     private static class CarRowMapper implements RowMapper<Car> {
         @Override
         public Car mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -231,42 +224,16 @@ public class  CarRepository {
             car.setReadyForUse(rs.getBoolean("isReadyForUse"));
             car.setImage(rs.getString("image"));
             car.setLicensePlate(rs.getString("license_plate"));
+            car.setCustomerName(rs.getString("customer_name"));
+            car.setCustomerEmail(rs.getString("customer_email"));
+            car.setDeliveryAddress(rs.getString("delivery_address"));
 
-            try {
-                car.setCustomerName(rs.getString("customer_name"));
-            } catch (SQLException e) {
-                car.setCustomerName(null);
-            }
+            LocalDate startDate = rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null;
+            Integer transportTime = rs.getObject("transport_time") != null ? rs.getInt("transport_time") : null;
 
-            try {
-                car.setCustomerEmail(rs.getString("customer_email"));
-            } catch (SQLException e) {
-                car.setCustomerEmail(null);
-            }
+            car.setStartDate(startDate);
+            car.setTransportTime(transportTime);
 
-            try {
-                java.sql.Date startDate = rs.getDate("start_date");
-                if (startDate != null) {
-                    car.setStartDate(startDate.toLocalDate());
-                }
-            } catch (SQLException e) {
-                car.setStartDate(null);
-            }
-
-            try {
-                car.setTransportTime(rs.getInt("transport_time"));
-            } catch (SQLException e) {
-                car.setTransportTime(null);
-            }
-
-            try {
-                car.setDeliveryAddress(rs.getString("delivery_address"));
-            } catch (SQLException e) {
-                car.setDeliveryAddress(null);
-            }
-
-            LocalDate startDate = car.getStartDate();
-            Integer transportTime = car.getTransportTime();
             if (startDate != null && transportTime != null) {
                 LocalDate deliveryDate = startDate.plusDays(transportTime);
                 long daysUntilDelivery = ChronoUnit.DAYS.between(LocalDate.now(), deliveryDate);

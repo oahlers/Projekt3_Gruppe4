@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 // Pagecontroller, står for håndtering af alle sidevisninger (GET-Anmodninger til visning af en side)
@@ -69,6 +71,17 @@ public class  PageController {
         }
 
         List<Car> allCars = carRepository.findAll();
+
+        for (Car car : allCars) {
+            if (car.getStartDate() != null && car.getTransportTime() != null) {
+                LocalDate endDate = car.getStartDate().plusDays(car.getTransportTime());
+
+                long remainingDays = ChronoUnit.DAYS.between(LocalDate.now(), endDate);
+
+                car.setRemainingRentalDays(remainingDays > 0 ? remainingDays : null);
+            }
+        }
+
         model.addAttribute("allCars", allCars);
         model.addAttribute("employee", loggedInEmployee);
 
@@ -152,19 +165,11 @@ public class  PageController {
         return "damageReport";
     }
 
-    @GetMapping("/damageReportConfirmation/{id}")
-    public String showFillReportPage(@PathVariable Long id, Model model) {
-        Car car = carRepository.findById(id);
-        if (car == null || !car.isReadyForUse()) {
-            return "error";
-        }
+    @GetMapping("/damageReportFill/{id}")
+    public String showDamageReportForm(@PathVariable("id") Long carId, Model model) {
+        Car car = carRepository.findById(carId);
         model.addAttribute("car", car);
         return "damageReportConfirmation";
-    }
-
-    @GetMapping("/damageReportDone")
-    public String showDamageReportDone() {
-        return "damageReportDone";
     }
 
     @GetMapping("/damageReportHistory")

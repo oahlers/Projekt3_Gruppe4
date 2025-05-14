@@ -1,4 +1,4 @@
-<!DOCTYPE  html>
+<!DOCTYPE html>
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
@@ -21,23 +21,78 @@
 
   <main class="main-content">
     <section class="damageReportForm">
-    <h2 th:text="'Laver skaderapport på bil ID: ' + ${car.carId} + ', Mærke: ' + ${car.brand} + ', Model: ' + ${car.model}">Bil-info</h2>
+      <h2 th:text="'Laver skaderapport på bil ID: ' + ${car.carId} + ', Mærke: ' + ${car.brand} + ', Model: ' + ${car.model}">Bil-info</h2>
 
-    <form th:action="@{/damageReportFill/{id}(id=${car.carId})}" method="POST">
-      <label for="report">Skaderapport:</label>
-      <textarea name="report" id="report" required></textarea>
+      <form th:action="@{/damageReportFill/{id}(id=${car.carId})}" method="POST" id="damageForm">
+        <h3>Kundeinformation</h3>
+        <p><strong>Navn:</strong> <span th:text="${car.customerName} ?: 'Ikke tilgængelig'"></span></p>
+        <p><strong>Email:</strong> <span th:text="${car.customerEmail} ?: 'Ikke tilgængelig'"></span></p>
+        <p><strong>Adresse:</strong> <span th:text="${car.deliveryAddress} ?: 'Ikke tilgængelig'"></span></p>
 
-      <label for="price">Pris:</label>
-      <input type="number" name="price" id="price" required>
+        <h3>Overordnet Beskrivelse</h3>
+        <textarea name="overallDescription" id="overallDescription" required placeholder="Fx 'Ingen skader' eller 'Mindre ridser på kofanger'"></textarea>
 
-      <label for="customerEmail">Kundens E-mail:</label>
-      <input type="email" name="customerEmail" id="customerEmail" required>
+        <h3>Skader</h3>
+        <div id="damageContainer"></div>
 
-      <button type="submit">Indsend Rapport</button>
-    </form>
+        <button type="button" onclick="addDamage()">Tilføj skade</button>
+        <br><br>
+
+        <label for="mileage">Overkørte Kilometer:</label>
+        <input type="number" name="mileage" id="mileage" required>
+
+        <button type="submit">Indsend Rapport</button>
+      </form>
+
+      <script>
+        let damageCount = 0;
+
+        function addDamage() {
+          function addDamage() {
+            damageCount++;
+            const container = document.getElementById('damageContainer');
+
+            const div = document.createElement('div');
+            div.className = 'damage-entry';
+            div.innerHTML = `
+    <h4>Skade ${damageCount}</h4>
+    <label>Beskrivelse:</label>
+    <textarea name="report[]" placeholder="Beskriv skaden..."></textarea>
+
+    <label>Pris:</label>
+    <input type="number" name="price[]" placeholder="Pris i DKK">
+
+    <button type="button" onclick="removeDamage(this)">Fjern skade</button>
+    <hr>
+  `;
+            container.appendChild(div);
+          }
+          damageCount++;
+          const container = document.getElementById('damageContainer');
+
+          const div = document.createElement('div');
+          div.className = 'damage-entry';
+          div.innerHTML = `
+      <h4>Skade ${damageCount}</h4>
+      <label>Beskrivelse:</label>
+      <textarea name="report${damageCount}" placeholder="Beskriv skaden..."></textarea>
+
+      <label>Pris:</label>
+      <input type="number" name="price${damageCount}" placeholder="Pris i DKK">
+
+      <button type="button" onclick="removeDamage(this)">Fjern skade</button>
+      <hr>
+    `;
+          container.appendChild(div);
+        }
+
+        function removeDamage(button) {
+          button.parentElement.remove();
+        }
+      </script>
+
     </section>
   </main>
-
 
   <div class="footer">
     <p>Bilabonnement | Medarbejderportal</p>
