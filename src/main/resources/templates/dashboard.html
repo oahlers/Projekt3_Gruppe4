@@ -63,9 +63,9 @@
             <div class="card">
                 <h3>Se Medarbejderliste</h3>
                 <a th:if="${session.loggedInEmployee != null and session.loggedInEmployee.role == 'ADMIN'}"
-                   th:href="@{/employeeOverviewAdmin}" class="btn-link">Se medarbejdere & Registrer Ny Bruger</a>
+                   th:href="@{/employeeOverviewAdmin}" class="btn-link">Se Medarbejdere & Registrer Ny Bruger</a>
                 <a th:unless="${session.loggedInEmployee != null and session.loggedInEmployee.role == 'ADMIN'}"
-                   th:href="@{/employeeOverview}" class="btn-link">Se medarbejdere</a>
+                   th:href="@{/employeeOverview}" class="btn-link">Se Medarbejdere</a>
             </div>
 
             <div class="card">
