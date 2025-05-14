@@ -61,11 +61,11 @@
 
             <!-- Søg Medarbejder - Betinget link afhængigt af rolle -->
             <div class="card">
-                <h3>Søg Medarbejder</h3>
+                <h3>Se Medarbejderliste</h3>
                 <a th:if="${session.loggedInEmployee != null and session.loggedInEmployee.role == 'ADMIN'}"
-                   th:href="@{/employeeOverviewAdmin}" class="btn-link">Søg medarbejder & Registrer Ny Bruger</a>
+                   th:href="@{/employeeOverviewAdmin}" class="btn-link">Se medarbejdere & Registrer Ny Brugere</a>
                 <a th:unless="${session.loggedInEmployee != null and session.loggedInEmployee.role == 'ADMIN'}"
-                   th:href="@{/employeeOverview}" class="btn-link">Søg medarbejder</a>
+                   th:href="@{/employeeOverview}" class="btn-link">Se medarbejdere</a>
             </div>
 
             <div class="card">
