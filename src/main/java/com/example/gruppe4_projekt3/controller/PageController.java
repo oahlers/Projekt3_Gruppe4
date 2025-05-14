@@ -153,7 +153,7 @@ public class  PageController {
         return "damageReport";
     }
 
-    @GetMapping("/damageReportFill/{id}")
+    @GetMapping("/damageReportConfirmation/{id}")
     public String showFillReportPage(@PathVariable Long id, Model model) {
         Car car = carRepository.findById(id);
         if (car == null || !car.isReadyForUse()) {
