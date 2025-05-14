@@ -67,6 +67,11 @@
                 <a th:unless="${session.loggedInEmployee != null and session.loggedInEmployee.role == 'ADMIN'}"
                    th:href="@{/employeeOverview}" class="btn-link">Søg medarbejder</a>
             </div>
+
+            <div class="card">
+                <h3>Besøg Bilabonnement.dk</h3>
+                <a href="https://bilabonnement.dk" class="btn-link" target="_blank" rel="noopener noreferrer">Gå til Hjemmeside</a>
+            </div>
         </section>
     </main>
 
