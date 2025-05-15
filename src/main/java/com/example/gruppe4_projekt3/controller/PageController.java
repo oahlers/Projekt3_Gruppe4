@@ -3,6 +3,7 @@ package com.example.gruppe4_projekt3.controller;
 import com.example.gruppe4_projekt3.model.Car;
 import com.example.gruppe4_projekt3.model.Employee;
 import com.example.gruppe4_projekt3.model.DamageReport;
+import com.example.gruppe4_projekt3.model.Rental;
 import com.example.gruppe4_projekt3.repository.CarRepository;
 import com.example.gruppe4_projekt3.repository.DamageReportRepository;
 import com.example.gruppe4_projekt3.repository.EmployeeRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 
 // Pagecontroller, står for håndtering af alle sidevisninger (GET-Anmodninger til visning af en side)
 
@@ -239,5 +241,11 @@ public class  PageController {
         model.addAttribute("car", car);
         return "damageReportConfirmation"; // fx en .html-side der viser formularen
     }
+
+
+
+
+
+
 
 }
