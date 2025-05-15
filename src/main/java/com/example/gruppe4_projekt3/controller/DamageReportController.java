@@ -25,11 +25,14 @@ public class  DamageReportController {
     private final DamageReportRepository damageReportRepository;
     private final EmployeeRepository employeeRepository;
 
-    public DamageReportController(CarRepository carRepository, DamageReportRepository damageReportRepository) {
+    public DamageReportController(CarRepository carRepository,
+                                  DamageReportRepository damageReportRepository,
+                                  EmployeeRepository employeeRepository) {
         this.carRepository = carRepository;
         this.damageReportRepository = damageReportRepository;
-        this.employeeRepository = new EmployeeRepository();
+        this.employeeRepository = employeeRepository;
     }
+
 
     @PostMapping("/damageReportFill/{id}")
     public String submitDamageReport(@PathVariable("id") Long carId,
