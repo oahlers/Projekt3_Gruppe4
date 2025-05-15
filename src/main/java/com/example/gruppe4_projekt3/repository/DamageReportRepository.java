@@ -44,21 +44,34 @@ public class DamageReportRepository {
                         price);
             }
         }
-
-        // Reset car status after damage reports inserted
         carRepository.resetAfterDamageReport(damageReport.getCar().getCarId());
     }
 
-
     public List<DamageReport> findAll() {
-        String sql = "SELECT dr.*, c.brand, c.model, e.fullname AS employee_fullname " +
+        String sql = "SELECT " +
+                "dr.*, " +
+                "c.car_id AS car_car_id, " +
+                "c.brand AS car_brand, " +
+                "c.model AS car_model, " +
+                "c.chassis_number AS car_chassis_number, " +
+                "c.license_plate AS car_license_plate, " +
+                "e.fullname AS employee_fullname " +
                 "FROM damage_report dr " +
                 "JOIN car c ON dr.car_id = c.car_id " +
                 "JOIN employees e ON dr.employee_id = e.employee_id";
-        return jdbcTemplate.query(sql, new DamageReportRowMapper());
+
+        return jdbcTemplate.query(sql, new DamageReportRowMapper(true));
     }
+
     public DamageReport findLatestByCarId(Long carId) {
-        String sql = "SELECT dr.*, c.brand, c.model, c.chassis_number, c.license_plate, e.fullname AS employee_fullname " +
+        String sql = "SELECT " +
+                "dr.*, " +
+                "c.car_id AS car_car_id, " +
+                "c.brand AS car_brand, " +
+                "c.model AS car_model, " +
+                "c.chassis_number AS car_chassis_number, " +
+                "c.license_plate AS car_license_plate, " +
+                "e.fullname AS employee_fullname " +
                 "FROM damage_report dr " +
                 "JOIN car c ON dr.car_id = c.car_id " +
                 "JOIN employees e ON dr.employee_id = e.employee_id " +
@@ -66,9 +79,8 @@ public class DamageReportRepository {
                 "ORDER BY dr.report_id DESC " +
                 "LIMIT 1";
 
-
         try {
-            return jdbcTemplate.queryForObject(sql, new DamageReportRowMapper(), carId);
+            return jdbcTemplate.queryForObject(sql, new DamageReportRowMapper(true), carId);
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
             return null;
         }
@@ -84,6 +96,13 @@ public class DamageReportRepository {
     }
 
     private static class DamageReportRowMapper implements RowMapper<DamageReport> {
+
+        private final boolean includeCarDetails;
+
+        public DamageReportRowMapper(boolean includeCarDetails) {
+            this.includeCarDetails = includeCarDetails;
+        }
+
         @Override
         public DamageReport mapRow(ResultSet rs, int rowNum) throws SQLException {
             Long carId = rs.getLong("car_id");
@@ -92,8 +111,13 @@ public class DamageReportRepository {
 
             Car car = new Car();
             car.setCarId(carId);
-            car.setBrand(rs.getString("brand"));
-            car.setModel(rs.getString("model"));
+
+            if (includeCarDetails) {
+                car.setLicensePlate(rs.getString("car_license_plate"));
+                car.setChassisNumber(rs.getString("car_chassis_number"));
+                car.setBrand(rs.getString("car_brand"));
+                car.setModel(rs.getString("car_model"));
+            }
 
             Employee employee = new Employee();
             employee.setEmployeeId(rs.getInt("employee_id"));
