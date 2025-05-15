@@ -36,9 +36,10 @@ body {
     justify-content: space-between;
     align-items: center;
     background-color: #ffffff;
-    padding: 10px 20px; /* Compact padding */
+    padding: 10px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     height: 60px;
+    position: relative;
 }
 
 .logo img {
@@ -61,7 +62,9 @@ body {
 }
 
 .header h3 {
-    align-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     color: #003087;
 }
 
@@ -442,6 +445,7 @@ body {
 .styled-table th, .styled-table td {
     padding: 12px 15px;
     border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
 }
 
 .styled-table tbody tr:hover {
