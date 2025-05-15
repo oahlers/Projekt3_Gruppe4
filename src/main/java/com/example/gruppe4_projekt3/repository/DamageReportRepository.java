@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class DamageReportRepository {
+public class  DamageReportRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final CarRepository carRepository;
