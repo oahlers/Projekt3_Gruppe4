@@ -89,6 +89,43 @@ public class  DamageReportController {
 
         return "damageReportDone";
     }
+    @GetMapping("/damageReportDone/{carId}")
+    public String showDamageReport(@PathVariable Long carId, Model model) {
+        Car car = carRepository.findById(carId);
+        DamageReport report = damageReportRepository.findLatestByCarId(carId);
+        Rental rental = damageReportRepository.findLatestRentalByCarId(carId);
+
+
+        List<Map.Entry<String, Double>> damageList = new ArrayList<>();
+        double totalDamagePrice = 0;
+
+        if (report.getReports() != null && report.getPrices() != null) {
+            for (int i = 0; i < report.getReports().length; i++) {
+                String desc = report.getReports()[i];
+                double price = report.getPrices()[i];
+                if (desc != null && !desc.isBlank()) {
+                    damageList.add(Map.entry(desc, price));
+                    totalDamagePrice += price;
+                }
+            }
+        }
+
+        double mileage = report.getMileage();
+        double kmFee = mileage * 0.75;
+        double totalPrice = totalDamagePrice + kmFee;
+
+        model.addAttribute("car", car);
+        model.addAttribute("rental", rental);
+        model.addAttribute("employee", report.getEmployee());
+        model.addAttribute("mileage", mileage);
+        model.addAttribute("overallDescription", "");
+        model.addAttribute("damageList", damageList);
+        model.addAttribute("kmFee", kmFee);
+        model.addAttribute("totalDamagePrice", totalDamagePrice);
+        model.addAttribute("totalPrice", totalPrice);
+
+        return "damageReportDone";
+    }
 
 
 
