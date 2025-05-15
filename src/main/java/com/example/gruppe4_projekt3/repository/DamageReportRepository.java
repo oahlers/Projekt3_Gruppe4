@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -24,28 +25,30 @@ public class DamageReportRepository {
     }
 
     public void save(DamageReport damageReport) {
-        String sql = "INSERT INTO damage_report (car_id, mileage, employee_id, customer_email) " +
-                "VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                damageReport.getCar().getCarId(),
-                damageReport.getMileage(),
-                damageReport.getEmployee() != null ? damageReport.getEmployee().getEmployeeId() : null,
-                damageReport.getCustomerEmail());
+        String sql = "INSERT INTO damage_report (car_id, mileage, employee_id, customer_email, report, price) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
 
-        Long reportId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
+        Integer employeeId = damageReport.getEmployee() != null ? damageReport.getEmployee().getEmployeeId() : null;
 
         for (int i = 0; i < damageReport.getReports().length; i++) {
-            if (damageReport.getReports()[i] != null && !damageReport.getReports()[i].isEmpty()) {
-                String damageSql = "INSERT INTO damage (damage_report_id, description, price) VALUES (?, ?, ?)";
-                jdbcTemplate.update(damageSql,
-                        reportId,
-                        damageReport.getReports()[i],
-                        damageReport.getPrices()[i]);
+            String reportDesc = damageReport.getReports()[i];
+            BigDecimal price = BigDecimal.valueOf(damageReport.getPrices()[i]);
+
+            if (reportDesc != null && !reportDesc.isEmpty()) {
+                jdbcTemplate.update(sql,
+                        damageReport.getCar().getCarId(),
+                        damageReport.getMileage(),
+                        employeeId,
+                        damageReport.getCustomerEmail(),
+                        reportDesc,
+                        price);
             }
         }
 
+        // Reset car status after damage reports inserted
         carRepository.resetAfterDamageReport(damageReport.getCar().getCarId());
     }
+
 
     public List<DamageReport> findAll() {
         String sql = "SELECT dr.*, c.brand, c.model, e.fullname AS employee_fullname " +

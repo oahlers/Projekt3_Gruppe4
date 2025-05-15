@@ -26,11 +26,14 @@
     <section class="damageReportForm">
       <h2 th:text="'Laver skaderapport på bil ID: ' + ${car.carId} + ', Mærke: ' + ${car.brand} + ', Model: ' + ${car.model}">Bil-info</h2>
 
-      <form th:action="@{/damageReportFill/{id}(id=${car.carId})}" method="POST" id="damageForm">
+      <form th:action="@{/damageReportDone/{id}(id=${car.carId})}" method="POST" id="damageForm">
         <h3>Kundeinformation</h3>
-        <p><strong>Navn:</strong> <span th:text="${car.customerName} ?: 'Ikke tilgængelig'"></span></p>
-        <p><strong>Email:</strong> <span th:text="${car.customerEmail} ?: 'Ikke tilgængelig'"></span></p>
-        <p><strong>Adresse:</strong> <span th:text="${car.deliveryAddress} ?: 'Ikke tilgængelig'"></span></p>
+        <p><strong>Navn:</strong>
+          <span th:text="${#strings.defaultString(car.customerName, 'Ikke tilgængelig')}"></span></p>
+        <p><strong>Email:</strong>
+          <span th:text="${#strings.defaultString(car.customerEmail, 'Ikke tilgængelig')}"></span></p>
+        <p><strong>Adresse:</strong>
+          <span th:text="${#strings.defaultString(car.deliveryAddress, 'Ikke tilgængelig')}"></span></p>
 
         <h3>Overordnet Beskrivelse</h3>
         <textarea name="overallDescription" id="overallDescription" required placeholder="Fx 'Ingen skader' eller 'Mindre ridser på kofanger'"></textarea>
@@ -51,25 +54,6 @@
         let damageCount = 0;
 
         function addDamage() {
-          function addDamage() {
-            damageCount++;
-            const container = document.getElementById('damageContainer');
-
-            const div = document.createElement('div');
-            div.className = 'damage-entry';
-            div.innerHTML = `
-    <h4>Skade ${damageCount}</h4>
-    <label>Beskrivelse:</label>
-    <textarea name="report[]" placeholder="Beskriv skaden..."></textarea>
-
-    <label>Pris:</label>
-    <input type="number" name="price[]" placeholder="Pris i DKK">
-
-    <button type="button" onclick="removeDamage(this)">Fjern skade</button>
-    <hr>
-  `;
-            container.appendChild(div);
-          }
           damageCount++;
           const container = document.getElementById('damageContainer');
 
@@ -78,10 +62,10 @@
           div.innerHTML = `
       <h4>Skade ${damageCount}</h4>
       <label>Beskrivelse:</label>
-      <textarea name="report${damageCount}" placeholder="Beskriv skaden..."></textarea>
+      <textarea name="report" placeholder="Beskriv skaden..." required></textarea>
 
       <label>Pris:</label>
-      <input type="number" name="price${damageCount}" placeholder="Pris i DKK">
+      <input type="number" name="price" step="0.01" placeholder="Pris i DKK" required>
 
       <button type="button" onclick="removeDamage(this)">Fjern skade</button>
       <hr>
@@ -94,6 +78,7 @@
         }
       </script>
 
+
     </section>
   </main>
 
@@ -104,3 +89,4 @@
 </div>
 </body>
 </html>
+
