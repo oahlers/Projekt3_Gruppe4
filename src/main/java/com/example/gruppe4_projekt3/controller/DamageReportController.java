@@ -35,7 +35,7 @@ public class  DamageReportController {
     }
 
 
-    @PostMapping("/damageReportFill/{id}")
+    @PostMapping("/damageReportDone/{id}")
     public String submitDamageReport(@PathVariable("id") Long carId,
                                      @RequestParam(name = "report", required = false) String[] reports,
                                      @RequestParam(name = "price", required = false) double[] prices,

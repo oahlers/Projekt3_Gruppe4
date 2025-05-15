@@ -165,12 +165,6 @@ public class  PageController {
         return "damageReport";
     }
 
-    @GetMapping("/damageReportFill/{id}")
-    public String showDamageReportForm(@PathVariable("id") Long carId, Model model) {
-        Car car = carRepository.findById(carId);
-        model.addAttribute("car", car);
-        return "damageReportConfirmation";
-    }
 
     @GetMapping("/damageReportHistory")
     public String showDamageReportHistory(Model model) {
@@ -228,4 +222,22 @@ public class  PageController {
         model.addAttribute("rentedCars", rentedCars);
         return "carDeliveryCalendar";
     }
+
+
+    @GetMapping("/damageReportFill/{id}")
+    public String showDamageReportForm(@PathVariable Long id, Model model, HttpSession session) {
+        Car car = carRepository.findById(id);
+        if (car == null || !car.isReadyForUse()) {
+            return "error";
+        }
+
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        if (loggedInEmployee == null) {
+            return "redirect:/auth";
+        }
+
+        model.addAttribute("car", car);
+        return "damageReportConfirmation"; // fx en .html-side der viser formularen
+    }
+
 }

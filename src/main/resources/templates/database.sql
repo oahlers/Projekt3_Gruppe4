@@ -78,14 +78,9 @@ CREATE TABLE damage_report (
                                FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
 
-CREATE TABLE car_purchase (
-                              purchase_id INT AUTO_INCREMENT PRIMARY KEY,
-                              car_id INT NOT NULL,
-                              customer_name VARCHAR(100) NOT NULL,
-                              customer_email VARCHAR(100) NOT NULL,
-                              purchase_date DATE NOT NULL,
-                              FOREIGN KEY (car_id) REFERENCES car(car_id)
-);
+ALTER TABLE car
+    ADD COLUMN km_before_delivery DOUBLE,
+    ADD COLUMN km_after_delivery DOUBLE;
 
 INSERT INTO subscription_type (type_name)
 VALUES ('unlimited'), ('limited');
