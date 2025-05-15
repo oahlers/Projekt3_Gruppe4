@@ -49,7 +49,8 @@ public class  DamageReportRepository {
     }
 
     public List<DamageReport> findAll() {
-        String sql = "SELECT dr.*, c.brand, c.model, e.fullname AS employee_fullname " +
+        String sql = "SELECT dr.*, c.brand, c.model, c.chassis_number, c.license_plate, " +
+                "e.fullname AS employee_fullname " +
                 "FROM damage_report dr " +
                 "JOIN car c ON dr.car_id = c.car_id " +
                 "JOIN employees e ON dr.employee_id = e.employee_id";
@@ -98,6 +99,8 @@ public class  DamageReportRepository {
 
             Car car = new Car();
             car.setCarId(carId);
+            car.setChassisNumber(rs.getString("chassis_number"));
+            car.setLicensePlate(rs.getString("license_plate"));
             car.setBrand(rs.getString("brand"));
             car.setModel(rs.getString("model"));
 
