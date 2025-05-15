@@ -22,7 +22,14 @@ CREATE TABLE car (
                      registration_fee DECIMAL(10,2) NOT NULL,
                      image VARCHAR(255),
                      isAvailableForLoan BIT NOT NULL,
-                     isReadyForUse BIT NOT NULL
+                     isReadyForUse BIT NOT NULL,
+                     km_before_delivery DOUBLE,
+                     km_after_delivery DOUBLE,
+                     customer_name VARCHAR(100),
+                     customer_email VARCHAR(100),
+                     delivery_address VARCHAR(255),
+                     start_date DATE,
+                     transport_time INT
 );
 
 CREATE TABLE employees (
@@ -77,10 +84,6 @@ CREATE TABLE damage_report (
                                FOREIGN KEY (car_id) REFERENCES car(car_id),
                                FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
-
-ALTER TABLE car
-    ADD COLUMN km_before_delivery DOUBLE,
-    ADD COLUMN km_after_delivery DOUBLE;
 
 INSERT INTO subscription_type (type_name)
 VALUES ('unlimited'), ('limited');
