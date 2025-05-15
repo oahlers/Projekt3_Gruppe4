@@ -45,10 +45,8 @@ public class DamageReportRepository {
             }
         }
 
-        // Reset car status after damage reports inserted
         carRepository.resetAfterDamageReport(damageReport.getCar().getCarId());
     }
-
 
     public List<DamageReport> findAll() {
         String sql = "SELECT dr.*, c.brand, c.model, e.fullname AS employee_fullname " +
@@ -57,6 +55,7 @@ public class DamageReportRepository {
                 "JOIN employees e ON dr.employee_id = e.employee_id";
         return jdbcTemplate.query(sql, new DamageReportRowMapper());
     }
+
     public DamageReport findLatestByCarId(Long carId) {
         String sql = "SELECT dr.*, c.brand, c.model, c.chassis_number, c.license_plate, e.fullname AS employee_fullname " +
                 "FROM damage_report dr " +
@@ -66,7 +65,6 @@ public class DamageReportRepository {
                 "ORDER BY dr.report_id DESC " +
                 "LIMIT 1";
 
-
         try {
             return jdbcTemplate.queryForObject(sql, new DamageReportRowMapper(), carId);
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
@@ -75,7 +73,15 @@ public class DamageReportRepository {
     }
 
     public Rental findLatestRentalByCarId(Long carId) {
-        String sql = "SELECT * FROM rental WHERE car_id = ? ORDER BY start_date DESC LIMIT 1";
+        String sql = "SELECT r.rental_id, r.car_id, r.customer_name, r.customer_email, r.delivery_address, " +
+                "r.rental_months, r.ready_for_use_date, r.payment_time, r.transport_time, " +
+                "r.subscription_type_id, r.mileage " +
+                "FROM rental r " +
+                "JOIN car c ON r.car_id = c.car_id " +
+                "WHERE r.car_id = ? " +
+                "ORDER BY r.start_date DESC " +
+                "LIMIT 1";
+
         try {
             return jdbcTemplate.queryForObject(sql, new RentalRowMapper(), carId);
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
@@ -112,7 +118,6 @@ public class DamageReportRepository {
             rental.setCustomerName(rs.getString("customer_name"));
             rental.setCustomerEmail(rs.getString("customer_email"));
             rental.setDeliveryAddress(rs.getString("delivery_address"));
-
             rental.setRentalMonths(rs.getInt("rental_months"));
             rental.setMileage(rs.getInt("mileage"));
 
@@ -125,5 +130,4 @@ public class DamageReportRepository {
             return rental;
         }
     }
-
 }

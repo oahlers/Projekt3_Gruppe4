@@ -95,9 +95,11 @@ public class CarRepository {
     }
 
     public List<Car> findAvailableForLoan() {
-        return jdbcTemplate.query(
-                "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0",
-                new CarRowMapper());
+        String sql = "SELECT c.*, r.customer_name, r.customer_email, r.delivery_address, " +
+                "r.start_date, r.transport_time, r.ready_for_use_date " +
+                "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
+                "WHERE c.isAvailableForLoan = 0 AND c.isReadyForUse = 0";
+        return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     public List<Car> findCarsNeedingDamageReport() {
