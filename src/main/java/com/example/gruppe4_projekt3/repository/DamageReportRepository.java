@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class DamageReportRepository {
+public class  DamageReportRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final CarRepository carRepository;
@@ -44,34 +44,20 @@ public class DamageReportRepository {
                         price);
             }
         }
+
         carRepository.resetAfterDamageReport(damageReport.getCar().getCarId());
     }
 
     public List<DamageReport> findAll() {
-        String sql = "SELECT " +
-                "dr.*, " +
-                "c.car_id AS car_car_id, " +
-                "c.brand AS car_brand, " +
-                "c.model AS car_model, " +
-                "c.chassis_number AS car_chassis_number, " +
-                "c.license_plate AS car_license_plate, " +
-                "e.fullname AS employee_fullname " +
+        String sql = "SELECT dr.*, c.brand, c.model, e.fullname AS employee_fullname " +
                 "FROM damage_report dr " +
                 "JOIN car c ON dr.car_id = c.car_id " +
                 "JOIN employees e ON dr.employee_id = e.employee_id";
-
-        return jdbcTemplate.query(sql, new DamageReportRowMapper(true));
+        return jdbcTemplate.query(sql, new DamageReportRowMapper());
     }
 
     public DamageReport findLatestByCarId(Long carId) {
-        String sql = "SELECT " +
-                "dr.*, " +
-                "c.car_id AS car_car_id, " +
-                "c.brand AS car_brand, " +
-                "c.model AS car_model, " +
-                "c.chassis_number AS car_chassis_number, " +
-                "c.license_plate AS car_license_plate, " +
-                "e.fullname AS employee_fullname " +
+        String sql = "SELECT dr.*, c.brand, c.model, c.chassis_number, c.license_plate, e.fullname AS employee_fullname " +
                 "FROM damage_report dr " +
                 "JOIN car c ON dr.car_id = c.car_id " +
                 "JOIN employees e ON dr.employee_id = e.employee_id " +
@@ -80,14 +66,22 @@ public class DamageReportRepository {
                 "LIMIT 1";
 
         try {
-            return jdbcTemplate.queryForObject(sql, new DamageReportRowMapper(true), carId);
+            return jdbcTemplate.queryForObject(sql, new DamageReportRowMapper(), carId);
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
             return null;
         }
     }
 
     public Rental findLatestRentalByCarId(Long carId) {
-        String sql = "SELECT * FROM rental WHERE car_id = ? ORDER BY start_date DESC LIMIT 1";
+        String sql = "SELECT r.rental_id, r.car_id, r.customer_name, r.customer_email, r.delivery_address, " +
+                "r.rental_months, r.ready_for_use_date, r.payment_time, r.transport_time, " +
+                "r.subscription_type_id, r.mileage " +
+                "FROM rental r " +
+                "JOIN car c ON r.car_id = c.car_id " +
+                "WHERE r.car_id = ? " +
+                "ORDER BY r.start_date DESC " +
+                "LIMIT 1";
+
         try {
             return jdbcTemplate.queryForObject(sql, new RentalRowMapper(), carId);
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
@@ -96,13 +90,6 @@ public class DamageReportRepository {
     }
 
     private static class DamageReportRowMapper implements RowMapper<DamageReport> {
-
-        private final boolean includeCarDetails;
-
-        public DamageReportRowMapper(boolean includeCarDetails) {
-            this.includeCarDetails = includeCarDetails;
-        }
-
         @Override
         public DamageReport mapRow(ResultSet rs, int rowNum) throws SQLException {
             Long carId = rs.getLong("car_id");
@@ -111,13 +98,8 @@ public class DamageReportRepository {
 
             Car car = new Car();
             car.setCarId(carId);
-
-            if (includeCarDetails) {
-                car.setLicensePlate(rs.getString("car_license_plate"));
-                car.setChassisNumber(rs.getString("car_chassis_number"));
-                car.setBrand(rs.getString("car_brand"));
-                car.setModel(rs.getString("car_model"));
-            }
+            car.setBrand(rs.getString("brand"));
+            car.setModel(rs.getString("model"));
 
             Employee employee = new Employee();
             employee.setEmployeeId(rs.getInt("employee_id"));
@@ -136,7 +118,6 @@ public class DamageReportRepository {
             rental.setCustomerName(rs.getString("customer_name"));
             rental.setCustomerEmail(rs.getString("customer_email"));
             rental.setDeliveryAddress(rs.getString("delivery_address"));
-
             rental.setRentalMonths(rs.getInt("rental_months"));
             rental.setMileage(rs.getInt("mileage"));
 
@@ -149,5 +130,4 @@ public class DamageReportRepository {
             return rental;
         }
     }
-
 }
