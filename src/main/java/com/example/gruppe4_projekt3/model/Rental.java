@@ -2,6 +2,15 @@ package com.example.gruppe4_projekt3.model;
 
 public class Rental {
     private Long rentalId;
+    private Long carId;
+    private String customerName;
+    private String customerEmail;
+    private String customerPhone;
+    private String deliveryAddress;
+
+    private int rentalMonths;
+    private int mileage;
+    private String subscriptionType;
 
     public Long getRentalId() {
         return rentalId;
@@ -51,11 +60,27 @@ public class Rental {
         this.deliveryAddress = deliveryAddress;
     }
 
-    private Long carId;
-    private String customerName;
-    private String customerEmail;
-    private String customerPhone;
-    private String deliveryAddress;
+    public int getRentalMonths() {
+        return rentalMonths;
+    }
 
+    public void setRentalMonths(int rentalMonths) {
+        this.rentalMonths = rentalMonths;
+    }
 
+    public int getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
+    }
+
+    public String getSubscriptionType() {
+        return subscriptionType;
+    }
+
+    public void setSubscriptionType(String subscriptionType) {
+        this.subscriptionType = subscriptionType;
+    }
 }

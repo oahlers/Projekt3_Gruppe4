@@ -200,8 +200,8 @@ public class CarRepository {
         String sql = "SELECT c.*, r.customer_name, r.customer_email, r.start_date, r.transport_time, " +
                 "r.delivery_address, r.ready_for_use_date " +
                 "FROM car c JOIN rental r ON c.car_id = r.car_id " +
-                "WHERE r.end_date IS NULL AND (r.start_date + make_interval(days => r.transport_time)) >= CURRENT_DATE " +
-                "ORDER BY (r.start_date + make_interval(days => r.transport_time)) ASC";
+                "WHERE r.end_date IS NULL AND DATE_ADD(r.start_date, INTERVAL r.transport_time DAY) >= CURRENT_DATE " +
+                "ORDER BY DATE_ADD(r.start_date, INTERVAL r.transport_time DAY) ASC";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 

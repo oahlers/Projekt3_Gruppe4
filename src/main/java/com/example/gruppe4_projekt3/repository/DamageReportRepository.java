@@ -136,7 +136,18 @@ public class DamageReportRepository {
             rental.setCustomerName(rs.getString("customer_name"));
             rental.setCustomerEmail(rs.getString("customer_email"));
             rental.setDeliveryAddress(rs.getString("delivery_address"));
+
+            rental.setRentalMonths(rs.getInt("rental_months"));
+            rental.setMileage(rs.getInt("mileage"));
+
+            try {
+                rental.setSubscriptionType(rs.getString("subscription_type_id"));
+            } catch (SQLException e) {
+                rental.setSubscriptionType(null);
+            }
+
             return rental;
         }
     }
+
 }

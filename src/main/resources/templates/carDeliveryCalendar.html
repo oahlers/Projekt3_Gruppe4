@@ -27,11 +27,11 @@
 
     <section class="hero">
         <h1>Leveringskalender</h1>
+        <p>Se kommende leveringer af biler</p>
     </section>
 
     <main class="main-content">
         <div class="search-dashboard">
-            <h2>Kommende Leveringer</h2>
             <table class="styled-table">
                 <thead>
                 <tr>
@@ -50,7 +50,7 @@
                     <td th:text="${car.carId}"></td>
                     <td th:text="${car.customerName}"></td>
                     <td th:text="${#temporals.format(car.startDate, 'dd-MM-yyyy')}"></td>
-                    <td th:text="${#temporals.format(car.startDate.plusDays(car.transportTime), 'dd-MM-yyyy')}"></td>
+                    <td th:text="${car.startDate != null and car.transportTime != null} ? ${#temporals.format(car.startDate.plusDays(car.transportTime), 'dd-MM-yyyy')} : 'Ukendt'"></td>
                     <td th:text="${car.remainingRentalDays}"></td>
                     <td th:text="${car.deliveryAddress}"></td>
                     <td th:text="${car.customerEmail}"></td>
