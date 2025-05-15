@@ -26,37 +26,43 @@
   <section class="hero">
     <h1>Statistik</h1>
     <p>Herunder finder du nøgletal for bilabonnementer.</p>
+
   </section>
 
   <main class="main-content">
-    <section class="dashboard">
-      <div class="card">
-        <h3>Gennemsnitlig betalingstid</h3>
-        <p><span id="paymentTime" th:text="${averagePaymentTime}">0</span> dage</p>
-        <canvas id="paymentChart" height="100"></canvas>
+
+    <div class="statistics-dashboard">
+
+      <section class="kpi-dashboard">
+        <div class="card">
+          <h3>Gennemsnitlig betalingstid</h3>
+          <p><span id="paymentTime" th:text="${averagePaymentTime}">0</span> dage</p>
+          <canvas id="paymentChart" height="100"></canvas>
+        </div>
+
+        <div class="card">
+          <h3>Gennemsnitlig transporttid</h3>
+          <p><span id="transportTime" th:text="${averageTransportTime}">0</span> dage</p>
+          <canvas id="transportChart" height="100"></canvas>
+        </div>
+
+        <div class="card">
+          <h3>Gennemsnitlig udlejningsvarighed</h3>
+          <p><span id="rentalDuration" th:text="${averageRentalDurationPerCar}">0</span> måneder</p>
+          <canvas id="rentalChart" height="100"></canvas>
+        </div>
+      </section>
+
+      <div class="update-statistics">
+        <form th:action="@{/statisticsCarList}" method="get">
+          <button type="submit" class="btn-link">Liste over alle bilers udlejningsperiode & tilgænglighedsperiode</button>
+        </form>
       </div>
 
-      <div class="card">
-        <h3>Gennemsnitlig transporttid</h3>
-        <p><span id="transportTime" th:text="${averageTransportTime}">0</span> dage</p>
-        <canvas id="transportChart" height="100"></canvas>
-      </div>
-
-      <div class="card">
-        <h3>Gennemsnitlig udlejningsvarighed</h3>
-        <p><span id="rentalDuration" th:text="${averageRentalDurationPerCar}">0</span> måneder</p>
-        <canvas id="rentalChart" height="100"></canvas>
-      </div>
-    </section>
-
-    <!-- Knap til at opdatere statistik -->
-    <div class="update-statistics">
-      <form th:action="@{/statisticsCarList}" method="get">
-        <button type="submit" class="btn-update">Liste over alle bilers udlejningsperiode & tilgænglighedsperiode</button>
-      </form>
     </div>
 
   </main>
+
 
   <div class="footer">
     <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
