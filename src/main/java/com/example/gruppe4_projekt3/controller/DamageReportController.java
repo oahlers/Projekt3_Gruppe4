@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 // DamageReportController. håndterer POST- og GET anmodninger for skaderapport funktioner
 // submitDamageReport
@@ -63,16 +64,15 @@ public class  DamageReportController {
         damageReportRepository.save(damageReport);
 
         double totalDamagePrice = 0;
-        List<String> validDescriptions = new ArrayList<>();
-        List<Double> validPrices = new ArrayList<>();
+        List<Map.Entry<String, Double>> damageList = new ArrayList<>();
 
         for (int i = 0; i < reports.length; i++) {
             if (reports[i] != null && !reports[i].isBlank()) {
-                validDescriptions.add(reports[i]);
-                validPrices.add(prices[i]);
+                damageList.add(Map.entry(reports[i], prices[i]));
                 totalDamagePrice += prices[i];
             }
         }
+
 
         double kmFee = mileage * 0.75;
         double totalPrice = totalDamagePrice + kmFee;
@@ -82,8 +82,7 @@ public class  DamageReportController {
         model.addAttribute("employee", employee);
         model.addAttribute("overallDescription", overallDescription);
         model.addAttribute("mileage", mileage);
-        model.addAttribute("damageDescriptions", validDescriptions);
-        model.addAttribute("damagePrices", validPrices);
+        model.addAttribute("damageList", damageList);
         model.addAttribute("kmFee", kmFee);
         model.addAttribute("totalDamagePrice", totalDamagePrice);
         model.addAttribute("totalPrice", totalPrice);
