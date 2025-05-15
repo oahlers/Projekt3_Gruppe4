@@ -8,6 +8,7 @@ CREATE TABLE subscription_type (
 );
 
 CREATE TABLE car (
+
                      car_id INT AUTO_INCREMENT PRIMARY KEY,
                      car_emission INT NOT NULL,
                      year INT NOT NULL,
