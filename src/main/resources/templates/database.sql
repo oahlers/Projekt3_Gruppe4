@@ -68,6 +68,7 @@ CREATE TABLE rental (
 
 CREATE TABLE damage_report (
                                report_id INT AUTO_INCREMENT PRIMARY KEY,
+                               report_group_id INT NULL,
                                car_id INT NOT NULL,
                                price DECIMAL(10,2) NULL,
                                employee_id INT NOT NULL,
