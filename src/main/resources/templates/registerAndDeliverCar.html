@@ -90,9 +90,12 @@
         const forms = document.querySelectorAll('form[id^="carForm_"]');
 
         forms.forEach(form => {
-            const carId = form.id.split('_')[1];
-            const subscriptionSelect = document.getElementById(`subscriptionType_${carId}`);
-            const rentalSelect = document.getElementById(`rentalMonths_${carId}`);
+            const subscriptionSelect = form.querySelector('select[name="subscriptionType"]');
+            const rentalSelect = form.querySelector('select[name="rentalMonths"]');
+
+            console.log('Form:', form.id);
+            console.log('subscriptionSelect:', subscriptionSelect);
+            console.log('rentalSelect:', rentalSelect);
 
             function updateRentalOptions() {
                 const type = subscriptionSelect.value;
@@ -101,16 +104,22 @@
                     limited: [5]
                 }[type] || [];
 
+                console.log('Updating rental options for form', form.id, 'with type', type, 'options:', options);
+
                 rentalSelect.innerHTML = options.map(month =>
                     `<option value="${month}">${month} måned${month !== 1 ? 'er' : ''}</option>`
                 ).join('');
             }
 
-            updateRentalOptions();
-
-            subscriptionSelect.addEventListener('change', updateRentalOptions);
+            if(subscriptionSelect && rentalSelect){
+                updateRentalOptions();
+                subscriptionSelect.addEventListener('change', updateRentalOptions);
+            } else {
+                console.warn('Missing select elements for form:', form.id);
+            }
         });
     });
+
 </script>
 
 </body>
