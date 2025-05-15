@@ -60,7 +60,7 @@ public class CarRepository {
 
     public void markAsRented(Long carId, LocalDate startDate, String customerName, String customerEmail,
                              int rentalMonths, int paymentTime, int transportTime, String subscriptionType,
-                             String deliveryAddress, int kilometersPerMonth) {
+                             String deliveryAddress, int mileage) {
         LocalDate readyForUseDate = startDate.plusMonths(rentalMonths);
 
         Integer subscriptionTypeId = jdbcTemplate.queryForObject(
@@ -72,9 +72,9 @@ public class CarRepository {
         jdbcTemplate.update(
                 "INSERT INTO rental (car_id, start_date, customer_name, customer_email, delivery_address, " +
                         "rental_months, ready_for_use_date, payment_time, transport_time, subscription_type_id, " +
-                        "kilometers_per_month) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                        "mileage) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 carId, startDate, customerName, customerEmail, deliveryAddress,
-                rentalMonths, readyForUseDate, paymentTime, transportTime, subscriptionTypeId, kilometersPerMonth);
+                rentalMonths, readyForUseDate, paymentTime, transportTime, subscriptionTypeId, mileage);
 
         jdbcTemplate.update(
                 "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?",
