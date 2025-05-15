@@ -1,17 +1,15 @@
-<!DOCTYPE  html>
-<html lang="da">
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Skadesrapport Historik - Bilabonnement</title>
-    <link rel="icon" href="/img/fav.png" type="image/x-icon">
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
 <div class="layout">
     <div class="header">
         <div class="logo">
-            <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
+            <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="Logo"></a>
         </div>
         <h3>Medarbejderportal</h3>
         <nav>
@@ -21,31 +19,39 @@
     </div>
 
     <section class="hero">
-        <h1>Historik over Skadesrapporter</h1>
-        <p>Se tidligere oprettede skadesrapporter i systemet.</p>
+        <h1>Historik over skaderapporter</h1>
     </section>
 
-    <a th:href="@{/damageReport}" class="btn-link">Tilbage til Skaderapporter</a>
-
     <main class="main-content">
-        <section class="dashboard" id="damageReportDashboard">
-                <h3>Tidligere rapporter</h3>
-                <div class="Card" id="reportCard" th:each="report : ${damageReports}">
-                        <td th:text="${report.car.carId}">123</td>
-                        <td th:text="${report.car.brand}">Volkswagen</td>
-                        <td th:text="${report.car.model}">Golf</td>
-                        <td th:text="${report.price}">5000</td>
-                        <td th:text="${report.report}">Beskrivelse</td> <!-- NYT -->
-                        <td th:text="${report.customerEmail}">kunde@mail.dk</td>
-                        <td th:text="${report.employee != null ? report.employee.fullName : 'Ukendt medarbejder'}">Medarbejder</td>
-                </div>
+        <section class="dashboard">
+            <div class="report-list">
+                <table class="styled-table">
+                    <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Stelnummer</th>
+                        <th>Registreringsnummer</th>
+                        <th>Kunde</th>
+                        <th>Se rapport</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="report : ${damageReports}">
+                        <td th:text="${report.car.model}">Model</td>
+                        <td th:text="${report.car.chassisNumber}">Stelnummer</td>
+                        <td th:text="${report.car.licensePlate}">Nummerplade</td>
+                        <td th:text="${report.customerEmail}">Kunde</td>
+                        <td><a th:href="@{'/damageReportDone/' + ${report.car.carId}}" class="btn-link">Vis</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
 
     <div class="footer">
-        <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
+        <p>Bilabonnement | Medarbejderportal | support@bilabonnement.dk</p>
     </div>
 </div>
-
 </body>
 </html>

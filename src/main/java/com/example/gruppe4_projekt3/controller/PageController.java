@@ -169,11 +169,12 @@ public class  PageController {
 
 
     @GetMapping("/damageReportHistory")
-    public String showDamageReportHistory(Model model) {
-        List<DamageReport> damageReports = damageReportRepository.findAll();
-        model.addAttribute("damageReports", damageReports);
+    public String damageReportHistory(Model model) {
+        List<DamageReport> reports = damageReportRepository.findAll();
+        model.addAttribute("damageReports", reports);
         return "damageReportHistory";
     }
+
 
     @GetMapping("/employeeOverview")
     public String getAllEmployees(Model model, HttpSession session) {

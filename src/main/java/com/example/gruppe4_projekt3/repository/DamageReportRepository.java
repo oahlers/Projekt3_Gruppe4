@@ -57,6 +57,22 @@ public class DamageReportRepository {
                 "JOIN employees e ON dr.employee_id = e.employee_id";
         return jdbcTemplate.query(sql, new DamageReportRowMapper());
     }
+    public DamageReport findLatestByCarId(Long carId) {
+        String sql = "SELECT dr.*, c.brand, c.model, c.chassis_number, c.license_plate, e.fullname AS employee_fullname " +
+                "FROM damage_report dr " +
+                "JOIN car c ON dr.car_id = c.car_id " +
+                "JOIN employees e ON dr.employee_id = e.employee_id " +
+                "WHERE dr.car_id = ? " +
+                "ORDER BY dr.report_id DESC " +
+                "LIMIT 1";
+
+
+        try {
+            return jdbcTemplate.queryForObject(sql, new DamageReportRowMapper(), carId);
+        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 
     public Rental findLatestRentalByCarId(Long carId) {
         String sql = "SELECT * FROM rental WHERE car_id = ? ORDER BY start_date DESC LIMIT 1";
