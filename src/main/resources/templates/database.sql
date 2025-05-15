@@ -83,8 +83,8 @@ VALUES ('unlimited'), ('limited');
 
 INSERT INTO car (car_emission, year, brand, model, color, equipment_level, vehicle_number, chassis_number, license_plate, price, registration_fee, image, isAvailableForLoan, isReadyForUse)
 VALUES
-    (0, 2024, 'NAVOR', 'E5 ROCK 218 HK', 'Sort', 'Premium', 'EVN12345', 'NAVORE5ROCK12345678', 'AB12345', 329995.00, 18420.00, '/img/rock.jpg', b'1', b'0'),
-    (0, 2023, 'Fiat', '500e Icon Pack 118 HK', 'Hvid', 'Icon Pack', 'EVF50001', 'FIAT500EICON12345678', 'XY98765', 259995.00, 16230.00, '/img/captur.jpg', b'1', b'0'),
+    (0, 2024, 'NAVOR', 'E5 ROCK 218 HK', 'Sort', 'Premium', 'EVN12345', 'NAVORE5ROCK12345678', 'AB12345', 329995.00, 18420.00, '/img/rock.jpg', b'1', b'1'),
+    (0, 2023, 'Fiat', '500e Icon Pack 118 HK', 'Hvid', 'Icon Pack', 'EVF50001', 'FIAT500EICON12345678', 'XY98765', 259995.00, 16230.00, '/img/captur.jpg', b'1', b'1'),
     (100, 2023, 'Tesla', 'Model Y Long Range', 'Blå', 'Standard', 'EVT10001', 'TESLAMODELYLONG12345678', 'CD54321', 689995.00, 29550.00, '/img/civicAdvance.jpg', b'1', b'0'),
     (50, 2023, 'BMW', 'iX3', 'Grå', 'Xdrive', 'EVB50001', 'BMWIX3123456789', 'EF12345', 799995.00, 41250.00, '/img/civicTechno.jpg', b'0', b'1'),
     (0, 2022, 'Nissan', 'Leaf 40 kWh', 'Rød', 'N-Connecta', 'EVN20001', 'NISSANLEAF12345678', 'GH67890', 219995.00, 11850.00, '/img/sivicSport.jpg', b'1', b'0'),
