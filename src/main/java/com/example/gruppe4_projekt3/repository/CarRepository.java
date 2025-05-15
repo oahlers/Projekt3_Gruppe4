@@ -95,9 +95,11 @@ public class CarRepository {
     }
 
     public List<Car> findAvailableForLoan() {
-        return jdbcTemplate.query(
-                "SELECT * FROM car WHERE isAvailableForLoan = 0 AND isReadyForUse = 0",
-                new CarRowMapper());
+        String sql = "SELECT c.*, r.customer_name, r.start_date, r.transport_time, " +
+                "r.ready_for_use_date, r.customer_email, r.delivery_address " +
+                "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
+                "WHERE c.isAvailableForLoan = 0 AND c.isReadyForUse = 0";
+        return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     public List<Car> findCarsNeedingDamageReport() {
@@ -200,8 +202,8 @@ public class CarRepository {
         String sql = "SELECT c.*, r.customer_name, r.customer_email, r.start_date, r.transport_time, " +
                 "r.delivery_address, r.ready_for_use_date " +
                 "FROM car c JOIN rental r ON c.car_id = r.car_id " +
-                "WHERE r.end_date IS NULL AND (r.start_date + make_interval(days => r.transport_time)) >= CURRENT_DATE " +
-                "ORDER BY (r.start_date + make_interval(days => r.transport_time)) ASC";
+                "WHERE r.end_date IS NULL AND DATE_ADD(r.start_date, INTERVAL r.transport_time DAY) >= CURRENT_DATE " +
+                "ORDER BY DATE_ADD(r.start_date, INTERVAL r.transport_time DAY) ASC";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
