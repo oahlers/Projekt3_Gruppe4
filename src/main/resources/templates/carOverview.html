@@ -11,6 +11,7 @@
 
 <div  class="layout">
     <div class="header">
+
         <div class="logo">
             <a th:href="@{/dashboard}">
                 <img src="/img/Logo.png" alt="BILABONNEMENT Logo">
@@ -26,6 +27,11 @@
     <section class="hero">
         <h1>Oversigt over Biler</h1>
         <p>Herunder ser du alle biler, inklusive udlejede og dem, der kræver skadesrapport.</p>
+        <div class="filter-buttons">
+            <button onclick="setActiveFilter(this, 'all')">Alle</button>
+            <button onclick="setActiveFilter(this, 'rented')">Udlejede</button>
+            <button onclick="setActiveFilter(this, 'needs-report')">Mangler skadesrapport</button>
+        </div>
     </section>
 
     <main class="main-content">
