@@ -27,6 +27,7 @@
             <div class="search-card">
                 <h3>Rediger Bil</h3>
                 <form th:action="@{/carOverviewEdit/{carId}(carId=${car.carId})}" method="post">
+                    <label>Stelnummer:</label>
                     <input type="text" name="chassisNumber" th:value="${car.chassisNumber}" required><br>
 
                     <label>Nummerplade:</label>
@@ -56,14 +57,17 @@
                     <label>Pris:</label>
                     <input type="number" step="0.01" name="price" th:value="${car.price}" required><br>
 
+                    <label>Nuværende billede:</label>
+                    <img th:src="${car.image}" alt="Nuværende bilbillede" style="max-width: 200px;" th:unless="${car.image == null}"/>
+                    <p th:if="${car.image == null}">Intet billede tilgængeligt</p>
+                    <label>Billedsti eller URL:</label>
+                    <input type="text" name="image" th:value="${car.image}" placeholder="Angiv billedsti eller URL (f.eks. /img/rock.jpg eller https://example.com/image.jpg)"><br>
+
                     <div class="button-group">
                         <button type="submit" class="submit">Gem Bil</button>
                     </div>
                 </form>
-
-
             </div>
-
         </section>
     </main>
 

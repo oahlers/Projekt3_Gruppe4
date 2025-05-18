@@ -60,7 +60,7 @@ public class CarController {
         }
     }
 
-     @PostMapping("/carOverviewEdit/{carId}")
+    @PostMapping("/carOverviewEdit/{carId}")
     public String updateCar(@PathVariable Long carId, @ModelAttribute Car car, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
@@ -68,7 +68,6 @@ public class CarController {
         }
 
         Car existingCar = carRepository.findById(carId);
-
         if (existingCar != null) {
             existingCar.setChassisNumber(car.getChassisNumber());
             existingCar.setLicensePlate(car.getLicensePlate());
@@ -79,12 +78,13 @@ public class CarController {
             existingCar.setModel(car.getModel());
             existingCar.setColor(car.getColor());
             existingCar.setPrice(car.getPrice());
-            existingCar.setImage(car.getImage());
-
+            if (car.getImage() != null && !car.getImage().isEmpty()) {
+                existingCar.setImage(car.getImage());
+            }
             carRepository.update(existingCar);
         }
 
-        return  "redirect:/carOverview";
+        return "redirect:/carOverview";
     }
 
 
