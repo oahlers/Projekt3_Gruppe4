@@ -27,10 +27,11 @@
     <section class="hero">
         <h1>Oversigt over Biler</h1>
         <p>Herunder ser du alle biler, inklusive udlejede og dem, der kræver skadesrapport.</p>
-        <div class="filter-buttons" >
+        <div class="filter-buttons">
             <button class="btn-link" onclick="setActiveFilter(this, 'all')">Alle</button>
             <button class="btn-link" onclick="setActiveFilter(this, 'rented')">Udlejede</button>
             <button class="btn-link" onclick="setActiveFilter(this, 'needs-report')">Mangler skadesrapport</button>
+            <button class="btn-link" onclick="setActiveFilter(this, 'available')">Tilgængelige biler</button> <!-- Ny knap -->
         </div>
     </section>
 
@@ -59,7 +60,6 @@
                 <div class="car-actions">
                     <a th:href="@{/cars/details/{id}(id=${car.carId})}" class="button-link">Se detaljer</a>
                     <a th:href="@{/cars/edit/{id}(id=${car.carId})}" class="button-link">Rediger bil</a>
-
                 </div>
             </div>
         </section>
@@ -71,7 +71,6 @@
 </div>
 
 <script>
-    // Hvis du ønsker at fortsætte med at filtrere i frontend, kan du implementere filterfunktionen som før
     function setActiveFilter(button, filter) {
         document.querySelectorAll('.filter-buttons button').forEach(btn => {
             btn.classList.remove('active');
@@ -96,6 +95,9 @@
                     break;
                 case 'needs-report':
                     car.style.display = isReady ? 'block' : 'none';
+                    break;
+                case 'available':
+                    car.style.display = !isAvailable ? 'block' : 'none';
                     break;
                 default:
                     car.style.display = 'block';
