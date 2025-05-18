@@ -27,6 +27,7 @@ public class Car {
     private Integer averageAvailabilityDays;
     private Integer averageRentalDuration;
     private LocalDate readyForUseDate;
+    private Long daysUntilDelivery;
 
     public LocalDate getDeliveryDate() {
         if (startDate != null && transportTime != null) {
@@ -106,4 +107,7 @@ public class Car {
 
     public LocalDate getReadyForUseDate() { return readyForUseDate; }
     public void setReadyForUseDate(LocalDate readyForUseDate) { this.readyForUseDate = readyForUseDate; }
+
+    public Long getDaysUntilDelivery() { return daysUntilDelivery; }
+    public void setDaysUntilDelivery(Long daysUntilDelivery) { this.daysUntilDelivery = daysUntilDelivery; }
 }

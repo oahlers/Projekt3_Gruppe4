@@ -1,18 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-        <html lang="da">
-        <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Leveringskalender - Bilabonnement</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leveringskalender - Bilabonnement</title>
     <link rel="icon" href="/img/fav.png" type="image/x-icon">
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
 <div class="layout">
     <div class="header">
         <div class="logo">
@@ -51,14 +46,13 @@
                     <td th:text="${car.customerName}"></td>
                     <td th:text="${#temporals.format(car.startDate, 'dd-MM-yyyy')}"></td>
                     <td th:text="${car.startDate != null and car.transportTime != null} ? ${#temporals.format(car.startDate.plusDays(car.transportTime), 'dd-MM-yyyy')} : 'Ukendt'"></td>
-                    <td th:text="${car.remainingRentalDays}"></td>
+                    <td th:text="${car.daysUntilDelivery != null} ? ${car.daysUntilDelivery} : 'Ukendt'"></td>
                     <td th:text="${car.deliveryAddress}"></td>
                     <td th:text="${car.customerEmail}"></td>
-                    <td th:text="${car.transportTime}"></td>
+                    <td th:text="${car.transportTime != null} ? ${car.transportTime} : 'Ikke angivet'"></td>
                 </tr>
                 </tbody>
             </table>
-
         </div>
     </main>
 
@@ -66,11 +60,5 @@
         <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
     </div>
 </div>
-
-</body>
-</html></title>
-</head>
-<body>
-
 </body>
 </html>

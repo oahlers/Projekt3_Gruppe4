@@ -22,14 +22,14 @@ public class CarRepository {
 
     public List<Car> findAll() {
         String sql = "SELECT c.*, r.customer_name, r.start_date, r.transport_time, " +
-                "r.ready_for_use_date, r.customer_email, r.delivery_address " +
+                "r.ready_for_use_date, r.customer_email, r.delivery_address, r.rental_months " +
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     public Car findById(Long id) {
         String sql = "SELECT c.*, r.customer_name, r.start_date, r.transport_time, " +
-                "r.ready_for_use_date, r.customer_email, r.delivery_address " +
+                "r.ready_for_use_date, r.customer_email, r.delivery_address, r.rental_months " +
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
                 "WHERE c.car_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new CarRowMapper());
@@ -60,25 +60,24 @@ public class CarRepository {
 
     public void markAsRented(Long carId, LocalDate startDate, String customerName, String customerEmail,
                              int rentalMonths, int paymentTime, int transportTime, String subscriptionType,
-                             String deliveryAddress, int kilometersPerMonth) {
+                             String deliveryAddress, int mileage) {
         LocalDate readyForUseDate = startDate.plusMonths(rentalMonths);
-
         Integer subscriptionTypeId = jdbcTemplate.queryForObject(
                 "SELECT id FROM subscription_type WHERE type_name = ?",
                 new Object[]{subscriptionType},
                 Integer.class
         );
-
         jdbcTemplate.update(
                 "INSERT INTO rental (car_id, start_date, customer_name, customer_email, delivery_address, " +
                         "rental_months, ready_for_use_date, payment_time, transport_time, subscription_type_id, " +
-                        "kilometers_per_month) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                        "mileage) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 carId, startDate, customerName, customerEmail, deliveryAddress,
-                rentalMonths, readyForUseDate, paymentTime, transportTime, subscriptionTypeId, kilometersPerMonth);
-
+                rentalMonths, readyForUseDate, paymentTime, transportTime, subscriptionTypeId, mileage
+        );
         jdbcTemplate.update(
                 "UPDATE car SET isAvailableForLoan = 1, isReadyForUse = 0 WHERE car_id = ?",
-                carId);
+                carId
+        );
     }
 
     public void resetAfterDamageReport(Long carId) {
@@ -89,14 +88,14 @@ public class CarRepository {
 
     public List<Car> findRentedCars() {
         String sql = "SELECT c.*, r.customer_name, r.start_date, r.transport_time, " +
-                "r.ready_for_use_date, r.customer_email, r.delivery_address " +
+                "r.ready_for_use_date, r.customer_email, r.delivery_address, r.rental_months " +
                 "FROM car c JOIN rental r ON c.car_id = r.car_id WHERE r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     public List<Car> findAvailableForLoan() {
         String sql = "SELECT c.*, r.customer_name, r.customer_email, r.delivery_address, " +
-                "r.start_date, r.transport_time, r.ready_for_use_date " +
+                "r.start_date, r.transport_time, r.ready_for_use_date, r.rental_months " +
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
                 "WHERE c.isAvailableForLoan = 0 AND c.isReadyForUse = 0";
         return jdbcTemplate.query(sql, new CarRowMapper());
@@ -104,7 +103,7 @@ public class CarRepository {
 
     public List<Car> findCarsNeedingDamageReport() {
         String sql = "SELECT c.*, r.customer_name, r.start_date, r.transport_time, " +
-                "r.ready_for_use_date, r.customer_email, r.delivery_address " +
+                "r.ready_for_use_date, r.customer_email, r.delivery_address, r.rental_months " +
                 "FROM car c LEFT JOIN rental r ON c.car_id = r.car_id AND r.end_date IS NULL " +
                 "WHERE c.isReadyForUse = 1";
         return jdbcTemplate.query(sql, new CarRowMapper());
@@ -118,7 +117,7 @@ public class CarRepository {
 
     public List<Car> findRentedAndReadyCars() {
         String sql = "SELECT c.*, r.customer_name, r.start_date, r.transport_time, " +
-                "r.ready_for_use_date, r.customer_email, r.delivery_address " +
+                "r.ready_for_use_date, r.customer_email, r.delivery_address, r.rental_months " +
                 "FROM car c JOIN rental r ON c.car_id = r.car_id " +
                 "WHERE c.isAvailableForLoan = 1 AND c.isReadyForUse = 1 AND r.end_date IS NULL";
         return jdbcTemplate.query(sql, new CarRowMapper());
@@ -200,7 +199,7 @@ public class CarRepository {
 
     public List<Car> findRentedCarsWithDetails() {
         String sql = "SELECT c.*, r.customer_name, r.customer_email, r.start_date, r.transport_time, " +
-                "r.delivery_address, r.ready_for_use_date " +
+                "r.delivery_address, r.ready_for_use_date, r.rental_months " +
                 "FROM car c JOIN rental r ON c.car_id = r.car_id " +
                 "WHERE r.end_date IS NULL AND DATE_ADD(r.start_date, INTERVAL r.transport_time DAY) >= CURRENT_DATE " +
                 "ORDER BY DATE_ADD(r.start_date, INTERVAL r.transport_time DAY) ASC";
@@ -229,19 +228,33 @@ public class CarRepository {
             car.setCustomerName(rs.getString("customer_name"));
             car.setCustomerEmail(rs.getString("customer_email"));
             car.setDeliveryAddress(rs.getString("delivery_address"));
+            car.setReadyForUseDate(rs.getDate("ready_for_use_date") != null ?
+                    rs.getDate("ready_for_use_date").toLocalDate() : null);
 
-            LocalDate startDate = rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null;
-            Integer transportTime = rs.getObject("transport_time") != null ? rs.getInt("transport_time") : null;
+            LocalDate startDate = rs.getDate("start_date") != null ?
+                    rs.getDate("start_date").toLocalDate() : null;
+            Integer rentalMonths = rs.getObject("rental_months") != null ?
+                    rs.getInt("rental_months") : null;
+            Integer transportTime = rs.getObject("transport_time") != null ?
+                    rs.getInt("transport_time") : null;
 
             car.setStartDate(startDate);
             car.setTransportTime(transportTime);
 
+            if (startDate != null && rentalMonths != null) {
+                LocalDate endDate = startDate.plusMonths(rentalMonths);
+                long daysRemaining = ChronoUnit.DAYS.between(LocalDate.now(), endDate);
+                car.setRemainingRentalDays(daysRemaining >= 0 ? daysRemaining : null);
+            } else {
+                car.setRemainingRentalDays(null);
+            }
+
             if (startDate != null && transportTime != null) {
                 LocalDate deliveryDate = startDate.plusDays(transportTime);
                 long daysUntilDelivery = ChronoUnit.DAYS.between(LocalDate.now(), deliveryDate);
-                car.setRemainingRentalDays(daysUntilDelivery >= 0 ? daysUntilDelivery : null);
+                car.setDaysUntilDelivery(daysUntilDelivery >= 0 ? daysUntilDelivery : null);
             } else {
-                car.setRemainingRentalDays(null);
+                car.setDaysUntilDelivery(null);
             }
 
             return car;

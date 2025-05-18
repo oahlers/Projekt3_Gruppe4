@@ -73,17 +73,6 @@ public class  PageController {
         }
 
         List<Car> allCars = carRepository.findAll();
-
-        for (Car car : allCars) {
-            if (car.getStartDate() != null && car.getTransportTime() != null) {
-                LocalDate endDate = car.getStartDate().plusDays(car.getTransportTime());
-
-                long remainingDays = ChronoUnit.DAYS.between(LocalDate.now(), endDate);
-
-                car.setRemainingRentalDays(remainingDays > 0 ? remainingDays : null);
-            }
-        }
-
         model.addAttribute("allCars", allCars);
         model.addAttribute("employee", loggedInEmployee);
 
