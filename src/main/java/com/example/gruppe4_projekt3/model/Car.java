@@ -97,7 +97,7 @@ public class Car {
     public void setDeliveryAddress(String deliveryAddress) { this.deliveryAddress = deliveryAddress; }
 
     public Long getRemainingRentalDays() { return remainingRentalDays; }
-    public void setRemainingRentalDays(Long remainingRentalDays) { this.remainingRentalDays = remainingRentalDays; }
+    public  void setRemainingRentalDays(Long remainingRentalDays) { this.remainingRentalDays = remainingRentalDays; }
 
     public Integer getAverageAvailabilityDays() { return averageAvailabilityDays; }
     public void setAverageAvailabilityDays(Integer averageAvailabilityDays) { this.averageAvailabilityDays = averageAvailabilityDays; }

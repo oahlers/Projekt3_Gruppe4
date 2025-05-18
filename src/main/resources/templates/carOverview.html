@@ -44,7 +44,7 @@
                     <img th:src="${car.image}" alt="Car image" class="car-img"/>
                 </div>
 
-                <h3 th:text="${car.brand} + ' ' + ${car.model}"></h3>
+                <h3  th:text="${car.brand} + ' ' + ${car.model}"></h3>
                 <p><strong>Stelnummer:</strong> <span th:text="${car.chassisNumber}"></span></p>
                 <p><strong>Nummerplade:</strong> <span th:text="${car.licensePlate}"></span></p>
                 <p><strong>Pris:</strong> <span th:text="${car.price} + ' DKK'"></span></p>

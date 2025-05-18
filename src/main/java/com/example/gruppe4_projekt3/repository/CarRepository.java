@@ -249,7 +249,7 @@ public class CarRepository {
                 car.setRemainingRentalDays(null);
             }
 
-            if (startDate != null && transportTime != null) {
+            if  (startDate != null && transportTime != null) {
                 LocalDate deliveryDate = startDate.plusDays(transportTime);
                 long daysUntilDelivery = ChronoUnit.DAYS.between(LocalDate.now(), deliveryDate);
                 car.setDaysUntilDelivery(daysUntilDelivery >= 0 ? daysUntilDelivery : null);
