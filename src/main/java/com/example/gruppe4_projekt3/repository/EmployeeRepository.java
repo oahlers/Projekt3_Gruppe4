@@ -17,13 +17,13 @@ public class EmployeeRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    // Gemmer en ny medarbejder i databasen.
+    // Gemmer en ny medarbejder i databasen med de angivne oplysninger.
     public void save(Employee employee) {
         String sql = "INSERT INTO employees (fullname, username, password, role) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, employee.getFullName(), employee.getUsername(), employee.getPassword(), employee.getRole());
     }
 
-    // Opdaterer en eksisterende medarbejder i databasen.
+    // Opdaterer en eksisterende medarbejder i databasen baseret på deres ID.
     public void update(Employee employee) {
         String sql = "UPDATE employees SET fullname = ?, username = ?, password = ?, role = ? WHERE employee_id = ?";
         jdbcTemplate.update(sql,
@@ -34,7 +34,7 @@ public class EmployeeRepository {
                 employee.getEmployeeId());
     }
 
-    // Finder en medarbejder ud fra deres ID.
+    // Finder en medarbejder i databasen ud fra deres ID og returnerer null, hvis de ikke findes.
     public Employee findByEmployeeId(int employeeId) {
         String sql = "SELECT * FROM employees WHERE employee_id = ?";
         try {
@@ -44,7 +44,7 @@ public class EmployeeRepository {
         }
     }
 
-    // Finder en medarbejder ud fra deres brugernavn.
+    // Finder en medarbejder i databasen ud fra deres brugernavn og returnerer null, hvis de ikke findes.
     public Employee findByUsername(String username) {
         String sql = "SELECT * FROM employees WHERE username = ?";
         try {
@@ -54,7 +54,7 @@ public class EmployeeRepository {
         }
     }
 
-    // Finder en medarbejder ud fra både employee ID og brugernavn.
+    // Finder en medarbejder i databasen ud fra både deres ID og brugernavn og returnerer null, hvis de ikke findes.
     public Employee findByEmployeeIdAndUsername(int employeeId, String username) {
         String sql = "SELECT * FROM employees WHERE employee_id = ? AND username = ?";
         try {
@@ -64,7 +64,7 @@ public class EmployeeRepository {
         }
     }
 
-    // Viser en liste af samtlige medarbejdere.
+    // Henter en liste over alle medarbejdere i databasen.
     public List<Employee> findAll() {
         String sql = "SELECT * FROM employees";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Employee.class));

@@ -1,4 +1,4 @@
-<!DOCTYPE  html>
+<!DOCTYPE html>
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -29,13 +29,14 @@
 
     <main class="main-content">
         <section class="car-dashboard">
+            <div th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></div>
             <div class="search-card" th:each="car : ${availableCars}">
                 <h3 th:text="${car.brand + ' ' + car.model}"></h3>
                 <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
                 <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
                 <p><strong>Pris:</strong> <span th:text="${car.price + ' DKK'}"></span></p>
 
-                <form th:action="@{/registerAndDeliverCar}" method="post" id="carForm_${car.carId}">
+                <form th:action="@{/registerAndDeliverCar}" method="post" th:id="'carForm_' + ${car.carId}">
                     <input type="hidden" name="carId" th:value="${car.carId}">
 
                     <label for="name">Kundens navn:</label>
@@ -44,17 +45,17 @@
                     <label for="deliveryAddress">Leveringsadresse:</label>
                     <input type="text" id="deliveryAddress" name="deliveryAddress" required>
 
-                    <label for="subscriptionType_${car.carId}">Abonnementstype:</label>
-                    <select id="subscriptionType_${car.carId}" name="subscriptionType" required>
-                        <option value="unlimited">Unlimited</option>
-                        <option value="limited">Limited</option>
+                    <label th:for="'subscriptionType_' + ${car.carId}">Abonnementstype:</label>
+                    <select th:id="'subscriptionType_' + ${car.carId}" name="subscriptionType" required>
+                        <option value="UNLIMITED">Unlimited</option>
+                        <option value="LIMITED">Limited</option>
                     </select>
 
-                    <label for="rentalMonths_${car.carId}">Lejeperiode (måneder):</label>
-                    <select id="rentalMonths_${car.carId}" name="rentalMonths" required></select>
+                    <label th:for="'rentalMonths_' + ${car.carId}">Lejeperiode (måneder):</label>
+                    <select th:id="'rentalMonths_' + ${car.carId}" name="rentalMonths" required></select>
 
-                    <label for="kilometersPerMonth_${car.carId}">Kilometer pr. måned:</label>
-                    <select id="kilometersPerMonth_${car.carId}" name="kilometersPerMonth" required>
+                    <label th:for="'kilometersPerMonth_' + ${car.carId}">Kilometer pr. måned:</label>
+                    <select th:id="'kilometersPerMonth_' + ${car.carId}" name="kilometersPerMonth" required>
                         <option value="1500">1.500 km</option>
                         <option value="1750">1.750 km</option>
                         <option value="2000">2.000 km</option>
@@ -88,30 +89,22 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const forms = document.querySelectorAll('form[id^="carForm_"]');
-
         forms.forEach(form => {
             const subscriptionSelect = form.querySelector('select[name="subscriptionType"]');
             const rentalSelect = form.querySelector('select[name="rentalMonths"]');
 
-            console.log('Form:', form.id);
-            console.log('subscriptionSelect:', subscriptionSelect);
-            console.log('rentalSelect:', rentalSelect);
-
             function updateRentalOptions() {
                 const type = subscriptionSelect.value;
                 const options = {
-                    unlimited: [3, 6, 9, 12, 24, 36],
-                    limited: [5]
+                    'UNLIMITED': [3, 6, 9, 12, 24, 36],
+                    'LIMITED': [5]
                 }[type] || [];
-
-                console.log('Updating rental options for form', form.id, 'with type', type, 'options:', options);
-
                 rentalSelect.innerHTML = options.map(month =>
                     `<option value="${month}">${month} måned${month !== 1 ? 'er' : ''}</option>`
                 ).join('');
             }
 
-            if(subscriptionSelect && rentalSelect){
+            if (subscriptionSelect && rentalSelect) {
                 updateRentalOptions();
                 subscriptionSelect.addEventListener('change', updateRentalOptions);
             } else {
@@ -119,8 +112,6 @@
             }
         });
     });
-
 </script>
-
 </body>
 </html>

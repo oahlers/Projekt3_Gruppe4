@@ -8,10 +8,8 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
-<div  class="layout">
+<div class="layout">
     <div class="header">
-
         <div class="logo">
             <a th:href="@{/dashboard}">
                 <img src="/img/Logo.png" alt="BILABONNEMENT Logo">
@@ -31,30 +29,36 @@
             <button class="btn-link" onclick="setActiveFilter(this, 'all')">Alle</button>
             <button class="btn-link" onclick="setActiveFilter(this, 'rented')">Udlejede</button>
             <button class="btn-link" onclick="setActiveFilter(this, 'needs-report')">Mangler skadesrapport</button>
-            <button class="btn-link" onclick="setActiveFilter(this, 'available')">Tilgængelige biler</button> <!-- Ny knap -->
+            <button class="btn-link" onclick="setActiveFilter(this, 'available')">Tilgængelige biler</button>
         </div>
     </section>
 
     <main class="main-content">
         <section class="car-dashboard">
             <div class="car-card" th:each="car : ${allCars}"
-                 th:attr="data-available=${car.availableForLoan}, data-ready=${car.readyForUse}">
-
+                 th:attr="data-available=${car.rented}, data-ready=${car.needsDamageReport}">
                 <div class="car-image">
                     <img th:src="${car.image}" alt="Car image" class="car-img"/>
                 </div>
-
-                <h3  th:text="${car.brand} + ' ' + ${car.model}"></h3>
+                <h3 th:text="${car.brand} + ' ' + ${car.model}"></h3>
                 <p><strong>Stelnummer:</strong> <span th:text="${car.chassisNumber}"></span></p>
                 <p><strong>Nummerplade:</strong> <span th:text="${car.licensePlate}"></span></p>
                 <p><strong>Pris:</strong> <span th:text="${car.price} + ' DKK'"></span></p>
-                <p><strong>Udlejet:</strong> <span th:text="${car.availableForLoan} ? 'Ja' : 'Nej'"></span></p>
-                <p><strong>Mangler skadesrapport:</strong> <span th:text="${car.readyForUse} ? 'Ja' : 'Nej'"></span></p>
+                <p><strong>Udlejet:</strong> <span th:text="${car.rented} ? 'Ja' : 'Nej'"></span></p>
+                <p><strong>Mangler skadesrapport:</strong> <span th:text="${car.needsDamageReport} ? 'Ja' : 'Nej'"></span></p>
 
-                <div th:if="${car.availableForLoan}">
-                    <p><strong>Kunde:</strong> <span th:text="${car.customerName}"></span></p>
-                    <p><strong>Resterende udlejningstid:</strong>
-                        <span th:text="${car.remainingRentalDays != null} ? (${car.remainingRentalDays} + ' dage') : 'Ikke udlejet'"></span></p>
+                <div th:if="${car.rented}">
+                    <th:block th:with="rental=${activeRentalsMap[car.carId]}">
+                        <p><strong>Kunde:</strong> <span th:text="${rental != null} ? ${rental.customerName} : 'Ingen'"></span></p>
+                        <p><strong>Startdato:</strong>
+                            <span th:text="${rental != null and rental.startDate != null} ?
+                                ${#temporals.format(rental.startDate, 'dd-MM-yyyy')} :
+                                'Ikke udlejet'"></span></p>
+                        <p><strong>Tid tilbage af lejeperiode:</strong>
+                            <span th:text="${remainingDaysMap[car.carId] != null} ?
+                                ${remainingDaysMap[car.carId]} + ' dage (' + ${remainingMonthsMap[car.carId]} + ' måneder)' :
+                                'Ukendt'"></span></p>
+                    </th:block>
                 </div>
 
                 <div class="car-actions">
@@ -81,23 +85,21 @@
 
     function filterCars(filter) {
         const cars = document.querySelectorAll('.car-card');
-
         cars.forEach(car => {
-            const isAvailable = car.getAttribute('data-available') === 'true';
-            const isReady = car.getAttribute('data-ready') === 'true';
-
+            const isRented = car.getAttribute('data-available') === 'true';
+            const needsDamageReport = car.getAttribute('data-ready') === 'true';
             switch(filter) {
                 case 'all':
                     car.style.display = 'block';
                     break;
                 case 'rented':
-                    car.style.display = isAvailable ? 'block' : 'none';
+                    car.style.display = isRented ? 'block' : 'none';
                     break;
                 case 'needs-report':
-                    car.style.display = isReady ? 'block' : 'none';
+                    car.style.display = needsDamageReport ? 'block' : 'none';
                     break;
                 case 'available':
-                    car.style.display = !isAvailable ? 'block' : 'none';
+                    car.style.display = !isRented ? 'block' : 'none';
                     break;
                 default:
                     car.style.display = 'block';
@@ -110,6 +112,5 @@
         setActiveFilter(allButton, 'all');
     });
 </script>
-
 </body>
 </html>

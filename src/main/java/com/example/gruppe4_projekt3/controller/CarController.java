@@ -2,32 +2,42 @@ package com.example.gruppe4_projekt3.controller;
 
 import com.example.gruppe4_projekt3.model.Car;
 import com.example.gruppe4_projekt3.model.Employee;
-import com.example.gruppe4_projekt3.repository.CarRepository;
+import com.example.gruppe4_projekt3.service.CarService;
+import com.example.gruppe4_projekt3.service.RentalService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Optional;
+import java.util.List;
 
 @Controller
 public class CarController {
+    private final CarService carService;
+    private final RentalService rentalService;
 
-    @Autowired
-    private CarRepository carRepository;
+    public CarController(CarService carService, RentalService rentalService) {
+        this.carService = carService;
+        this.rentalService = rentalService;
+    }
 
+    // Tilføjer en ny bil til systemet og redirecter til dashboardet, hvis det lykkes, eller viser en fejl.
     @PostMapping("/cars/add")
-    public String addCar(@ModelAttribute Car car, HttpSession session) {
+    public String addCar(@ModelAttribute Car car, HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
-        carRepository.save(car);
-        return "dashboard";
+        try {
+            carService.saveCar(car);
+            return "dashboard";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "addCars";
+        }
     }
 
+    // Registrerer og leverer en bil til en kunde ved at oprette en lejeaftale og redirecter til dashboardet.
     @PostMapping("/registerAndDeliverCar")
     public String registerDelivery(
             @RequestParam Long carId,
@@ -38,55 +48,47 @@ public class CarController {
             @RequestParam int transportTime,
             @RequestParam String email,
             @RequestParam String subscriptionType,
-            @RequestParam int kilometersPerMonth) {
-
-        carRepository.markAsRented(
-                carId, LocalDate.now(), name, email, rentalMonths, paymentTime,
-                transportTime, subscriptionType, deliveryAddress, kilometersPerMonth);
-
-        return "dashboard";
-    }
-
-
-    // Denne metode håndterer at vise bilens redigeringsformular
-    @GetMapping("/carOverviewEdit/{carId}")
-    public String showEditForm(@PathVariable Long carId, Model model) {
-        Optional<Car> carOpt = Optional.ofNullable(carRepository.findById(carId));
-        if (carOpt.isPresent()) {
-            model.addAttribute("car", carOpt.get());
-            return "carOverviewEdit";
-        } else {
-            return "carOverviewDetails";
+            @RequestParam int kilometersPerMonth,
+            Model model) {
+        try {
+            int subscriptionTypeId = "UNLIMITED".equalsIgnoreCase(subscriptionType) ? 1 : 2;
+            rentalService.createRental(carId, name, email, deliveryAddress, rentalMonths, subscriptionTypeId,
+                    kilometersPerMonth, paymentTime, transportTime);
+            return "redirect:/dashboard";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            List<Car> availableCars = carService.findAvailableForLoan();
+            model.addAttribute("availableCars", availableCars);
+            return "registerAndDeliverCar";
         }
     }
 
+    // Viser formularen til redigering af en bil baseret på bilens ID og redirecter til detaljesiden, hvis bilen ikke findes.
+    @GetMapping("/carOverviewEdit/{carId}")
+    public String showEditForm(@PathVariable Long carId, Model model) {
+        Car car = carService.findCarById(carId);
+        if (car != null) {
+            model.addAttribute("car", car);
+            return "carOverviewEdit";
+        }
+        return "carOverviewDetails";
+    }
+
+    // Opdaterer en eksisterende bil med nye oplysninger og redirecter til biloversigten, eller viser en fejl.
     @PostMapping("/carOverviewEdit/{carId}")
-    public String updateCar(@PathVariable Long carId, @ModelAttribute Car car, HttpSession session) {
+    public String updateCar(@PathVariable Long carId, @ModelAttribute Car car, HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
-
-        Car existingCar = carRepository.findById(carId);
-        if (existingCar != null) {
-            existingCar.setChassisNumber(car.getChassisNumber());
-            existingCar.setLicensePlate(car.getLicensePlate());
-            existingCar.setVehicleNumber(car.getVehicleNumber());
-            existingCar.setCarEmission(car.getCarEmission());
-            existingCar.setYear(car.getYear());
-            existingCar.setBrand(car.getBrand());
-            existingCar.setModel(car.getModel());
-            existingCar.setColor(car.getColor());
-            existingCar.setPrice(car.getPrice());
-            if (car.getImage() != null && !car.getImage().isEmpty()) {
-                existingCar.setImage(car.getImage());
-            }
-            carRepository.update(existingCar);
+        try {
+            car.setCarId(carId);
+            carService.updateCar(car);
+            return "redirect:/carOverview";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("car", car);
+            return "carOverviewEdit";
         }
-
-        return "redirect:/carOverview";
     }
-
-
-
 }

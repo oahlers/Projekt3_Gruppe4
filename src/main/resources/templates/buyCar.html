@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bil Detaljer - Bilabonnement</title>
+    <title>Køb Bil - Bilabonnement</title>
     <link rel="icon" href="/img/fav.png" type="image/x-icon">
     <link rel="stylesheet" href="/style.css">
 </head>
@@ -17,34 +17,34 @@
         </div>
         <h3>Medarbejderportal</h3>
         <nav>
-            <a th:href="@{/carOverview}" class="back-btn">Tilbage</a>
+            <a th:href="@{/damageReport}" class="back-btn">Tilbage</a>
             <a th:href="@{/}" class="back-btn">Log ud</a>
         </nav>
     </div>
 
     <section class="hero">
-        <h1>Bil Detaljer</h1>
-        <p>Detaljeret information om den valgte bil.</p>
+        <h1>Køb Bil</h1>
+        <p>Bekræft købet af bilen for kunden nedenfor.</p>
     </section>
 
     <main class="main-content">
         <div class="car-dashboard">
-            <div class="car-card" th:if="${car != null}">
+            <div class="car-card" th:if="${car != null and rental != null}">
                 <p><strong>Mærke:</strong> <span th:text="${car.brand}"></span></p>
                 <p><strong>Model:</strong> <span th:text="${car.model}"></span></p>
-                <p><strong>Årgang:</strong> <span th:text="${car.year}"></span></p>
-                <p><strong>Farve:</strong> <span th:text="${car.color}"></span></p>
-                <p><strong>Udstyrsniveau:</strong> <span th:text="${car.equipmentLevel}"></span></p>
                 <p><strong>Nummerplade:</strong> <span th:text="${car.licensePlate}"></span></p>
-                <p><strong>Udlejet:</strong> <span th:text="${car.rented ? 'Ja' : 'Nej'}"></span></p>
-                <p><strong>Mangler skadesrapport:</strong> <span th:text="${car.needsDamageReport ? 'Ja' : 'Nej'}"></span></p>
-                <p><strong>Kunde:</strong> <span th:text="${rental != null} ? ${rental.customerName} : 'Ingen'"></span></p>
-                <p><strong>Lejedage tilbage:</strong>
-                    <span th:text="${remainingDays != null} ? ${remainingDays} + ' dage' : 'Ikke udlejet'"></span></p>
-                <a th:href="@{'/carOverviewEdit/' + ${car.carId}}" class="btn">Rediger bil</a>
+                <p><strong>Kunde:</strong> <span th:text="${rental.customerName}"></span></p>
+                <p><strong>Adresse:</strong> <span th:text="${rental.deliveryAddress}"></span></p>
+                <p><strong>Email:</strong> <span th:text="${rental.customerEmail}"></span></p>
+                <p><strong>Pris:</strong> <span th:text="${totalPrice} + ' DKK'"></span></p>
+
+                <form th:action="@{/buyCarDone/{id}(id=${car.carId})}" method="post">
+                    <input type="hidden" name="rentalId" th:value="${rental.rentalId}">
+                    <button type="submit" class="btn-link">Bekræft køb</button>
+                </form>
             </div>
-            <div th:if="${car == null}">
-                <p>Bil ikke fundet.</p>
+            <div th:if="${car == null or rental == null}">
+                <p>Bil eller lejeaftale ikke fundet.</p>
             </div>
         </div>
     </main>

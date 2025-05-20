@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Køb Bekræftet - Bilabonnement</title>
+    <link rel="icon" href="/img/fav.png" type="image/x-icon">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="layout">
+    <div class="header">
+        <div class="logo">
+            <a th:href="@{/dashboard}">
+                <img src="/img/Logo.png" alt="BILABONNEMENT Logo">
+            </a>
+        </div>
+        <h3>Medarbejderportal</h3>
+        <nav>
+            <a th:href="@{/damageReport}" class="back-btn">Tilbage</a>
+            <a th:href="@{/}" class="back-btn">Log ud</a>
+        </nav>
+    </div>
+
+    <section class="hero">
+        <h1>Køb Bekræftet</h1>
+        <p>Købet af bilen er blevet registreret.</p>
+    </section>
+
+    <main class="main-content">
+        <section class="confirmation">
+            <h3>Kundeinformation</h3>
+            <p><strong>Navn:</strong> <span th:text="${#strings.defaultString(rental?.customerName, 'Ikke tilgængelig')}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${#strings.defaultString(rental?.customerEmail, 'Ikke tilgængelig')}"></span></p>
+            <p><strong>Adresse:</strong> <span th:text="${#strings.defaultString(rental?.deliveryAddress, 'Ikke tilgængelig')}"></span></p>
+
+            <h3>Bilinformation</h3>
+            <p><strong>Mærke:</strong> <span th:text="${car?.brand ?: 'Ikke tilgængelig'}"></span></p>
+            <p><strong>Model:</strong> <span th:text="${car?.model ?: 'Ikke tilgængelig'}"></span></p>
+            <p><strong>Nummerplade:</strong> <span th:text="${car?.licensePlate ?: 'Ikke tilgængelig'}"></span></p>
+
+            <h3>Købsdetaljer</h3>
+            <p><strong>Pris:</strong> <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')} + ' kr.'"></span></p>
+            <p><strong>Købsdato:</strong> <span th:text="${#temporals.format(purchaseDate, 'dd-MM-yyyy')}"></span></p>
+
+            <div style="margin-top: 2rem;" th:if="${car != null and rental != null}">
+                <a th:href="@{/damageReport}" class="btn-link">Tilbage til skadesrapporter</a>
+                <button onclick="window.print()" class="btn-link">Udskriv som PDF</button>
+            </div>
+
+            <div th:if="${car == null or rental == null}">
+                <p>Bil eller lejeaftale ikke fundet.</p>
+            </div>
+        </section>
+    </main>
+
+    <div class="footer">
+        <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
+    </div>
+</div>
+</body>
+</html>

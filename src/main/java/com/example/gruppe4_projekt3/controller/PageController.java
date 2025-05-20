@@ -1,14 +1,11 @@
 package com.example.gruppe4_projekt3.controller;
 
-import com.example.gruppe4_projekt3.model.Car;
-import com.example.gruppe4_projekt3.model.Employee;
-import com.example.gruppe4_projekt3.model.DamageReport;
-import com.example.gruppe4_projekt3.model.Rental;
-import com.example.gruppe4_projekt3.repository.CarRepository;
-import com.example.gruppe4_projekt3.repository.DamageReportRepository;
-import com.example.gruppe4_projekt3.repository.EmployeeRepository;
+import com.example.gruppe4_projekt3.model.*;
+import com.example.gruppe4_projekt3.service.CarService;
+import com.example.gruppe4_projekt3.service.DamageReportService;
+import com.example.gruppe4_projekt3.service.EmployeeService;
+import com.example.gruppe4_projekt3.service.RentalService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,45 +13,40 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-// Pagecontroller, står for håndtering af alle sidevisninger (GET-Anmodninger til visning af en side)
-
-// Generelle sider
-// showIndexPage, showAuthPage, showDashboard
-
-// Bil-relateret sider
-// showAllCars, viewAllCars, showDeliverCarPage
-
-// Skaderapport-sider
-// showDamageReportList, showFillReportPage, showDamageReportDone, showDamageReportHistory
-
-// Diverse sider (Medarbejdersøgning og statistik)
-// showSearchForm, showStatistics
+import java.util.Set;
 
 @Controller
-public class  PageController {
+public class PageController {
+    private final EmployeeService employeeService;
+    private final CarService carService;
+    private final DamageReportService damageReportService;
+    private final RentalService rentalService;
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    public PageController(EmployeeService employeeService, CarService carService,
+                          DamageReportService damageReportService, RentalService rentalService) {
+        this.employeeService = employeeService;
+        this.carService = carService;
+        this.damageReportService = damageReportService;
+        this.rentalService = rentalService;
+    }
 
-    @Autowired
-    private CarRepository carRepository;
-
-    @Autowired
-    private DamageReportRepository damageReportRepository;
-
+    // Viser startsiden (index) for applikationen.
     @GetMapping("/")
     public String showIndexPage() {
         return "index";
     }
 
+    // Viser login-siden (auth), som også bruger index-skabelonen.
     @GetMapping("/auth")
     public String showAuthPage() {
         return "index";
     }
 
+    // Viser dashboardet for en logget ind medarbejder og redirecter til login, hvis brugeren ikke er logget ind.
     @GetMapping("/dashboard")
     public String showDashboard(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -65,23 +57,48 @@ public class  PageController {
         return "dashboard";
     }
 
+    // Viser en oversigt over alle biler med deres lejeoplysninger og resterende lejeperiode for loggede brugere.
     @GetMapping("/carOverview")
     public String showAllCars(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
+        List<Car> allCars = carService.findAllCars();
+        List<Rental> activeRentals = rentalService.findAllActive();
 
-        List<Car> allCars = carRepository.findAll();
+        Map<Long, Rental> activeRentalsMap = new HashMap<>();
+        Map<Long, Long> remainingDaysMap = new HashMap<>();
+        Map<Long, Long> remainingMonthsMap = new HashMap<>();
+
+        LocalDate today = LocalDate.now();
+
+        for (Rental rental : activeRentals) {
+            activeRentalsMap.put(rental.getCarId(), rental);
+            if (rental.getStartDate() != null && rental.getRentalMonths() > 0) {
+                LocalDate endDate = rental.getStartDate().plusMonths(rental.getRentalMonths());
+                long remainingDays = ChronoUnit.DAYS.between(today, endDate);
+                long remainingMonths = ChronoUnit.MONTHS.between(today, endDate);
+                remainingDaysMap.put(rental.getCarId(), remainingDays);
+                remainingMonthsMap.put(rental.getCarId(), remainingMonths);
+            } else {
+                remainingDaysMap.put(rental.getCarId(), null);
+                remainingMonthsMap.put(rental.getCarId(), null);
+            }
+        }
+
         model.addAttribute("allCars", allCars);
+        model.addAttribute("activeRentalsMap", activeRentalsMap);
+        model.addAttribute("remainingDaysMap", remainingDaysMap);
+        model.addAttribute("remainingMonthsMap", remainingMonthsMap);
         model.addAttribute("employee", loggedInEmployee);
-
         return "carOverview";
     }
 
+    // Viser formularen til redigering af en bil og viser en fejl, hvis bilen ikke findes.
     @GetMapping("/cars/edit/{id}")
     public String editCar(@PathVariable Long id, Model model, HttpSession session) {
-        Car car = carRepository.findById(id);
+        Car car = carService.findCarById(id);
         if (car == null) {
             return "error";
         }
@@ -89,154 +106,163 @@ public class  PageController {
         return "carOverviewEdit";
     }
 
+    // Viser detaljer for en specifik bil, inklusive lejeoplysninger og resterende lejedage.
     @GetMapping("/cars/details/{id}")
-    public String showCarOverviewDetails(@PathVariable Long id, Model model, HttpSession session) {
-        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
-        if (loggedInEmployee == null) {
-            return "redirect:/auth";
-        }
+    public String showCarDetails(@PathVariable("id") Long carId, Model model) {
+        Car car = carService.findCarById(carId);
+        Rental rental = rentalService.findLatestRentalByCarId(carId);
+        Long remainingDays = null;
 
-        Car car = carRepository.findById(id);
-        if (car == null) {
-            return "error";
+        if (rental != null && rental.getStartDate() != null && rental.getRentalMonths() > 0) {
+            LocalDate today = LocalDate.now();
+            LocalDate endDate = rental.getStartDate().plusMonths(rental.getRentalMonths());
+            remainingDays = ChronoUnit.DAYS.between(today, endDate);
         }
 
         model.addAttribute("car", car);
+        model.addAttribute("rental", rental);
+        model.addAttribute("remainingDays", remainingDays);
         return "carOverviewDetails";
     }
 
-
+    // Viser siden til registrering og levering af en bil med en liste over tilgængelige biler.
     @GetMapping("/registerAndDeliverCar")
     public String showDeliverCarPage(Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
-        model.addAttribute("availableCars", carRepository.findAvailableForLoan());
+        model.addAttribute("availableCars", carService.findAvailableForLoan());
         return "registerAndDeliverCar";
     }
 
+    // Viser statistiksiden med gennemsnitlige værdier for betalingstid, transporttid og lejevarighed for en bil.
     @GetMapping("/statistics")
     public String showStatistics(Model model) {
         Long carId = 1L;
-        double averageRentalDuration = carRepository.getAverageRentalDurationPerCar(carId);
-        model.addAttribute("averagePaymentTime", carRepository.getAveragePaymentTime());
-        model.addAttribute("averageTransportTime", carRepository.getAverageTransportTime());
-        model.addAttribute("averageRentalDurationPerCar", averageRentalDuration);
+        Double averageRentalDuration = carService.getAverageRentalDurationPerCar(carId);
+        model.addAttribute("averagePaymentTime", rentalService.getAveragePaymentTime() != null ? rentalService.getAveragePaymentTime() : 0.0);
+        model.addAttribute("averageTransportTime", rentalService.getAverageTransportTime() != null ? rentalService.getAverageTransportTime() : 0.0);
+        model.addAttribute("averageRentalDurationPerCar", averageRentalDuration != null ? averageRentalDuration : 0.0);
         return "statistics";
     }
 
-
+    // Viser en liste over alle biler med deres gennemsnitlige tilgængelighed og lejevarighed.
     @GetMapping("/statisticsCarList")
     public String getStatisticsCarList(Model model) {
-        List<Car> cars = carRepository.findAll();
-
+        List<Car> cars = carService.findAllCars();
         for (Car car : cars) {
-            Double averageAvailabilityDays = carRepository.getAverageAvailabilityPerCar(car.getCarId());
+            Double averageAvailabilityDays = carService.getAverageAvailabilityPerCar(car.getCarId());
             car.setAverageAvailabilityDays(averageAvailabilityDays != null ? averageAvailabilityDays.intValue() : 0);
-
-            Double averageRentalDuration = carRepository.getAverageRentalDurationPerCar(car.getCarId());
+            Double averageRentalDuration = carService.getAverageRentalDurationPerCar(car.getCarId());
             car.setAverageRentalDuration(averageRentalDuration != null ? averageRentalDuration.intValue() : 0);
         }
-
         model.addAttribute("cars", cars);
         return "statisticsCarList";
     }
 
-
+    // Viser en liste over biler, der kræver en skadesrapport, for loggede brugere.
     @GetMapping("/damageReport")
     public String showDamageReportList(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
-        List<Car> cars = carRepository.findCarsNeedingDamageReport();
+        List<Car> cars = carService.findCarsNeedingDamageReport();
+        List<Rental> activeRentals = rentalService.findAllActive();
+        Map<Long, Rental> activeRentalsMap = new HashMap<>();
+        Set<Long> limitedCarsReadyForPurchase = new HashSet<>();
+
+        LocalDate today = LocalDate.now();
+
+        for (Rental rental : activeRentals) {
+            activeRentalsMap.put(rental.getCarId(), rental);
+            // Tjek om lejeaftalen er for et "Limited" abonnement, lejeperioden er afsluttet, og bilen ikke er købt
+            if (rental.getSubscriptionTypeId() == 2 && rental.getReadyForUseDate() != null &&
+                    !rental.getReadyForUseDate().isAfter(today) && !rental.isPurchased()) {
+                limitedCarsReadyForPurchase.add(rental.getCarId());
+            }
+        }
+
         model.addAttribute("employee", loggedInEmployee);
         model.addAttribute("cars", cars);
+        model.addAttribute("activeRentalsMap", activeRentalsMap);
+        model.addAttribute("limitedCarsReadyForPurchase", limitedCarsReadyForPurchase);
         return "damageReport";
     }
 
-
+    // Viser historikken over alle skadesrapporter i systemet.
     @GetMapping("/damageReportHistory")
     public String showDamageReportHistory(Model model) {
-        List<DamageReport> damageReports = damageReportRepository.findAll();
+        List<DamageReport> damageReports = damageReportService.findAll();
         model.addAttribute("damageReports", damageReports);
         return "damageReportHistory";
     }
 
-
-
+    // Viser en oversigt over alle medarbejdere for loggede brugere.
     @GetMapping("/employeeOverview")
     public String getAllEmployees(Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
-
-        List<Employee> employees = employeeRepository.findAll();
+        List<Employee> employees = employeeService.findAll();
         model.addAttribute("employees", employees);
-
         return "employeeOverview";
     }
 
-    @GetMapping("/employeeOverviewAdmin")
-    public String getAllEmployeesAdmin(Model model, HttpSession session) {
-        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
-        if (loggedInEmployee == null || !isAdmin(session)) {
-            return "redirect:/auth";
-        }
-
-        List<Employee> employees = employeeRepository.findAll();
-        model.addAttribute("employees", employees);
-
-        return "employeeOverviewAdmin";
-    }
-
-    private boolean isAdmin(HttpSession session) {
-        Employee employee = (Employee) session.getAttribute("loggedInEmployee");
-        return employee != null && "ADMIN".equalsIgnoreCase(employee.getRole());
-    }
-
+    // Viser siden til tilføjelse af en ny bil for loggede brugere.
     @GetMapping("/addCars")
     public String viewAllCars(HttpSession session, Model model) {
         Employee employee = (Employee) session.getAttribute("loggedInEmployee");
         if (employee == null) {
             return "redirect:/";
         }
-        if ("ADMIN".equals(employee.getRole())) {
-        }
         return "addCars";
     }
 
-    // Denne metode henter de biler der er udlejet og viser deres leveringsdato og tilhørende information
+    // Viser leveringskalenderen med alle aktive lejeaftaler og deres leveringsdage for loggede brugere.
     @GetMapping("/carDeliveryCalendar")
-    public String showCarDeliveryCalendar(Model model) {
-        List<Car> rentedCars = carRepository.findRentedCarsWithDetails();
-        model.addAttribute("rentedCars", rentedCars);
-        return "carDeliveryCalendar";
-    }
-
-
-    @GetMapping("/damageReportFill/{id}")
-    public String showDamageReportForm(@PathVariable Long id, Model model, HttpSession session) {
-        Car car = carRepository.findById(id);
-        if (car == null || !car.isReadyForUse()) {
-            return "error";
-        }
-
+    public String showCarDeliveryCalendar(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
         if (loggedInEmployee == null) {
             return "redirect:/auth";
         }
+        List<Rental> rentedCars = rentalService.findAllActive();
+        Map<Long, Long> daysUntilDeliveryMap = new HashMap<>();
+        LocalDate today = LocalDate.now();
 
-        model.addAttribute("car", car);
-        return "damageReportConfirmation"; // fx en .html-side der viser formularen
+        for (Rental rental : rentedCars) {
+            if (rental.getStartDate() != null && rental.getTransportTime() != null) {
+                LocalDate deliveryDate = rental.getStartDate().plusDays(rental.getTransportTime());
+                long daysUntilDelivery = ChronoUnit.DAYS.between(today, deliveryDate);
+                daysUntilDeliveryMap.put(rental.getRentalId(), daysUntilDelivery);
+            } else {
+                daysUntilDeliveryMap.put(rental.getRentalId(), null);
+            }
+        }
+
+        model.addAttribute("rentedCars", rentedCars);
+        model.addAttribute("daysUntilDeliveryMap", daysUntilDeliveryMap);
+        model.addAttribute("employee", loggedInEmployee);
+        return "carDeliveryCalendar";
     }
 
-
-
-
-
-
-
+    // Viser formularen til udfyldelse af en skadesrapport for en bil, hvis den er klar til rapport.
+    @GetMapping("/damageReportFill/{id}")
+    public String showDamageReportForm(@PathVariable Long id, Model model, HttpSession session) {
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        if (loggedInEmployee == null) {
+            return "redirect:/auth";
+        }
+        Car car = carService.findCarById(id);
+        if (car == null || !car.isNeedsDamageReport()) {
+            model.addAttribute("errorMessage", "Bilen er ikke klar til skaderapport.");
+            return "error";
+        }
+        Rental rental = rentalService.findLatestRentalByCarId(id);
+        model.addAttribute("car", car);
+        model.addAttribute("rental", rental);
+        return "damageReportConfirmation";
+    }
 }

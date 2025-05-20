@@ -1,14 +1,13 @@
-<!DOCTYPE  html>
-<html lang="da">
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medarbejderopslag - Bilabonnement</title>
-    <link rel="icon" href="/img/fav.png" type="image/x-icon" />
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" href="/img/fav.png" type="image/x-icon">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
 <div class="layout">
     <div class="header">
         <div class="logo">
@@ -26,10 +25,12 @@
     </section>
 
     <main class="main-content">
-
         <div class="search-dashboard">
             <h2>Alle Medarbejdere</h2>
-            <table class="styled-table">
+            <div th:if="${employees.isEmpty()}">
+                <p>Ingen medarbejdere fundet.</p>
+            </div>
+            <table class="styled-table" th:unless="${employees.isEmpty()}">
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -51,13 +52,8 @@
     </main>
 
     <div class="footer">
-        <p>
-            Bilabonnement | Medarbejderportal | Kontakt os på
-            support@bilabonnement.dk
-        </p>
+        <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
     </div>
-
 </div>
-
 </body>
 </html>

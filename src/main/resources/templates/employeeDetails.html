@@ -1,14 +1,13 @@
-<!DOCTYPE  html>
-<html lang="da">
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medarbejderdetaljer - Bilabonnement</title>
-    <link rel="icon" href="/img/fav.png" type="image/x-icon" />
-    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" href="/img/fav.png" type="image/x-icon">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
 <div class="layout">
     <div class="header">
         <div class="logo">
@@ -16,8 +15,8 @@
         </div>
         <h3>Medarbejderportal</h3>
         <nav>
-            <a th:href="@{/employeeOverview.html}" class="back-btn">Tilbage</a>
-            <a th:href="@{/employeeEdit.html}" class="back-btn">Log ud</a>
+            <a th:href="@{/employeeOverview}" class="back-btn">Tilbage</a>
+            <a th:href="@{/}" class="back-btn">Log ud</a>
         </nav>
     </div>
 
@@ -26,7 +25,6 @@
     </section>
 
     <main class="main-content">
-
         <div class="search-dashboard">
             <h2>Medarbejderoplysninger</h2>
             <table class="styled-table">
@@ -41,35 +39,22 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td th:text="${employee.employeeId}">1</td>
-                    <td th:text="${employee.username}">username</td>
-                    <td th:text="${employee.fullName}">Navn</td>
-                    <td th:text="${employee.role}">Rolle</td>
+                    <td th:text="${employee.employeeId}"></td>
+                    <td th:text="${employee.username}"></td>
+                    <td th:text="${employee.fullName}"></td>
+                    <td th:text="${employee.role}"></td>
                     <td>
-                        <a th:href="@{/employee/edit/{id}(id=${employee.employeeId})}" class="btn-details">
-                            Rediger
-                        </a>
-                        <form th:action="@{/employee/delete/{id}(id=${employee.employeeId})}" method="post" style="display:inline;">
-                            <button type="submit" class="btn-details"
-                                    onclick="return confirm('Er du sikker på, at du vil slette denne medarbejder?')">
-                                Slet
-                            </button>
-                        </form>
+                        <a th:href="@{/employee/edit/{id}(id=${employee.employeeId})}" class="btn-details">Rediger</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-
     </main>
 
     <div class="footer">
-        <p>
-            Bilabonnement | Medarbejderportal | Kontakt os på
-            support@bilabonnement.dk
-        </p>
+        <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
     </div>
 </div>
-
 </body>
 </html>

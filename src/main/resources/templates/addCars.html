@@ -1,5 +1,5 @@
-<!DOCTYPE  html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,6 @@
 </head>
 <body>
 <div class="layout">
-
   <div class="header">
     <div class="logo">
       <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
@@ -27,12 +26,11 @@
   </section>
 
   <main class="main-content">
-
     <section class="viewCar-dashboard">
       <div class="search-card">
         <h3>Tilføj Ny Bil</h3>
+        <p th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></p>
         <form th:action="@{/cars/add}" method="post">
-
           <label>Stelnummer:</label>
           <input type="text" name="chassisNumber" required><br>
 
@@ -71,7 +69,6 @@
           </div>
         </form>
       </div>
-
     </section>
   </main>
 
@@ -79,6 +76,5 @@
     <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
   </div>
 </div>
-
 </body>
 </html>

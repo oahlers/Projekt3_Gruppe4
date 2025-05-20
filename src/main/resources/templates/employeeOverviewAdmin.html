@@ -1,14 +1,13 @@
-<!DOCTYPE  html>
-<html lang="da">
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Medarbejderopslag - Bilabonnement</title>
-  <link rel="icon" href="/img/fav.png" type="image/x-icon" />
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" href="/img/fav.png" type="image/x-icon">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
 <div class="layout">
   <div class="header">
     <div class="logo">
@@ -26,17 +25,19 @@
   </section>
 
   <main class="main-content">
-
     <div class="search-dashboard">
       <h2>Alle Medarbejdere</h2>
-      <table class="styled-table">
+      <div th:if="${employees.isEmpty()}">
+        <p>Ingen medarbejdere fundet.</p>
+      </div>
+      <table class="styled-table" th:unless="${employees.isEmpty()}">
         <thead>
         <tr>
           <th>ID</th>
           <th>Brugernavn</th>
           <th>Navn</th>
           <th>Rolle</th>
-          <th>Handling</th> <!-- Tilføjet kolonne -->
+          <th>Handling</th>
         </tr>
         </thead>
         <tbody>
@@ -46,7 +47,7 @@
           <td th:text="${employee.fullName}"></td>
           <td th:text="${employee.role}"></td>
           <td>
-            <a th:href="@{'/employee/edit/' + ${employee.employeeId}}" class="btn-details">Detaljer</a>
+            <a th:href="@{/employee/details/{id}(id=${employee.employeeId})}" class="btn-details">Detaljer</a>
           </td>
         </tr>
         </tbody>
@@ -57,7 +58,6 @@
       <h2>Opret ny medarbejder</h2>
       <p th:if="${registerError}" th:text="${registerError}" style="color: red;"></p>
       <form th:action="@{/employeeOverviewAdmin}" method="post">
-
         <label for="signup-full-name">Fulde navn</label>
         <input type="text" id="signup-full-name" name="fullName" placeholder="Indtast fulde navn" required>
 
@@ -67,7 +67,6 @@
         <label for="signup-password">Adgangskode</label>
         <input type="password" id="signup-password" name="password" placeholder="Indtast adgangskode" required minlength="8"
                title="Adgangskoden skal være mindst 8 tegn lang.">
-
 
         <label for="signup-role">Rolle</label>
         <select id="signup-role" name="role" required>
@@ -79,18 +78,11 @@
         <button type="submit">Opret bruger</button>
       </form>
     </div>
-
   </main>
 
-
   <div class="footer">
-    <p>
-      Bilabonnement | Medarbejderportal | Kontakt os på
-      support@bilabonnement.dk
-    </p>
+    <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
   </div>
-
 </div>
-
 </body>
 </html>

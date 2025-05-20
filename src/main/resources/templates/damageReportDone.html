@@ -8,7 +8,6 @@
 </head>
 <body>
 <div class="layout">
-
     <div class="header">
         <div class="logo">
             <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="Logo"></a>
@@ -26,42 +25,37 @@
     <main class="main-content">
         <section class="confirmation">
             <h3>Kundeinformation</h3>
-            <p><strong>Navn:</strong> <span th:text="${rental.customerName}"></span></p>
-            <p><strong>Email:</strong> <span th:text="${rental.customerEmail}"></span></p>
-            <p><strong>Adresse:</strong> <span th:text="${rental.deliveryAddress}"></span></p>
+            <p><strong>Navn:</strong> <span th:text="${#strings.defaultString(rental?.customerName, 'Ikke tilgængelig')}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${#strings.defaultString(rental?.customerEmail, 'Ikke tilgængelig')}"></span></p>
+            <p><strong>Adresse:</strong> <span th:text="${#strings.defaultString(rental?.deliveryAddress, 'Ikke tilgængelig')}"></span></p>
 
             <h3>Overordnet Beskrivelse</h3>
             <p th:text="${overallDescription}">Ingen skader</p>
 
             <h3>Skader</h3>
-            <div th:each="damage, iterStat : ${damageList}">
+            <div th:each="damage, iterStat : ${damages}">
                 <p><strong>Skade [[${iterStat.index + 1}]]:</strong></p>
-                <p>Beskrivelse: <span th:text="${damage.key}"></span></p>
-                <p>Pris: <span th:text="${#numbers.formatDecimal(damage.value, 1, 'COMMA', 2, 'POINT')}"></span> kr.</p>
+                <p>Beskrivelse: <span th:text="${damage.description}"></span></p>
+                <p>Pris: <span th:text="${#numbers.formatDecimal(damage.price, 1, 'COMMA', 2, 'POINT')}"></span> kr.</p>
                 <hr>
             </div>
+            <p th:if="${damages.isEmpty()}">Ingen skader rapporteret.</p>
 
             <h3>Afregning</h3>
             <p>Overkørte kilometer: <span th:text="${mileage}"></span> km</p>
             <p>Pris pr. km: 0,75 kr</p>
             <p><strong>Km-gebyr:</strong>
-                <span th:text="${#numbers.formatDecimal(mileage * 0.75, 1, 'COMMA', 2, 'POINT')}"></span> kr</p>
-
-            <p><strong>Samlet skadebeløb:</strong>
-                <span th:text="${#numbers.formatDecimal(totalDamagePrice, 1, 'COMMA', 2, 'POINT')}"></span> kr</p>
-
+                <span th:text="${#numbers.formatDecimal(kmFee, 1, 'COMMA', 2, 'POINT')}"></span> kr</p>
             <p><strong>Samlet beløb:</strong>
                 <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}"></span> kr</p>
 
             <div style="margin-top: 2rem;">
                 <a th:href="@{/damageReport}" class="btn-link">Gå tilbage til skaderapporter</a>
-                <a href="#" onclick="window.print()" class="btn-link" style="margin-bottom: 1rem; cursor: pointer;">Print som PDF</a>
+                <button onclick="window.print()" class="btn-link">Udskriv som PDF</button>
+
             </div>
-
         </section>
-
     </main>
-
     <div class="footer">
         <p>Bilabonnement | Medarbejderportal | support@bilabonnement.dk</p>
     </div>

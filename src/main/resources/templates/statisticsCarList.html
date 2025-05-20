@@ -8,9 +8,7 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
 <div class="layout">
-
     <div class="header">
         <div class="logo">
             <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
@@ -31,7 +29,10 @@
         <section class="search-dashboard">
             <div class="card">
                 <h3>Liste over alle biler</h3>
-                <table class="styled-table">
+                <div th:if="${cars.isEmpty()}">
+                    <p>Ingen biler fundet.</p>
+                </div>
+                <table class="styled-table" th:unless="${cars.isEmpty()}">
                     <thead>
                     <tr>
                         <th>Bil ID</th>
@@ -46,14 +47,11 @@
                         <td th:text="${car.carId}"></td>
                         <td th:text="${car.brand}"></td>
                         <td th:text="${car.model}"></td>
-
                         <td th:text="${car.averageAvailabilityDays != null ? car.averageAvailabilityDays + ' dage' : 'Data ikke tilgængelig'}"></td>
                         <td th:text="${car.averageRentalDuration != null ? car.averageRentalDuration + ' måneder' : 'Data ikke tilgængelig'}"></td>
-
                     </tr>
                     </tbody>
                 </table>
-
             </div>
         </section>
     </main>
@@ -61,8 +59,6 @@
     <div class="footer">
         <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
     </div>
-
 </div>
-
 </body>
 </html>

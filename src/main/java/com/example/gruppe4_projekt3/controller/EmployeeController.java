@@ -1,116 +1,132 @@
 package com.example.gruppe4_projekt3.controller;
 
 import com.example.gruppe4_projekt3.model.Employee;
-import com.example.gruppe4_projekt3.repository.CarRepository;
-import com.example.gruppe4_projekt3.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.gruppe4_projekt3.service.EmployeeService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpSession;
-
-import java.util.List;
-
-// EmployeeController. håndterer POST- og GET anmodninger for medarbejder funktioner
-// login, register, findEmployee
-
 @Controller
 public class EmployeeController {
+    private final EmployeeService employeeService;
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
-    @Autowired
-    private CarRepository carRepository;
-
-    // Håndterer login af medarbejder og gemmer session, hvis oplysningerne er korrekte.
+    // Håndterer login for en medarbejder og redirecter til dashboardet, hvis det lykkes, eller viser en fejl.
     @PostMapping("/login")
     public String login(@RequestParam("employeeId") int employeeId,
                         @RequestParam("username") String username,
                         @RequestParam("password") String password,
-                        @RequestParam(value = "role", required = false) String role,
                         HttpSession session,
                         Model model) {
-        Employee employee = employeeRepository.findByEmployeeIdAndUsername(employeeId, username);
-        if (employee != null && employee.getPassword().equals(password)) {
-            session.setAttribute("loggedInEmployee", employee);
-            return "redirect:/dashboard";
-        } else {
-            model.addAttribute("loginError", "Ugyldigt EmployeeID, brugernavn eller adgangskode");
+        try {
+            if (employeeService.validateLogin(employeeId, username, password)) {
+                Employee employee = employeeService.findByEmployeeId(employeeId);
+                session.setAttribute("loggedInEmployee", employee);
+                return "redirect:/dashboard";
+            } else {
+                model.addAttribute("loginError", "Ugyldigt EmployeeID, brugernavn eller adgangskode");
+                return "index";
+            }
+        } catch (Exception e) {
+            model.addAttribute("loginError", "En fejl opstod under login. Prøv igen.");
             return "index";
         }
     }
 
-    // Registrerer en ny medarbejder.
+    // Opretter en ny medarbejder, hvis skaberen er admin, og redirecter til medarbejderoversigten.
     @PostMapping("/employeeOverviewAdmin")
     public String register(@RequestParam("fullName") String fullName,
                            @RequestParam("username") String username,
                            @RequestParam("password") String password,
                            @RequestParam("role") String role,
-                           Model model, HttpSession session) {
-
-        // Tjek om brugeren er administrator
+                           Model model,
+                           HttpSession session) {
         if (!isAdmin(session)) {
-            model.addAttribute("registerError", "Du har ikke tilladelse til at oprette en medarbejder.");
-            return "employeeOverView"; // Eller den side, du ønsker at sende brugeren til
+            model.addAttribute("registerError", "Du har ikke tilladelse til at oprette en medarbejder");
+            return "employeeOverviewAdmin";
         }
 
-        if (password.length() < 8) {
-            model.addAttribute("registerError", "Adgangskoden skal være mindst 8 tegn.");
-            return "employeeOverView";
+        try {
+            Employee newEmployee = new Employee();
+            newEmployee.setFullName(fullName);
+            newEmployee.setUsername(username);
+            newEmployee.setPassword(password);
+            newEmployee.setRole(role);
+            employeeService.saveEmployee(newEmployee);
+            return "redirect:/employeeOverviewAdmin";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("registerError", e.getMessage());
+            return "employeeOverviewAdmin";
         }
-
-        Employee existingEmployeeByUsername = employeeRepository.findByUsername(username);
-        if (existingEmployeeByUsername != null) {
-            model.addAttribute("registerError", "Brugernavnet eksisterer allerede");
-            return "employeeOverView";
-        }
-
-        // Opret en ny Employee uden at bruge employeeId
-        Employee newEmployee = new Employee();
-        newEmployee.setFullName(fullName);
-        newEmployee.setUsername(username);
-        newEmployee.setPassword(password);
-        newEmployee.setRole(role);
-
-        // Gem den nye medarbejder i databasen
-        employeeRepository.save(newEmployee);
-
-        return "redirect:/employeeOverviewAdmin"; // Redirect for at vise den opdaterede liste
     }
 
-    // Søger efter en medarbejder ud fra ID og/eller brugernavn.
-    @GetMapping("/employees")
-    public String getAllEmployees(Model model) {
-        List<Employee> employees = employeeRepository.findAll();
-        model.addAttribute("employees", employees);
-        return "employeeOverView";
+    // Viser en oversigt over alle medarbejdere for en admin-bruger og redirecter til login, hvis brugeren ikke er logget ind.
+    @GetMapping("/employeeOverviewAdmin")
+    public String getAllEmployees(Model model, HttpSession session) {
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        if (loggedInEmployee == null || !isAdmin(session)) {
+            return "redirect:/auth";
+        }
+        model.addAttribute("employees", employeeService.findAll());
+        return "employeeOverviewAdmin";
     }
 
+    // Viser formularen til redigering af en medarbejder for en admin-bruger og redirecter til oversigten, hvis medarbejderen ikke findes.
+    @GetMapping("/employee/edit/{id}")
+    public String showEditForm(@PathVariable int id, Model model, HttpSession session) {
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        if (loggedInEmployee == null || !isAdmin(session)) {
+            return "redirect:/auth";
+        }
+        Employee employee = employeeService.findByEmployeeId(id);
+        if (employee != null) {
+            model.addAttribute("employee", employee);
+            return "employeeEdit";
+        }
+        return "redirect:/employeeOverviewAdmin";
+    }
+
+    // Opdaterer en eksisterende medarbejder og redirecter til medarbejderoversigten, eller viser en fejl.
+    @PostMapping("/employee/edit/{id}")
+    public String updateEmployee(@PathVariable int id, @ModelAttribute Employee employee, Model model, HttpSession session) {
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        if (loggedInEmployee == null || !isAdmin(session)) {
+            return "redirect:/auth";
+        }
+        try {
+            employee.setEmployeeId(id);
+            employeeService.updateEmployee(employee);
+            return "redirect:/employeeOverviewAdmin";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("editError", e.getMessage());
+            model.addAttribute("employee", employee);
+            return "employeeEdit";
+        }
+    }
+
+    // Tjekker, om den loggede bruger er en admin ved at kontrollere brugerens rolle i sessionen.
     private boolean isAdmin(HttpSession session) {
         Employee employee = (Employee) session.getAttribute("loggedInEmployee");
         return employee != null && "ADMIN".equalsIgnoreCase(employee.getRole());
     }
 
-
-
-    @GetMapping("/employee/edit/{id}")
-    public String showEditForm(@PathVariable int id, Model model) {
-        Employee employee = employeeRepository.findByEmployeeId(id);
-        if (employee != null) {
-            model.addAttribute("employee", employee);
-            return "employeeEdit";
+    // Viser detaljer for en specifik medarbejder og viser en fejl, hvis medarbejderen ikke findes.
+    @GetMapping("/employee/details/{id}")
+    public String showEmployeeDetails(@PathVariable int id, Model model, HttpSession session) {
+        Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
+        if (loggedInEmployee == null) {
+            return "redirect:/auth";
         }
-        return "redirect:/employee/list";
+        Employee employee = employeeService.findByEmployeeId(id);
+        if (employee == null) {
+            model.addAttribute("errorMessage", "Medarbejder ikke fundet.");
+            return "error";
+        }
+        model.addAttribute("employee", employee);
+        return "employeeDetails";
     }
-
-    @PostMapping("/employee/edit/{id}")
-    public String updateEmployee(@PathVariable int id, @ModelAttribute Employee employee) {
-        employee.setEmployeeId(id);
-        employeeRepository.update(employee);
-        return "redirect:/employeeOverviewAdmin";
-    }
-
-
 }

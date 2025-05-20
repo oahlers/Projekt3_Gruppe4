@@ -25,7 +25,10 @@
     <main class="main-content">
         <section class="search-dashboard">
             <div class="report-list">
-                <table class="styled-table">
+                <div th:if="${damageReports.isEmpty()}">
+                    <p>Ingen skaderapporter fundet.</p>
+                </div>
+                <table class="styled-table" th:unless="${damageReports.isEmpty()}">
                     <thead>
                     <tr>
                         <th>Model</th>
@@ -38,11 +41,11 @@
                     </thead>
                     <tbody>
                     <tr th:each="report : ${damageReports}">
-                        <td th:text="${report.car.model}">Model</td>
-                        <td th:text="${report.car.chassisNumber}">Stelnummer</td>
-                        <td th:text="${report.car.licensePlate}">Nummerplade</td>
-                        <td th:text="${report.customerEmail}">Kunde</td>
-                        <td th:text="${#arrays.length(report.reports)}">Antal skader</td>
+                        <td th:text="${report.car?.model ?: 'Ukendt'}"></td>
+                        <td th:text="${report.car?.chassisNumber ?: 'Ukendt'}"></td>
+                        <td th:text="${report.car?.licensePlate ?: 'Ukendt'}"></td>
+                        <td th:text="${report.customerEmail ?: 'Ukendt'}"></td>
+                        <td th:text="${report.damages.size()}"></td>
                         <td><a th:href="@{'/damageReportDone/' + ${report.car.carId}}" class="btn-link">Vis</a></td>
                     </tr>
                     </tbody>
@@ -50,11 +53,9 @@
             </div>
         </section>
     </main>
-
     <div class="footer">
         <p>Bilabonnement | Medarbejderportal | support@bilabonnement.dk</p>
     </div>
 </div>
-
 </body>
 </html>

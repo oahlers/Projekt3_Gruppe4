@@ -1,5 +1,6 @@
 package com.example.gruppe4_projekt3.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DamageReport {
@@ -7,14 +8,8 @@ public class DamageReport {
     private Car car;
     private Employee employee;
     private String customerEmail;
-    private String[] reports = new String[10];
-    private double[] prices = new double[10];
+    private List<Damage> damages = new ArrayList<>();
     private int mileage;
-
-    public void setDamages(List<String> descriptions, List<Double> prices) {
-        this.reports = descriptions.toArray(new String[0]);
-        this.prices = prices.stream().mapToDouble(Double::doubleValue).toArray();
-    }
 
     public DamageReport() {
     }
@@ -25,7 +20,6 @@ public class DamageReport {
         this.customerEmail = customerEmail;
         this.mileage = mileage;
     }
-
 
     public Long getReportId() {
         return reportId;
@@ -59,20 +53,12 @@ public class DamageReport {
         this.customerEmail = customerEmail;
     }
 
-    public String[] getReports() {
-        return reports;
+    public List<Damage> getDamages() {
+        return damages;
     }
 
-    public void setReports(String[] reports) {
-        this.reports = reports;
-    }
-
-    public double[] getPrices() {
-        return prices;
-    }
-
-    public void setPrices(double[] prices) {
-        this.prices = prices;
+    public void setDamages(List<Damage> damages) {
+        this.damages = damages;
     }
 
     public int getMileage() {

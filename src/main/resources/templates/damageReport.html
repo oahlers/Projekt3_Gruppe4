@@ -1,19 +1,19 @@
-<!DOCTYPE  html>
+<!DOCTYPE html>
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skaderapporter - Bilabonnement</title>
+    <title>Skadesrapporter - Bilabonnement</title>
     <link rel="icon" href="/img/fav.png" type="image/x-icon">
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
 <div class="layout">
-
     <div class="header">
         <div class="logo">
-            <a th:href="@{/dashboard}"><img src="/img/Logo.png" alt="BILABONNEMENT Logo"></a>
+            <a th:href="@{/dashboard}">
+                <img src="/img/Logo.png" alt="BILABONNEMENT Logo">
+            </a>
         </div>
         <h3>Medarbejderportal</h3>
         <nav>
@@ -21,44 +21,48 @@
             <a th:href="@{/}" class="back-btn">Log ud</a>
         </nav>
     </div>
+
     <section class="hero">
-        <h1>Skaderapporter</h1>
-        <p>Herunder ses biler der mangler skaderapport.</p>
+        <h1>Skadesrapporter</h1>
+        <p>Herunder ser du biler, der kræver en skadesrapport.</p>
     </section>
+
     <main class="main-content">
-        <section class="damageReport-dashboard">
+        <div class="search-dashboard">
             <table class="styled-table">
                 <thead>
                 <tr>
                     <th>Bil ID</th>
+                    <th>Mærke</th>
                     <th>Model</th>
-                    <th>Registreringsnummer</th>
+                    <th>Nummerplade</th>
                     <th>Handling</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="car : ${cars}">
-                    <td th:text="${car.carId}">1</td>
-                    <td th:text="${car.model}">Modelnavn</td>
-                    <td th:text="${car.vehicleNumber}">XX12345</td>
+                    <td th:text="${car.carId}"></td>
+                    <td th:text="${car.brand}"></td>
+                    <td th:text="${car.model}"></td>
+                    <td th:text="${car.licensePlate}"></td>
                     <td>
-                        <a th:href="@{/damageReportFill/{id}(id=${car.carId})}" class="btn-link">Udfyld Skaderapport</a>
+                        <th:block th:if="${limitedCarsReadyForPurchase.contains(car.carId)}">
+                            <a th:href="@{/damageReportFill/{id}(id=${car.carId})}" class="btn-link">Udfyld skadesrapport</a>
+                            <a th:href="@{/buyCar/{id}(id=${car.carId})}" class="btn-link">Bil købt af kunde</a>
+                        </th:block>
+                        <th:block th:unless="${limitedCarsReadyForPurchase.contains(car.carId)}">
+                            <a th:href="@{/damageReportFill/{id}(id=${car.carId})}" class="btn-link">Udfyld skadesrapport</a>
+                        </th:block>
                     </td>
                 </tr>
                 </tbody>
             </table>
-
-            <div style="margin-top: 2rem;">
-                <a th:href="@{/damageReportHistory}" class="btn-link">Se tidligere skaderapporter</a>
-            </div>
-        </section>
+        </div>
     </main>
 
     <div class="footer">
         <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
     </div>
-
 </div>
-
 </body>
 </html>

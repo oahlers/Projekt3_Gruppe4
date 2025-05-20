@@ -41,22 +41,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="car : ${rentedCars}">
-                    <td th:text="${car.carId}"></td>
-                    <td th:text="${car.customerName}"></td>
-                    <td th:text="${#temporals.format(car.startDate, 'dd-MM-yyyy')}"></td>
-                    <td th:text="${car.startDate != null and car.transportTime != null} ? ${#temporals.format(car.startDate.plusDays(car.transportTime), 'dd-MM-yyyy')} : 'Ukendt'"></td>
-                    <td th:text="${car.daysUntilDelivery != null} ? ${car.daysUntilDelivery} : 'Ukendt'"></td>
-                    <td th:text="${car.deliveryAddress}"></td>
-                    <td th:text="${car.customerEmail}"></td>
-                    <td th:text="${car.transportTime != null} ? ${car.transportTime} : 'Ikke angivet'"></td>
+                <tr th:each="rental : ${rentedCars}">
+                    <td th:text="${rental.carId}"></td>
+                    <td th:text="${rental.customerName}"></td>
+                    <td th:text="${#temporals.format(rental.startDate, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${rental.startDate != null and rental.transportTime != null} ? ${#temporals.format(rental.startDate.plusDays(rental.transportTime), 'dd-MM-yyyy')} : 'Ukendt'"></td>
+                    <td th:text="${daysUntilDeliveryMap[rental.rentalId] != null} ? ${daysUntilDeliveryMap[rental.rentalId]} : 'Ukendt'"></td>
+                    <td th:text="${rental.deliveryAddress}"></td>
+                    <td th:text="${rental.customerEmail}"></td>
+                    <td th:text="${rental.transportTime != null} ? ${rental.transportTime} : 'Ikke angivet'"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </main>
 
-    <div  class="footer">
+    <div class="footer">
         <p>Bilabonnement | Medarbejderportal | Kontakt os på support@bilabonnement.dk</p>
     </div>
 </div>

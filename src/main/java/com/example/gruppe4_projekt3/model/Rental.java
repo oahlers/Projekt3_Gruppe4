@@ -1,16 +1,22 @@
 package com.example.gruppe4_projekt3.model;
 
+import java.time.LocalDate;
+
 public class Rental {
     private Long rentalId;
     private Long carId;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String customerName;
     private String customerEmail;
-    private String customerPhone;
     private String deliveryAddress;
-
     private int rentalMonths;
+    private LocalDate readyForUseDate;
+    private Integer paymentTime;
+    private Integer transportTime;
+    private int subscriptionTypeId;
     private int mileage;
-    private String subscriptionType;
+    private boolean isPurchased;
 
     public Long getRentalId() {
         return rentalId;
@@ -26,6 +32,22 @@ public class Rental {
 
     public void setCarId(Long carId) {
         this.carId = carId;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public String getCustomerName() {
@@ -44,14 +66,6 @@ public class Rental {
         this.customerEmail = customerEmail;
     }
 
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
-    }
-
     public String getDeliveryAddress() {
         return deliveryAddress;
     }
@@ -68,6 +82,38 @@ public class Rental {
         this.rentalMonths = rentalMonths;
     }
 
+    public LocalDate getReadyForUseDate() {
+        return readyForUseDate;
+    }
+
+    public void setReadyForUseDate(LocalDate readyForUseDate) {
+        this.readyForUseDate = readyForUseDate;
+    }
+
+    public Integer getPaymentTime() {
+        return paymentTime;
+    }
+
+    public void setPaymentTime(Integer paymentTime) {
+        this.paymentTime = paymentTime;
+    }
+
+    public Integer getTransportTime() {
+        return transportTime;
+    }
+
+    public void setTransportTime(Integer transportTime) {
+        this.transportTime = transportTime;
+    }
+
+    public int getSubscriptionTypeId() {
+        return subscriptionTypeId;
+    }
+
+    public void setSubscriptionTypeId(int subscriptionTypeId) {
+        this.subscriptionTypeId = subscriptionTypeId;
+    }
+
     public int getMileage() {
         return mileage;
     }
@@ -76,11 +122,11 @@ public class Rental {
         this.mileage = mileage;
     }
 
-    public String getSubscriptionType() {
-        return subscriptionType;
+    public boolean isPurchased() {
+        return isPurchased;
     }
 
-    public void setSubscriptionType(String subscriptionType) {
-        this.subscriptionType = subscriptionType;
+    public void setPurchased(boolean purchased) {
+        isPurchased = purchased;
     }
 }
