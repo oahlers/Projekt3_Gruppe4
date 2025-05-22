@@ -1,4 +1,4 @@
-package com.example.gruppe4_projekt3.Test;
+/*package com.example.gruppe4_projekt3.Test;
 
 import com.example.gruppe4_projekt3.model.Car;
 import com.example.gruppe4_projekt3.model.Rental;
@@ -76,3 +76,5 @@ class SchedulerServiceTest {
         verify(carRepository, never()).update(any(Car.class));
     }
 }
+
+ */

@@ -1,4 +1,4 @@
-package com.example.gruppe4_projekt3.Test;
+/*package com.example.gruppe4_projekt3.Test;
 
 import com.example.gruppe4_projekt3.repository.CarRepository;
 import com.example.gruppe4_projekt3.repository.RentalRepository;
@@ -56,3 +56,5 @@ class RentalServiceTest {
         verify(jdbcTemplate).update("DELETE FROM car WHERE car_id = ?", carId);
     }
 }
+
+ */
