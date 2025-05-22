@@ -49,7 +49,7 @@ Brugernavn: demo
 
 Password: demo
 
-Yderligere noter
+Yderligere noter:
 
 For at køre programmet via IntelliJIDEA, så startes programmet via: Gruppe4Projekt3Application.
 Sørg for, at port 8080 er ledig, da dette er standardporten for Spring Boot.  
