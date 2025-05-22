@@ -54,5 +54,3 @@ Yderligere noter:
 For at køre programmet via IntelliJ IDEA, så startes programmet via: Gruppe4Projekt3Application.
 Sørg for, at port 8080 er ledig, da dette er standardporten for Spring Boot.  
 Hvis du støder på problemer med databasen, tjek, at MySQL kører, og at konfigurationen i application.properties er korrekt.  
-For at deploye applikationen på Azure skal du bruge Azure CLI eller Azure Portal og følge deres dokumentation for Spring Boot-deployment.
-
