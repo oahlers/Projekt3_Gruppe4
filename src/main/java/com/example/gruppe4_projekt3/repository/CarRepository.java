@@ -89,22 +89,6 @@ public class CarRepository {
         return result != null ? result : 0.0;
     }
 
-    // Beregner den gennemsnitlige betalingstid for alle aktive lejeaftaler.
-    public Double getAveragePaymentTime() {
-        Double result = jdbcTemplate.queryForObject(
-                "SELECT AVG(payment_time) FROM rental WHERE payment_time IS NOT NULL",
-                Double.class);
-        return result != null ? result : 0.0;
-    }
-
-    // Beregner den gennemsnitlige transporttid for alle aktive lejeaftaler.
-    public Double getAverageTransportTime() {
-        Double result = jdbcTemplate.queryForObject(
-                "SELECT AVG(transport_time) FROM rental WHERE transport_time IS NOT NULL",
-                Double.class);
-        return result != null ? result : 0.0;
-    }
-
     private static class CarRowMapper implements RowMapper<Car> {
         @Override
         public Car mapRow(ResultSet rs, int rowNum) throws SQLException {
