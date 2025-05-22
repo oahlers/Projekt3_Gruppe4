@@ -74,33 +74,18 @@ public class RentalService {
         return rentalRepository.findAllActive();
     }
 
-    // Afslutter en lejeaftale ved at sætte dens slutdato til i dag.
-    public void endRental(Long rentalId) {
-        rentalRepository.endRental(rentalId, LocalDate.now());
-    }
-
     // Markerer en lejeaftale som købt, afslutter lejeaftalen og sletter bilen og relaterede data fra databasen.
     public void markCarAsPurchased(Long rentalId, Long carId) {
-        // Markér lejeaftalen som købt og afslut den
         rentalRepository.markAsPurchased(rentalId, LocalDate.now());
-
-        // Slet relaterede data i afhængige tabeller
-        // 1. Slet skadesrapporter (og deres tilknyttede skader) for bilen
         List<Long> reportIds = jdbcTemplate.queryForList(
                 "SELECT report_id FROM damage_report WHERE car_id = ?", Long.class, carId);
         for (Long reportId : reportIds) {
             jdbcTemplate.update("DELETE FROM damage WHERE report_id = ?", reportId);
         }
         jdbcTemplate.update("DELETE FROM damage_report WHERE car_id = ?", carId);
-
-        // 2. Slet lejeaftaler for bilen
         jdbcTemplate.update("DELETE FROM rental WHERE car_id = ?", carId);
-
-        // 3. Slet tilgængelighedslog og sporing for bilen
         jdbcTemplate.update("DELETE FROM availability_log WHERE car_id = ?", carId);
         jdbcTemplate.update("DELETE FROM AvailabilityTracking WHERE car_id = ?", carId);
-
-        // 4. Slet bilen fra car-tabellen
         jdbcTemplate.update("DELETE FROM car WHERE car_id = ?", carId);
     }
 

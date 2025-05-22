@@ -14,13 +14,6 @@ public class DamageReport {
     public DamageReport() {
     }
 
-    public DamageReport(Car car, Employee employee, String customerEmail, int mileage) {
-        this.car = car;
-        this.employee = employee;
-        this.customerEmail = customerEmail;
-        this.mileage = mileage;
-    }
-
     public Long getReportId() {
         return reportId;
     }

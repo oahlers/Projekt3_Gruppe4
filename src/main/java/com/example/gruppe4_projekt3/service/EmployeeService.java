@@ -50,11 +50,6 @@ public class EmployeeService {
         return employeeRepository.findByEmployeeId(employeeId);
     }
 
-    // Finder en medarbejder ud fra deres brugernavn og returnerer null, hvis de ikke findes.
-    public Employee findByUsername(String username) {
-        return employeeRepository.findByUsername(username);
-    }
-
     // Henter en liste over alle medarbejdere i databasen.
     public List<Employee> findAll() {
         return employeeRepository.findAll();
