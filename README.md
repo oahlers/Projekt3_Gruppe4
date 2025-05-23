@@ -1,4 +1,5 @@
 Demo Applikation
+
 Dette er en demo-applikation bygget med Java og Spring Framework, der bruger en MySQL-database. Denne README-fil indeholder instruktioner til at installere, starte og køre applikationen samt information om demobruger og deployment.
 Deployment på Azure
 Applikationen er udrullet på Microsoft Azure og kan tilgås via følgende link: https://baprivat-afg3g3g8bmf9avgh.germanywestcentral-01.azurewebsites.net/
