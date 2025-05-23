@@ -100,6 +100,8 @@ public class PageController {
         model.addAttribute("activeRentalsMap", activeRentalsMap);
         model.addAttribute("remainingDaysMap", remainingDaysMap);
         model.addAttribute("remainingMonthsMap", remainingMonthsMap);
+        model.addAttribute("totalPriceAllCars", totalPriceAllCars);
+        model.addAttribute("totalPriceRentedCars", totalPriceRentedCars);
         model.addAttribute("employee", loggedInEmployee);
         return "carOverview";
     }
