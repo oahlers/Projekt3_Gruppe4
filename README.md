@@ -54,6 +54,8 @@ spring.datasource.hikari.initialization-fail-timeout=-1
 
 
 
+
+
 3. Kør applikationen
 Når applikationen er startet, kan du tilgå den via:http://localhost:8080
 
