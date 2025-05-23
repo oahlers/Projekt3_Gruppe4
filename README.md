@@ -8,11 +8,11 @@ Applikationen er udrullet på Microsoft Azure og kan tilgås via følgende link:
 
 For at teste applikationen kan du bruge følgende login-oplysninger:  
 
-Bruger-ID: 1 
+Bruger-ID: **1** 
 
-Brugernavn: demo
+Brugernavn: **demo**
 
-Password: demo
+Password: **demo**
 
 
 Softwaremæssige forudsætninger
@@ -26,12 +26,12 @@ IDE: IntelliJ IDEA, Eclipse eller en anden IDE med understøttelse af Java og Sp
 Spring Boot: Version 3.0 eller nyere (håndteres via Maven)
 
 Installationsvejledning for at køre programmet via. localhost:
-1. Klon repository
+**1. Klon repository**
    
 Klon projektet fra GitHub:  
 git clone https://github.com/oahlers/Projekt3_Gruppe4.git
 
-2. Konfigurer databasen
+**2. Konfigurer databasen**
 
 Installer MySQL, hvis det ikke allerede er installeret.  
 Opret en database i MySQL:  CREATE DATABASE bilabonnement;
@@ -54,9 +54,7 @@ spring.datasource.hikari.initialization-fail-timeout=-1
 
 
 
-
-
-3. Kør applikationen
+**3. Kør applikationen**
 Når applikationen er startet, kan du tilgå den via:http://localhost:8080
 
 
