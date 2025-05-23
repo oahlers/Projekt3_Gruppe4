@@ -26,7 +26,7 @@ IDE: IntelliJ IDEA, Eclipse eller en anden IDE med understøttelse af Java og Sp
 Spring Boot: Version 3.0 eller nyere (håndteres via Maven)
 
 Installationsvejledning for at køre programmet via. localhost:
-1. Klon repositoryet
+1. Klon repository
    
 Klon projektet fra GitHub:  
 git clone https://github.com/oahlers/Projekt3_Gruppe4.git
@@ -53,6 +53,8 @@ Password: demo
 
 Yderligere noter:
 
+
+Testfilerne ligger inde test/java/com.example.gruppe4_projekt3_service
 For at køre programmet via IntelliJ IDEA, så startes programmet via: Gruppe4Projekt3Application.
 Sørg for, at port 8080 er ledig, da dette er standardporten for Spring Boot.  
 Hvis du støder på problemer med databasen, tjek, at MySQL kører, og at konfigurationen i application.properties er korrekt.  
