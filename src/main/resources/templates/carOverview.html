@@ -6,6 +6,17 @@
     <title>Biloversigt - Bilabonnement</title>
     <link rel="icon" href="/img/fav.png" type="image/x-icon">
     <link rel="stylesheet" href="/style.css">
+    <style>
+        .price-summary {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #333;
+        }
+        .price-summary span {
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
 <div class="layout">
@@ -24,6 +35,8 @@
 
     <section class="hero">
         <h1>Oversigt over Biler</h1>
+        <p class="price-summary">Samlet pris for alle biler: <span th:text="${#numbers.formatDecimal(totalPriceAllCars, 0, 'COMMA', 2, 'POINT')} + ' DKK'"></span></p>
+        <p class="price-summary">Samlet pris for udlejede biler: <span th:text="${#numbers.formatDecimal(totalPriceRentedCars, 0, 'COMMA', 2, 'POINT')} + ' DKK'"></span></p>
         <p>Herunder ser du alle biler, inklusive udlejede og dem, der kræver skadesrapport.</p>
         <div class="filter-buttons">
             <button class="btn-link" onclick="setActiveFilter(this, 'all')">Alle</button>
