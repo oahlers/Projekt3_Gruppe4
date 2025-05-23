@@ -42,7 +42,9 @@ spring.datasource.password=dit_password
 spring.jpa.hibernate.ddl-auto=update
 
 3. Kør applikationen
-Når applikationen er startet, kan du tilgå den via:http://localhost:8080  
+Når applikationen er startet, kan du tilgå den via:http://localhost:8080
+
+
 Log ind med demobruger-oplysningerne:  
 
 Bruger-ID: 1
