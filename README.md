@@ -36,10 +36,22 @@ git clone https://github.com/oahlers/Projekt3_Gruppe4.git
 Installer MySQL, hvis det ikke allerede er installeret.  
 Opret en database i MySQL:  CREATE DATABASE bilabonnement;
 
-Opdater databasekonfigurationen i src/main/resources/application.properties:  spring.datasource.url=jdbc:mysql://localhost:3306/demo_app
-spring.datasource.username=dit_brugernavn
-spring.datasource.password=dit_password
-spring.jpa.hibernate.ddl-auto=update
+Opdater databasekonfigurationen i src/main/resources/application.properties: 
+
+spring.datasource.url=jdbc:mysql://localhost:3306/demo_app
+
+spring.datasource.url=${JDBC_DATABASE_URL}
+
+spring.datasource.username=${JDBC_USERNAME}
+
+spring.datasource.password=${JDBC_PASSWORD}
+
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+spring.datasource.hikari.connection-timeout=10000
+
+spring.datasource.hikari.initialization-fail-timeout=-1
+
 
 3. Kør applikationen
 Når applikationen er startet, kan du tilgå den via:http://localhost:8080
