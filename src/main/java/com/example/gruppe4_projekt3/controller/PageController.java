@@ -87,10 +87,21 @@ public class PageController {
             }
         }
 
+        double totalPriceAllCars = allCars.stream()
+                .mapToDouble(Car::getPrice)
+                .sum();
+
+        double totalPriceRentedCars = allCars.stream()
+                .filter(Car::isRented)
+                .mapToDouble(Car::getPrice)
+                .sum();
+
         model.addAttribute("allCars", allCars);
         model.addAttribute("activeRentalsMap", activeRentalsMap);
         model.addAttribute("remainingDaysMap", remainingDaysMap);
         model.addAttribute("remainingMonthsMap", remainingMonthsMap);
+        model.addAttribute("totalPriceAllCars", totalPriceAllCars);
+        model.addAttribute("totalPriceRentedCars", totalPriceRentedCars);
         model.addAttribute("employee", loggedInEmployee);
         return "carOverview";
     }

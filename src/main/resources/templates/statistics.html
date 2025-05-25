@@ -35,7 +35,7 @@
           <canvas id="paymentChart" height="100"></canvas>
         </div>
         <div class="card">
-          <h3>Gennemsnitlig transporttid</h3>
+          <h3>Gennemsnitlig leveringstid</h3>
           <p><span id="transportTime" th:text="${#numbers.formatDecimal(averageTransportTime, 1, 'COMMA', 2, 'POINT')} ?: '0.00'">0</span> dage</p>
           <canvas id="transportChart" height="100"></canvas>
         </div>
