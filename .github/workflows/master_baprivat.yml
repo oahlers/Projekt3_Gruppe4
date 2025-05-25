@@ -19,8 +19,8 @@ jobs:
       - name: Set up Java version
         uses: actions/setup-java@v4
         with:
-          java-version: '23'
-          distribution: 'temurin'
+          java-version: '21'
+          distribution: 'microsoft'
       - name: Build with Maven
         run: mvn clean install
       - name: Upload artifact for deployment job
@@ -28,7 +28,6 @@ jobs:
         with:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
