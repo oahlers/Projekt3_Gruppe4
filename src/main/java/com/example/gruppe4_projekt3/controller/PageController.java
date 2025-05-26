@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class PageController {
@@ -243,14 +244,18 @@ public class PageController {
         Map<Long, Long> daysUntilDeliveryMap = new HashMap<>();
         LocalDate today = LocalDate.now();
 
+        rentedCars = rentedCars.stream()
+                .filter(rental -> rental.getStartDate() != null && rental.getTransportTime() != null)
+                .filter(rental -> {
+                    LocalDate deliveryDate = rental.getStartDate().plusDays(rental.getTransportTime());
+                    return deliveryDate.isAfter(today);
+                })
+                .collect(Collectors.toList());
+
         for (Rental rental : rentedCars) {
-            if (rental.getStartDate() != null && rental.getTransportTime() != null) {
-                LocalDate deliveryDate = rental.getStartDate().plusDays(rental.getTransportTime());
-                long daysUntilDelivery = ChronoUnit.DAYS.between(today, deliveryDate);
-                daysUntilDeliveryMap.put(rental.getRentalId(), daysUntilDelivery);
-            } else {
-                daysUntilDeliveryMap.put(rental.getRentalId(), null);
-            }
+            LocalDate deliveryDate = rental.getStartDate().plusDays(rental.getTransportTime());
+            long daysUntilDelivery = ChronoUnit.DAYS.between(today, deliveryDate);
+            daysUntilDeliveryMap.put(rental.getRentalId(), daysUntilDelivery);
         }
 
         model.addAttribute("rentedCars", rentedCars);
