@@ -74,18 +74,21 @@ public class PageController {
 
         LocalDate today = LocalDate.now();
 
+        activeRentals = activeRentals.stream()
+                .filter(rental -> rental.getStartDate() != null && rental.getRentalMonths() > 0)
+                .filter(rental -> {
+                    LocalDate endDate = rental.getStartDate().plusMonths(rental.getRentalMonths());
+                    return endDate.isAfter(today);
+                })
+                .collect(Collectors.toList());
+
         for (Rental rental : activeRentals) {
             activeRentalsMap.put(rental.getCarId(), rental);
-            if (rental.getStartDate() != null && rental.getRentalMonths() > 0) {
-                LocalDate endDate = rental.getStartDate().plusMonths(rental.getRentalMonths());
-                long remainingDays = ChronoUnit.DAYS.between(today, endDate);
-                long remainingMonths = ChronoUnit.MONTHS.between(today, endDate);
-                remainingDaysMap.put(rental.getCarId(), remainingDays);
-                remainingMonthsMap.put(rental.getCarId(), remainingMonths);
-            } else {
-                remainingDaysMap.put(rental.getCarId(), null);
-                remainingMonthsMap.put(rental.getCarId(), null);
-            }
+            LocalDate endDate = rental.getStartDate().plusMonths(rental.getRentalMonths());
+            long remainingDays = ChronoUnit.DAYS.between(today, endDate);
+            long remainingMonths = ChronoUnit.MONTHS.between(today, endDate);
+            remainingDaysMap.put(rental.getCarId(), remainingDays);
+            remainingMonthsMap.put(rental.getCarId(), remainingMonths);
         }
 
         double totalPriceAllCars = allCars.stream()
@@ -93,7 +96,7 @@ public class PageController {
                 .sum();
 
         double totalPriceRentedCars = allCars.stream()
-                .filter(Car::isRented)
+                .filter(car -> activeRentalsMap.containsKey(car.getCarId()))
                 .mapToDouble(Car::getPrice)
                 .sum();
 
