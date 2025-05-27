@@ -16,6 +16,7 @@ public class RentalRepository {
     }
 
     // Gemmer en ny lejeaftale i databasen med de angivne oplysninger.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void save(Rental rental) {
         String sql = "INSERT INTO rental (car_id, customer_name, customer_email, delivery_address, " +
                 "rental_months, start_date, ready_for_use_date, subscription_type_id, mileage, " +
@@ -28,6 +29,7 @@ public class RentalRepository {
     }
 
     // Finder den seneste lejeaftale for en given bil og returnerer null, hvis ingen findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Rental findLatestByCarId(Long carId) {
         String sql = "SELECT * FROM rental WHERE car_id = ? ORDER BY start_date DESC LIMIT 1";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
@@ -51,6 +53,7 @@ public class RentalRepository {
     }
 
     // Henter en liste over alle aktive lejeaftaler, hvor slutdatoen ikke er sat.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public List<Rental> findAllActive() {
         String sql = "SELECT * FROM rental WHERE end_date IS NULL";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
@@ -74,12 +77,14 @@ public class RentalRepository {
     }
 
     // Afslutter en lejeaftale ved at sætte en slutdato i databasen.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void endRental(Long rentalId, LocalDate endDate) {
         String sql = "UPDATE rental SET end_date = ? WHERE rental_id = ?";
         jdbcTemplate.update(sql, endDate, rentalId);
     }
 
     // Markerer en lejeaftale som købt og sætter en slutdato i databasen.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void markAsPurchased(Long rentalId, LocalDate endDate) {
         String sql = "UPDATE rental SET isPurchased = 1, end_date = ? WHERE rental_id = ?";
         jdbcTemplate.update(sql, endDate, rentalId);

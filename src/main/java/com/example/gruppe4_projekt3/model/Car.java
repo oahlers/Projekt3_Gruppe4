@@ -1,5 +1,7 @@
 package com.example.gruppe4_projekt3.model;
 
+// Model klassen for Car
+// // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
 public class Car {
     private Long carId;
     private int carEmission;

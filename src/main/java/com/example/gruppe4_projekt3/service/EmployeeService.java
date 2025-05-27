@@ -15,6 +15,7 @@ public class EmployeeService {
     }
 
     // Gemmer en ny medarbejder i databasen efter validering af brugernavn og adgangskode.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void saveEmployee(Employee employee) {
         if (employee.getUsername() == null || employee.getUsername().isEmpty()) {
             throw new IllegalArgumentException("Brugernavn må ikke være tomt");
@@ -29,6 +30,7 @@ public class EmployeeService {
     }
 
     // Opdaterer en eksisterende medarbejder i databasen efter validering af brugernavn og adgangskode.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void updateEmployee(Employee employee) {
         if (employee.getUsername() == null || employee.getUsername().isEmpty()) {
             throw new IllegalArgumentException("Brugernavn må ikke være tomt");
@@ -40,17 +42,20 @@ public class EmployeeService {
     }
 
     // Validerer en medarbejders loginoplysninger ved at tjekke ID, brugernavn og adgangskode.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public boolean validateLogin(int employeeId, String username, String password) {
         Employee employee = employeeRepository.findByEmployeeIdAndUsername(employeeId, username);
         return employee != null && password.equals(employee.getPassword());
     }
 
     // Finder en medarbejder ud fra deres ID og returnerer null, hvis de ikke findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Employee findByEmployeeId(int employeeId) {
         return employeeRepository.findByEmployeeId(employeeId);
     }
 
     // Henter en liste over alle medarbejdere i databasen.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public List<Employee> findAll() {
         return employeeRepository.findAll();
     }

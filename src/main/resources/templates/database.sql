@@ -1,3 +1,7 @@
+-- Database med oprettelse af tabeller og tilhørende eksempler
+    -- Julis Gissel, Rasmus Guldborg Pedersen og Oliver Ahlers
+
+
 -- Dropper databasen, hvis den eksisterer, og opretter en ny.
 DROP DATABASE IF EXISTS bilabonnement;
 

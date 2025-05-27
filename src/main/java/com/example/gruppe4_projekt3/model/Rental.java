@@ -2,6 +2,8 @@ package com.example.gruppe4_projekt3.model;
 
 import java.time.LocalDate;
 
+// Model klasse for Rental
+// [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
 public class Rental {
     private Long rentalId;
     private Long carId;

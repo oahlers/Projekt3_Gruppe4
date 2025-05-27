@@ -18,12 +18,14 @@ public class EmployeeRepository {
     private JdbcTemplate jdbcTemplate;
 
     // Gemmer en ny medarbejder i databasen med de angivne oplysninger.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void save(Employee employee) {
         String sql = "INSERT INTO employees (fullname, username, password, role) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, employee.getFullName(), employee.getUsername(), employee.getPassword(), employee.getRole());
     }
 
     // Opdaterer en eksisterende medarbejder i databasen baseret på deres ID.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void update(Employee employee) {
         String sql = "UPDATE employees SET fullname = ?, username = ?, password = ?, role = ? WHERE employee_id = ?";
         jdbcTemplate.update(sql,
@@ -35,6 +37,7 @@ public class EmployeeRepository {
     }
 
     // Finder en medarbejder i databasen ud fra deres ID og returnerer null, hvis de ikke findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Employee findByEmployeeId(int employeeId) {
         String sql = "SELECT * FROM employees WHERE employee_id = ?";
         try {
@@ -45,6 +48,7 @@ public class EmployeeRepository {
     }
 
     // Finder en medarbejder i databasen ud fra deres brugernavn og returnerer null, hvis de ikke findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Employee findByUsername(String username) {
         String sql = "SELECT * FROM employees WHERE username = ?";
         try {
@@ -55,6 +59,7 @@ public class EmployeeRepository {
     }
 
     // Finder en medarbejder i databasen ud fra både deres ID og brugernavn og returnerer null, hvis de ikke findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Employee findByEmployeeIdAndUsername(int employeeId, String username) {
         String sql = "SELECT * FROM employees WHERE employee_id = ? AND username = ?";
         try {
@@ -65,11 +70,14 @@ public class EmployeeRepository {
     }
 
     // Henter en liste over alle medarbejdere i databasen.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public List<Employee> findAll() {
         String sql = "SELECT * FROM employees";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Employee.class));
     }
 
+    // Rowmapper for Employee
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public class EmployeeRowMapper implements RowMapper<Employee> {
         @Override
         public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {

@@ -36,18 +36,21 @@ public class PageController {
     }
 
     // Viser startsiden (index) for applikationen.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/")
     public String showIndexPage() {
         return "index";
     }
 
     // Viser login-siden (auth), som også bruger index-skabelonen.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/auth")
     public String showAuthPage() {
         return "index";
     }
 
     // Viser dashboardet for en logget ind medarbejder og redirecter til login, hvis brugeren ikke er logget ind.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/dashboard")
     public String showDashboard(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -59,6 +62,7 @@ public class PageController {
     }
 
     // Viser en oversigt over alle biler med deres lejeoplysninger og resterende lejeperiode for loggede brugere.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/carOverview")
     public String showAllCars(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -111,6 +115,7 @@ public class PageController {
     }
 
     // Viser formularen til redigering af en bil og viser en fejl, hvis bilen ikke findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/cars/edit/{id}")
     public String editCar(@PathVariable Long id, Model model, HttpSession session) {
         Car car = carService.findCarById(id);
@@ -122,6 +127,7 @@ public class PageController {
     }
 
     // Viser detaljer for en specifik bil, inklusive lejeoplysninger og resterende lejedage.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/cars/details/{id}")
     public String showCarDetails(@PathVariable("id") Long carId, Model model) {
         Car car = carService.findCarById(carId);
@@ -141,6 +147,7 @@ public class PageController {
     }
 
     // Viser siden til registrering og levering af en bil med en liste over tilgængelige biler.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/registerAndDeliverCar")
     public String showDeliverCarPage(Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -152,6 +159,7 @@ public class PageController {
     }
 
     // Viser statistiksiden med gennemsnitlige værdier for betalingstid, transporttid og lejevarighed for en bil.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/statistics")
     public String showStatistics(Model model) {
         Long carId = 1L;
@@ -163,6 +171,7 @@ public class PageController {
     }
 
     // Viser en liste over alle biler med deres gennemsnitlige tilgængelighed og lejevarighed.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/statisticsCarList")
     public String getStatisticsCarList(Model model) {
         List<Car> cars = carService.findAllCars();
@@ -177,6 +186,7 @@ public class PageController {
     }
 
     // Viser en liste over biler, der kræver en skadesrapport, for loggede brugere.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/damageReport")
     public String showDamageReportList(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -192,7 +202,6 @@ public class PageController {
 
         for (Rental rental : activeRentals) {
             activeRentalsMap.put(rental.getCarId(), rental);
-            // Tjek om lejeaftalen er for et "Limited" abonnement, lejeperioden er afsluttet, og bilen ikke er købt
             if (rental.getSubscriptionTypeId() == 2 && rental.getReadyForUseDate() != null &&
                     !rental.getReadyForUseDate().isAfter(today) && !rental.isPurchased()) {
                 limitedCarsReadyForPurchase.add(rental.getCarId());
@@ -207,6 +216,7 @@ public class PageController {
     }
 
     // Viser historikken over alle skadesrapporter i systemet.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/damageReportHistory")
     public String showDamageReportHistory(Model model) {
         List<DamageReport> damageReports = damageReportService.findAll();
@@ -215,6 +225,7 @@ public class PageController {
     }
 
     // Viser en oversigt over alle medarbejdere for loggede brugere.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/employeeOverview")
     public String getAllEmployees(Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -227,6 +238,7 @@ public class PageController {
     }
 
     // Viser siden til tilføjelse af en ny bil for loggede brugere.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/addCars")
     public String viewAllCars(HttpSession session, Model model) {
         Employee employee = (Employee) session.getAttribute("loggedInEmployee");
@@ -237,6 +249,7 @@ public class PageController {
     }
 
     // Viser leveringskalenderen med alle aktive lejeaftaler og deres leveringsdage for loggede brugere.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/carDeliveryCalendar")
     public String showCarDeliveryCalendar(HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -268,6 +281,7 @@ public class PageController {
     }
 
     // Viser formularen til udfyldelse af en skadesrapport for en bil, hvis den er klar til rapport.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/damageReportFill/{id}")
     public String showDamageReportForm(@PathVariable Long id, Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");

@@ -1,5 +1,7 @@
 package com.example.gruppe4_projekt3.model;
 
+// Model klasse for Damage
+// [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
 public class Damage {
     private Long damageId;
     private Long reportId;

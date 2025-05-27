@@ -13,6 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
 
+// Exception Flow test af CarService
+// [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
 @ExtendWith(MockitoExtension.class)
 class CarServiceHappyFlowTest {
 

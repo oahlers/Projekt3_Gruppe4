@@ -18,18 +18,21 @@ public class CarRepository {
     }
 
     // Henter en liste over alle biler fra databasen.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public List<Car> findAll() {
         String sql = "SELECT * FROM car";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     // Finder en bil i databasen ud fra dens ID og returnerer null, hvis den ikke findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Car findById(Long id) {
         String sql = "SELECT * FROM car WHERE car_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new CarRowMapper());
     }
 
     // Gemmer en ny bil i databasen med de angivne detaljer.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void save(Car car) {
         String sql = "INSERT INTO car (car_emission, year, brand, model, color, equipment_level, " +
                 "vehicle_number, chassis_number, price, registration_fee, isRented, " +
@@ -42,6 +45,7 @@ public class CarRepository {
     }
 
     // Opdaterer en eksisterende bil i databasen med nye oplysninger baseret på dens ID.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void update(Car car) {
         String sql = "UPDATE car SET car_emission = ?, year = ?, brand = ?, model = ?, color = ?, " +
                 "equipment_level = ?, vehicle_number = ?, chassis_number = ?, license_plate = ?, " +
@@ -55,6 +59,7 @@ public class CarRepository {
     }
 
     // Nulstiller en bils tilgængelighed og skadesstatus i databasen efter en skadesrapport.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void resetAfterDamageReport(Long carId) {
         jdbcTemplate.update(
                 "UPDATE car SET isRented = 0, needsDamageReport = 0 WHERE car_id = ?",
@@ -62,18 +67,21 @@ public class CarRepository {
     }
 
     // Henter en liste over biler, der er tilgængelige til udlejning (ikke udlejet og klar til brug).
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public List<Car> findAvailableForLoan() {
         String sql = "SELECT * FROM car WHERE isRented = 0 AND needsDamageReport = 0";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     // Henter en liste over biler, der kræver en skadesrapport (klar til brug).
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public List<Car> findCarsNeedingDamageReport() {
         String sql = "SELECT * FROM car WHERE needsDamageReport = 1";
         return jdbcTemplate.query(sql, new CarRowMapper());
     }
 
     // Beregner den gennemsnitlige tilgængelighedstid for en bil baseret på dens historik.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Double getAverageAvailabilityPerCar(Long carId) {
         Double result = jdbcTemplate.queryForObject(
                 "SELECT AVG(a.duration_days) FROM availability_log a WHERE a.car_id = ?",
@@ -82,6 +90,7 @@ public class CarRepository {
     }
 
     // Beregner den gennemsnitlige lejevarighed for en bil baseret på dens lejeaftaler.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Double getAverageRentalDurationPerCar(Long carId) {
         Double result = jdbcTemplate.queryForObject(
                 "SELECT AVG(r.rental_months) FROM rental r WHERE r.car_id = ?",
@@ -89,6 +98,8 @@ public class CarRepository {
         return result != null ? result : 0.0;
     }
 
+    // Rowmapper for Car
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     private static class CarRowMapper implements RowMapper<Car> {
         @Override
         public Car mapRow(ResultSet rs, int rowNum) throws SQLException {

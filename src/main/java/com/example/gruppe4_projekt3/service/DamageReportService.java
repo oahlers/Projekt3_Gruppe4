@@ -21,6 +21,7 @@ public class DamageReportService {
     }
 
     // Opretter en ny skadesrapport for en bil og gemmer den i databasen efter validering.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void createDamageReport(Long carId, Employee employee, String customerEmail, int mileage, List<Damage> damages) {
         Car car = carRepository.findById(carId);
         if (car == null || !car.isNeedsDamageReport()) {
@@ -36,16 +37,19 @@ public class DamageReportService {
     }
 
     // Finder den seneste skadesrapport for en given bil og returnerer null, hvis ingen findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public DamageReport findLatestByCarId(Long carId) {
         return damageReportRepository.findLatestByCarId(carId);
     }
 
     // Henter alle skadesrapporter fra databasen.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public List<DamageReport> findAll() {
         return damageReportRepository.findAll();
     }
 
     // Beregner den samlede pris for en skadesrapport inklusive kilometergebyr.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public double calculateTotalDamagePrice(List<Damage> damages, int mileage) {
         double totalDamagePrice = damages.stream().mapToDouble(Damage::getPrice).sum();
         double kmFee = mileage * 0.75;

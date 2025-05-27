@@ -1,5 +1,7 @@
 package com.example.gruppe4_projekt3.model;
 
+// Model klasse for Employee
+// [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
 public class  Employee {
     private int employeeId;
     private String fullName;

@@ -34,6 +34,7 @@ public class DamageReportController {
     }
 
     // Opretter og gemmer en skadesrapport for en bil og viser en bekræftelsesside med prisberegning.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @PostMapping("/damageReportDone/{id}")
     public String submitDamageReport(@PathVariable("id") Long carId,
                                      @RequestParam(name = "report", required = false) String[] reports,
@@ -86,6 +87,7 @@ public class DamageReportController {
     }
 
     // Viser den seneste skadesrapport for en bil sammen med prisberegninger og relaterede oplysninger.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/damageReportDone/{carId}")
     public String showDamageReport(@PathVariable Long carId, Model model) {
         DamageReport report = damageReportService.findLatestByCarId(carId);
@@ -115,6 +117,7 @@ public class DamageReportController {
     }
 
     // Viser siden til at bekræfte køb af en bil for en kunde med et "Limited" abonnement.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/buyCar/{id}")
     public String showBuyCarForm(@PathVariable("id") Long carId, Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -144,6 +147,7 @@ public class DamageReportController {
     }
 
     // Bekræfter købet af en bil og viser en bekræftelsesside.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @PostMapping("/buyCarDone/{id}")
     public String confirmCarPurchase(@PathVariable("id") Long carId, @RequestParam("rentalId") Long rentalId, Model model) {
         Car car = carRepository.findById(carId);

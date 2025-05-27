@@ -22,6 +22,7 @@ public class CarController {
     }
 
     // Tilføjer en ny bil til systemet og redirecter til dashboardet, hvis det lykkes, eller viser en fejl.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @PostMapping("/cars/add")
     public String addCar(@ModelAttribute Car car, HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -38,6 +39,7 @@ public class CarController {
     }
 
     // Registrerer og leverer en bil til en kunde ved at oprette en lejeaftale og redirecter til dashboardet.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @PostMapping("/registerAndDeliverCar")
     public String registerDelivery(
             @RequestParam Long carId,
@@ -64,6 +66,7 @@ public class CarController {
     }
 
     // Viser formularen til redigering af en bil baseret på bilens ID og redirecter til detaljesiden, hvis bilen ikke findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/carOverviewEdit/{carId}")
     public String showEditForm(@PathVariable Long carId, Model model) {
         Car car = carService.findCarById(carId);
@@ -75,6 +78,7 @@ public class CarController {
     }
 
     // Opdaterer en eksisterende bil med nye oplysninger og redirecter til biloversigten, eller viser en fejl.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @PostMapping("/carOverviewEdit/{carId}")
     public String updateCar(@PathVariable Long carId, @ModelAttribute Car car, HttpSession session, Model model) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");

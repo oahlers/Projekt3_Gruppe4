@@ -3,6 +3,8 @@ package com.example.gruppe4_projekt3.model;
 import java.util.ArrayList;
 import java.util.List;
 
+// Model klasse for DamageReport
+// // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
 public class DamageReport {
     private Long reportId;
     private Car car;

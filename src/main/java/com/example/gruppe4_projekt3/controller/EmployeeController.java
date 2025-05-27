@@ -16,6 +16,7 @@ public class EmployeeController {
     }
 
     // Håndterer login for en medarbejder og redirecter til dashboardet, hvis det lykkes, eller viser en fejl.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @PostMapping("/login")
     public String login(@RequestParam("employeeId") int employeeId,
                         @RequestParam("username") String username,
@@ -38,6 +39,7 @@ public class EmployeeController {
     }
 
     // Opretter en ny medarbejder, hvis skaberen er admin, og redirecter til medarbejderoversigten.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @PostMapping("/employeeOverviewAdmin")
     public String register(@RequestParam("fullName") String fullName,
                            @RequestParam("username") String username,
@@ -65,6 +67,7 @@ public class EmployeeController {
     }
 
     // Viser en oversigt over alle medarbejdere for en admin-bruger og redirecter til login, hvis brugeren ikke er logget ind.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/employeeOverviewAdmin")
     public String getAllEmployees(Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -76,6 +79,7 @@ public class EmployeeController {
     }
 
     // Viser formularen til redigering af en medarbejder for en admin-bruger og redirecter til oversigten, hvis medarbejderen ikke findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/employee/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -91,6 +95,7 @@ public class EmployeeController {
     }
 
     // Opdaterer en eksisterende medarbejder og redirecter til medarbejderoversigten, eller viser en fejl.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @PostMapping("/employee/edit/{id}")
     public String updateEmployee(@PathVariable int id, @ModelAttribute Employee employee, Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");
@@ -108,13 +113,13 @@ public class EmployeeController {
         }
     }
 
-    // Tjekker, om den loggede bruger er en admin ved at kontrollere brugerens rolle i sessionen.
     private boolean isAdmin(HttpSession session) {
         Employee employee = (Employee) session.getAttribute("loggedInEmployee");
         return employee != null && "ADMIN".equalsIgnoreCase(employee.getRole());
     }
 
     // Viser detaljer for en specifik medarbejder og viser en fejl, hvis medarbejderen ikke findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @GetMapping("/employee/details/{id}")
     public String showEmployeeDetails(@PathVariable int id, Model model, HttpSession session) {
         Employee loggedInEmployee = (Employee) session.getAttribute("loggedInEmployee");

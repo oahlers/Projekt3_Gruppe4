@@ -24,6 +24,7 @@ public class RentalService {
     }
 
     // Opretter en ny lejeaftale, validerer abonnementsregler og opdaterer bilens status til udlejet.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void createRental(Long carId, String customerName, String customerEmail, String deliveryAddress,
                              int rentalMonths, int subscriptionTypeId, int mileage, int paymentTime, int transportTime) {
         validateRental(rentalMonths, subscriptionTypeId);
@@ -52,6 +53,7 @@ public class RentalService {
     }
 
     // Validerer regler for en lejeaftale baseret på abonnementsype og lejeperiode.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     private void validateRental(int rentalMonths, int subscriptionTypeId) {
         if (subscriptionTypeId != 1 && subscriptionTypeId != 2) {
             throw new IllegalArgumentException("Ugyldig abonnementstype");
@@ -65,16 +67,19 @@ public class RentalService {
     }
 
     // Finder den seneste lejeaftale for en given bil og returnerer null, hvis ingen findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Rental findLatestRentalByCarId(Long carId) {
         return rentalRepository.findLatestByCarId(carId);
     }
 
     // Henter en liste over alle aktive lejeaftaler i systemet.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public List<Rental> findAllActive() {
         return rentalRepository.findAllActive();
     }
 
     // Markerer en lejeaftale som købt, afslutter lejeaftalen og sletter bilen og relaterede data fra databasen.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void markCarAsPurchased(Long rentalId, Long carId) {
         rentalRepository.markAsPurchased(rentalId, LocalDate.now());
         List<Long> reportIds = jdbcTemplate.queryForList(
@@ -90,6 +95,7 @@ public class RentalService {
     }
 
     // Beregner den gennemsnitlige betalingstid for alle aktive lejeaftaler.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Double getAveragePaymentTime() {
         return rentalRepository.findAllActive().stream()
                 .mapToInt(r -> r.getPaymentTime() != null ? r.getPaymentTime() : 0)
@@ -98,6 +104,7 @@ public class RentalService {
     }
 
     // Beregner den gennemsnitlige transporttid for alle aktive lejeaftaler.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Double getAverageTransportTime() {
         return rentalRepository.findAllActive().stream()
                 .mapToInt(r -> r.getTransportTime() != null ? r.getTransportTime() : 0)

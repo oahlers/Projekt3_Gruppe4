@@ -24,6 +24,7 @@ public class DamageReportRepository {
     }
 
     // Gemmer en ny skadesrapport i databasen sammen med tilhørende skader og nulstiller bilens status.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public void save(DamageReport damageReport) {
         String insertReportSql = "INSERT INTO damage_report (car_id, mileage, employee_id, customer_email) " +
                 "VALUES (?, ?, ?, ?)";
@@ -47,6 +48,7 @@ public class DamageReportRepository {
     }
 
     // Henter alle skadesrapporter fra databasen sammen med tilhørende skader.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public List<DamageReport> findAll() {
         String sql = "SELECT dr.*, c.brand, c.model, c.chassis_number, c.license_plate, " +
                 "e.fullname AS employee_fullname " +
@@ -65,6 +67,7 @@ public class DamageReportRepository {
     }
 
     // Finder den seneste skadesrapport for en given bil og returnerer null, hvis ingen findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public DamageReport findLatestByCarId(Long carId) {
         String sql = "SELECT dr.*, c.brand, c.model, c.chassis_number, c.license_plate, " +
                 "e.fullname AS employee_fullname " +
@@ -87,6 +90,7 @@ public class DamageReportRepository {
     }
 
     // Finder den seneste aktive lejeaftale for en given bil og returnerer null, hvis ingen findes.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     public Rental findLatestRentalByCarId(Long carId) {
         String sql = "SELECT * FROM rental WHERE car_id = ? AND end_date IS NULL ORDER BY start_date DESC LIMIT 1";
         try {
@@ -96,6 +100,8 @@ public class DamageReportRepository {
         }
     }
 
+    // Rowmapper for skadesrapporter
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     private static class DamageReportRowMapper implements RowMapper<DamageReport> {
         @Override
         public DamageReport mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -121,6 +127,8 @@ public class DamageReportRepository {
         }
     }
 
+    // Rowmapper for Damage
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     private static class DamageRowMapper implements RowMapper<Damage> {
         @Override
         public Damage mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -133,6 +141,8 @@ public class DamageReportRepository {
         }
     }
 
+    // Rowmapper for rental
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     private static class RentalRowMapper implements RowMapper<Rental> {
         @Override
         public Rental mapRow(ResultSet rs, int rowNum) throws SQLException {

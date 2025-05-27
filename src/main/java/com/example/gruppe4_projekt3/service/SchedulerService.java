@@ -25,6 +25,7 @@ public class SchedulerService {
     }
 
     // Opdaterer bilers skadesstatus dagligt baseret på deres lejeaftalers udløbsdato.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @Scheduled(cron = "0 0 0 * * ?")
     public void updateReadyForUseStatus() {
         List<Rental> activeRentals = rentalRepository.findAllActive();
@@ -39,6 +40,7 @@ public class SchedulerService {
     }
 
     // Sporer dagligt bilers tilgængelighed og logger perioder, hvor de bliver utilgængelige.
+    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
     @Scheduled(cron = "0 0 0 * * ?")
     public void trackAvailability() {
         List<Car> cars = carRepository.findAll();
