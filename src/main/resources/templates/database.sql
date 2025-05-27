@@ -105,21 +105,21 @@ VALUES ('UNLIMITED'), ('LIMITED');
 -- Indsætter testdata for biler med opdaterede feltnavne.
 INSERT INTO car (car_emission, year, brand, model, color, equipment_level, vehicle_number, chassis_number, license_plate, price, registration_fee, image, isRented, needsDamageReport)
 VALUES
-    (0, 2024, 'NAVOR', 'E5 ROCK 218 HK', 'Sort', 'Premium', 'EVN12345', 'NAVORE5ROCK12345678', 'AB12345', 329995.00, 18420.00, '/img/rock.jpg', b'1', b'0'), -- Udlejet, tid tilbage
-    (0, 2023, 'Fiat', '500e Icon Pack 118 HK', 'Hvid', 'Icon Pack', 'EVF50001', 'FIAT500EICON12345678', 'XY98765', 259995.00, 16230.00, '/img/captur.jpg', b'1', b'0'), -- Udlejet, tid tilbage
-    (100, 2023, 'Tesla', 'Model Y Long Range', 'Blå', 'Standard', 'EVT10001', 'TESLAMODELYLONG12345678', 'CD54321', 689995.00, 29550.00, '/img/civicAdvance.jpg', b'1', b'0'), -- Udlejet, tid tilbage
-    (50, 2023, 'BMW', 'iX3', 'Grå', 'Xdrive', 'EVB50001', 'BMWIX3123456789', 'EF12345', 799995.00, 41250.00, '/img/civicTechno.jpg', b'1', b'1'), -- Udlejet, lejeperiode ovre, mangler skadesrapport
-    (0, 2022, 'Nissan', 'Leaf 40 kWh', 'Rød', 'N-Connecta', 'EVN20001', 'NISSANLEAF12345678', 'GH67890', 219995.00, 11850.00, '/img/sivicSport.jpg', b'1', b'1'), -- Udlejet, lejeperiode ovre, mangler skadesrapport
-    (0, 2021, 'Renault', 'Zoe 52 kWh', 'Grøn', 'Intens', 'EVR50001', 'RENAULTZOE12345678', 'IJ12345', 189995.00, 8200.00, '/img/civicAdvance.jpg', b'0', b'0'), -- Ikke udlejet
-    (0, 2023, 'Audi', 'Q4 e-tron', 'Blå', 'S Line', 'EVA40001', 'AUDIQ4ETRON12345678', 'KL98765', 619995.00, 23400.00, '/img/civicTechno.jpg', b'0', b'0'), -- Ikke udlejet
-    (0, 2024, 'Volkswagen', 'ID.4', 'Sort', 'Pro Performance', 'EVW20001', 'VOLKSWAGENID4123456789', 'MN54321', 479995.00, 20750.00, '/img/storVarebil.jpg', b'0', b'0'), -- Ikke udlejet
-    (0, 2023, 'Peugeot', 'e-208', 'Hvid', 'GT', 'EVP90001', 'PEUGEOTE20812345678', 'OP12345', 299995.00, 17500.00, '/img/e208.jpg', b'1', b'1'), -- Udlejet, lejeperiode ovre, mangler skadesrapport
-    (0, 2023, 'Hyundai', 'Kona Electric', 'Sort', 'Essential', 'EVH10001', 'HYUNDAIKONA12345678', 'QR67890', 279995.00, 16500.00, '/img/kona.jpg', b'1', b'1'), -- Udlejet, lejeperiode ovre, mangler skadesrapport
-    (0, 2024, 'Mercedes', 'EQA 250', 'Sølv', 'Progressive', 'EVM10001', 'MERCEDES25012345678', 'ST12345', 549995.00, 22000.00, '/img/eqa.jpg', b'1', b'0'), -- Startet udlejning, tid tilbage
-    (0, 2024, 'Kia', 'EV6', 'Rød', 'GT-Line', 'EVK10001', 'KIAEV612345678', 'UV67890', 459995.00, 19500.00, '/img/ev6.jpg', b'1', b'0'), -- Startet udlejning, tid tilbage
-    (0, 2023, 'Skoda', 'Enyaq iV 80', 'Blå', 'Sportline', 'EVS10001', 'SKODAENYAQ12345678', 'WX12345', 499995.00, 21000.00, '/img/enyaq.jpg', b'1', b'0'), -- Startet udlejning, tid tilbage, LIMITED
-    (0, 2023, 'Ford', 'Mustang Mach-E', 'Grå', 'Extended Range', 'EVF20001', 'FORDMUSTANG12345678', 'YZ67890', 579995.00, 23000.00, '/img/mache.jpg', b'1', b'0'), -- Startet udlejning, tid tilbage, LIMITED
-    (0, 2022, 'Mazda', 'MX-30', 'Hvid', 'Exclusive', 'EVM30001', 'MAZDAMX3012345678', 'AC12345', 249995.00, 14500.00, '/img/mx30.jpg', b'1', b'0'); -- Startet udlejning, tid tilbage, LIMITED
+    (0, 2024, 'NAVOR', 'E5 ROCK 218 HK', 'Sort', 'Premium', 'EVN12345', 'NAVORE5ROCK12345678', 'AB12345', 329995.00, 18420.00, '/img/navor.jpg', b'1', b'0'), -- Udlejet, tid tilbage
+    (0, 2023, 'Fiat', '500e Icon Pack 118 HK', 'Hvid', 'Icon Pack', 'EVF50001', 'FIAT500EICON12345678', 'XY98765', 259995.00, 16230.00, '/img/fiat500e.jpg', b'1', b'0'), -- Udlejet, tid tilbage
+    (100, 2023, 'Tesla', 'Model Y Long Range', 'Blå', 'Standard', 'EVT10001', 'TESLAMODELYLONG12345678', 'CD54321', 689995.00, 29550.00, '/img/teslamodely.jpg', b'1', b'0'), -- Udlejet, tid tilbage
+    (50, 2023, 'BMW', 'iX3', 'Grå', 'Xdrive', 'EVB50001', 'BMWIX3123456789', 'EF12345', 799995.00, 41250.00, '/img/bmwix3.jpg', b'1', b'1'), -- Udlejet, lejeperiode ovre, mangler skadesrapport
+    (0, 2022, 'Nissan', 'Leaf 40 kWh', 'Rød', 'N-Connecta', 'EVN20001', 'NISSANLEAF12345678', 'GH67890', 219995.00, 11850.00, '/img/nissanleaf.png', b'1', b'1'), -- Udlejet, lejeperiode ovre, mangler skadesrapport
+    (0, 2021, 'Renault', 'Zoe 52 kWh', 'Grøn', 'Intens', 'EVR50001', 'RENAULTZOE12345678', 'IJ12345', 189995.00, 8200.00, '/img/renaultzore.jpg', b'0', b'0'), -- Ikke udlejet
+    (0, 2023, 'Audi', 'Q4 e-tron', 'Blå', 'S Line', 'EVA40001', 'AUDIQ4ETRON12345678', 'KL98765', 619995.00, 23400.00, '/img/audiq4.jpg', b'0', b'0'), -- Ikke udlejet
+    (0, 2024, 'Volkswagen', 'ID.4', 'Sort', 'Pro Performance', 'EVW20001', 'VOLKSWAGENID4123456789', 'MN54321', 479995.00, 20750.00, '/img/vwid4.jpg', b'0', b'0'), -- Ikke udlejet
+    (0, 2023, 'Peugeot', 'e-208', 'Hvid', 'GT', 'EVP90001', 'PEUGEOTE20812345678', 'OP12345', 299995.00, 17500.00, '/img/peugeote208.jpg', b'1', b'1'), -- Udlejet, lejeperiode ovre, mangler skadesrapport
+    (0, 2023, 'Hyundai', 'Kona Electric', 'Sort', 'Essential', 'EVH10001', 'HYUNDAIKONA12345678', 'QR67890', 279995.00, 16500.00, '/img/hyundaikona.jpg', b'1', b'1'), -- Udlejet, lejeperiode ovre, mangler skadesrapport
+    (0, 2024, 'Mercedes', 'EQA 250', 'Sølv', 'Progressive', 'EVM10001', 'MERCEDES25012345678', 'ST12345', 549995.00, 22000.00, '/img/mercedeseqa.jpg', b'1', b'0'), -- Startet udlejning, tid tilbage
+    (0, 2024, 'Kia', 'EV6', 'Rød', 'GT-Line', 'EVK10001', 'KIAEV612345678', 'UV67890', 459995.00, 19500.00, '/img/kiaev6.png', b'1', b'0'), -- Startet udlejning, tid tilbage
+    (0, 2023, 'Skoda', 'Enyaq iV 80', 'Blå', 'Sportline', 'EVS10001', 'SKODAENYAQ12345678', 'WX12345', 499995.00, 21000.00, '/img/skodaenyaq.jpg', b'1', b'0'), -- Startet udlejning, tid tilbage, LIMITED
+    (0, 2023, 'Ford', 'Mustang Mach-E', 'Grå', 'Extended Range', 'EVF20001', 'FORDMUSTANG12345678', 'YZ67890', 579995.00, 23000.00, '/img/fordmustangmache.jpg', b'1', b'0'), -- Startet udlejning, tid tilbage, LIMITED
+    (0, 2022, 'Mazda', 'MX-30', 'Hvid', 'Exclusive', 'EVM30001', 'MAZDAMX3012345678', 'AC12345', 249995.00, 14500.00, '/img/mazdamx30.jpg', b'1', b'0'); -- Startet udlejning, tid tilbage, LIMITED
 
 -- Indsætter testdata for medarbejdere.
 INSERT INTO employees (fullname, username, password, role)
