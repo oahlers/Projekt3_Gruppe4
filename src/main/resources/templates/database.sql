@@ -115,8 +115,6 @@ VALUES
     (0, 2023, 'Audi', 'Q4 e-tron', 'Blå', 'S Line', 'EVA40001', 'AUDIQ4ETRON12345678', 'KL98765', 619995.00, 23400.00, '/img/civicTechno.jpg', b'0', b'0'),
     (0, 2024, 'Volkswagen', 'ID.4', 'Sort', 'Pro Performance', 'EVW20001', 'VOLKSWAGENID4123456789', 'MN54321', 479995.00, 20750.00, '/img/storVarebil.jpg', b'0', b'0'),
     (0, 2023, 'Peugeot', 'e-208', 'Hvid', 'GT', 'EVP90001', 'PEUGEOTE20812345678', 'OP12345', 299995.00, 17500.00, '/img/e208.jpg', b'1', b'1'),
-    (0, 2022, 'Hyundai', 'Kona Electric', 'Grå', 'Trend', 'EVH90002', 'HYUNDAIKONA12345678', 'QR67890', 279995.00, 16500.00, '/img/kona.jpg', b'1', b'1');
-
 -- Indsætter testdata for medarbejdere.
 INSERT INTO employees (fullname, username, password, role)
 VALUES
