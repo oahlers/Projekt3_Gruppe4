@@ -1,6 +1,3 @@
-<!-- Side med oversigt over programmets biler -->
-<!-- Julius Gissel -->
-
 <!DOCTYPE html>
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -66,14 +63,8 @@
                 <div th:if="${car.rented}">
                     <th:block th:with="rental=${activeRentalsMap[car.carId]}">
                         <p><strong>Kunde:</strong> <span th:text="${rental != null} ? ${rental.customerName} : 'Ingen'"></span></p>
-                        <p><strong>Startdato:</strong>
-                            <span th:text="${rental != null and rental.startDate != null} ?
-                                ${#temporals.format(rental.startDate, 'dd-MM-yyyy')} :
-                                'Ikke udlejet'"></span></p>
-                        <p><strong>Tid tilbage af lejeperiode:</strong>
-                            <span th:text="${remainingDaysMap[car.carId] != null} ?
-                                ${remainingDaysMap[car.carId]} + ' dage (' + ${remainingMonthsMap[car.carId]} + ' måneder)' :
-                                'Ukendt'"></span></p>
+                        <p><strong>Startdato:</strong> <span th:text="${rentalStatusMap[car.carId]}"></span></p>
+                        <p><strong>Tid tilbage af lejeperiode:</strong> <span th:text="${timeRemainingStatusMap[car.carId]}"></span></p>
                     </th:block>
                 </div>
 

@@ -75,8 +75,8 @@ public class PageController {
         Map<Long, Rental> activeRentalsMap = new HashMap<>();
         Map<Long, Long> remainingDaysMap = new HashMap<>();
         Map<Long, Long> remainingMonthsMap = new HashMap<>();
-        Map<Long, String> rentalStatusMap = new HashMap<>(); // Ny map til at gemme status
-        Map<Long, String> timeRemainingStatusMap = new HashMap<>(); // Ny map til tid tilbage status
+        Map<Long, String> rentalStatusMap = new HashMap<>();
+        Map<Long, String> timeRemainingStatusMap = new HashMap<>();
 
         LocalDate today = LocalDate.now();
 
