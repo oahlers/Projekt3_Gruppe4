@@ -75,10 +75,12 @@ public class PageController {
         Map<Long, Rental> activeRentalsMap = new HashMap<>();
         Map<Long, Long> remainingDaysMap = new HashMap<>();
         Map<Long, Long> remainingMonthsMap = new HashMap<>();
+        Map<Long, String> rentalStatusMap = new HashMap<>(); // Ny map til at gemme status
+        Map<Long, String> timeRemainingStatusMap = new HashMap<>(); // Ny map til tid tilbage status
 
         LocalDate today = LocalDate.now();
 
-        activeRentals = activeRentals.stream()
+        List<Rental> ongoingRentals = activeRentals.stream()
                 .filter(rental -> rental.getStartDate() != null && rental.getRentalMonths() > 0)
                 .filter(rental -> {
                     LocalDate endDate = rental.getStartDate().plusMonths(rental.getRentalMonths());
@@ -86,13 +88,29 @@ public class PageController {
                 })
                 .collect(Collectors.toList());
 
-        for (Rental rental : activeRentals) {
+        for (Rental rental : ongoingRentals) {
             activeRentalsMap.put(rental.getCarId(), rental);
             LocalDate endDate = rental.getStartDate().plusMonths(rental.getRentalMonths());
             long remainingDays = ChronoUnit.DAYS.between(today, endDate);
             long remainingMonths = ChronoUnit.MONTHS.between(today, endDate);
             remainingDaysMap.put(rental.getCarId(), remainingDays);
             remainingMonthsMap.put(rental.getCarId(), remainingMonths);
+            rentalStatusMap.put(rental.getCarId(), rental.getStartDate().toString());
+            timeRemainingStatusMap.put(rental.getCarId(), remainingDays + " dage (" + remainingMonths + " måneder)");
+        }
+
+        for (Car car : allCars) {
+            if (car.isRented() && car.isNeedsDamageReport() && !activeRentalsMap.containsKey(car.getCarId())) {
+                Rental latestRental = rentalService.findLatestRentalByCarId(car.getCarId());
+                if (latestRental != null) {
+                    activeRentalsMap.put(car.getCarId(), latestRental);
+                    rentalStatusMap.put(car.getCarId(), "Færdigudlejet");
+                    timeRemainingStatusMap.put(car.getCarId(), "Ikke mere tid, klar til skadesrapport");
+                }
+            } else if (!activeRentalsMap.containsKey(car.getCarId())) {
+                rentalStatusMap.put(car.getCarId(), "Ikke udlejet");
+                timeRemainingStatusMap.put(car.getCarId(), "Ukendt");
+            }
         }
 
         double totalPriceAllCars = allCars.stream()
@@ -108,6 +126,8 @@ public class PageController {
         model.addAttribute("activeRentalsMap", activeRentalsMap);
         model.addAttribute("remainingDaysMap", remainingDaysMap);
         model.addAttribute("remainingMonthsMap", remainingMonthsMap);
+        model.addAttribute("rentalStatusMap", rentalStatusMap);
+        model.addAttribute("timeRemainingStatusMap", timeRemainingStatusMap);
         model.addAttribute("totalPriceAllCars", totalPriceAllCars);
         model.addAttribute("totalPriceRentedCars", totalPriceRentedCars);
         model.addAttribute("employee", loggedInEmployee);
