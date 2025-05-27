@@ -17,10 +17,12 @@ import java.util.List;
 public class DamageReportRepository {
     private final JdbcTemplate jdbcTemplate;
     private final CarRepository carRepository;
+    private final RentalRepository rentalRepository; // Tilføjet for at bruge RentalRowMapper
 
-    public DamageReportRepository(JdbcTemplate jdbcTemplate, CarRepository carRepository) {
+    public DamageReportRepository(JdbcTemplate jdbcTemplate, CarRepository carRepository, RentalRepository rentalRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.carRepository = carRepository;
+        this.rentalRepository = rentalRepository;
     }
 
     // Gemmer en ny skadesrapport i databasen sammen med tilhørende skader og nulstiller bilens status.
@@ -94,7 +96,7 @@ public class DamageReportRepository {
     public Rental findLatestRentalByCarId(Long carId) {
         String sql = "SELECT * FROM rental WHERE car_id = ? AND end_date IS NULL ORDER BY start_date DESC LIMIT 1";
         try {
-            return jdbcTemplate.queryForObject(sql, new RentalRowMapper(), carId);
+            return jdbcTemplate.queryForObject(sql, rentalRepository::mapRental, carId);
         } catch (Exception e) {
             return null;
         }
@@ -138,30 +140,6 @@ public class DamageReportRepository {
             damage.setDescription(rs.getString("description"));
             damage.setPrice(rs.getDouble("price"));
             return damage;
-        }
-    }
-
-    // Rowmapper for rental
-    // [ Rasmus Guldborg Pedersen ] [ Oliver Ahlers ]
-    private static class RentalRowMapper implements RowMapper<Rental> {
-        @Override
-        public Rental mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Rental rental = new Rental();
-            rental.setRentalId(rs.getLong("rental_id"));
-            rental.setCarId(rs.getLong("car_id"));
-            rental.setCustomerName(rs.getString("customer_name"));
-            rental.setCustomerEmail(rs.getString("customer_email"));
-            rental.setDeliveryAddress(rs.getString("delivery_address"));
-            rental.setRentalMonths(rs.getInt("rental_months"));
-            rental.setMileage(rs.getInt("mileage"));
-            rental.setPaymentTime(rs.getObject("payment_time", Integer.class));
-            rental.setTransportTime(rs.getObject("transport_time", Integer.class));
-            rental.setSubscriptionTypeId(rs.getInt("subscription_type_id"));
-            rental.setStartDate(rs.getDate("start_date") != null ?
-                    rs.getDate("start_date").toLocalDate() : null);
-            rental.setReadyForUseDate(rs.getDate("ready_for_use_date") != null ?
-                    rs.getDate("ready_for_use_date").toLocalDate() : null);
-            return rental;
         }
     }
 }
