@@ -114,7 +114,12 @@ VALUES
     (0, 2023, 'Audi', 'Q4 e-tron', 'Blå', 'S Line', 'EVA40001', 'AUDIQ4ETRON12345678', 'KL98765', 619995.00, 23400.00, '/img/civicTechno.jpg', b'0', b'0'), -- Ikke udlejet
     (0, 2024, 'Volkswagen', 'ID.4', 'Sort', 'Pro Performance', 'EVW20001', 'VOLKSWAGENID4123456789', 'MN54321', 479995.00, 20750.00, '/img/storVarebil.jpg', b'0', b'0'), -- Ikke udlejet
     (0, 2023, 'Peugeot', 'e-208', 'Hvid', 'GT', 'EVP90001', 'PEUGEOTE20812345678', 'OP12345', 299995.00, 17500.00, '/img/e208.jpg', b'1', b'1'), -- Udlejet, lejeperiode ovre, mangler skadesrapport
-    (0, 2023, 'Hyundai', 'Kona Electric', 'Sort', 'Essential', 'EVH10001', 'HYUNDAIKONA12345678', 'QR67890', 279995.00, 16500.00, '/img/kona.jpg', b'1', b'1'); -- Udlejet, lejeperiode ovre, mangler skadesrapport
+    (0, 2023, 'Hyundai', 'Kona Electric', 'Sort', 'Essential', 'EVH10001', 'HYUNDAIKONA12345678', 'QR67890', 279995.00, 16500.00, '/img/kona.jpg', b'1', b'1'), -- Udlejet, lejeperiode ovre, mangler skadesrapport
+    (0, 2024, 'Mercedes', 'EQA 250', 'Sølv', 'Progressive', 'EVM10001', 'MERCEDES25012345678', 'ST12345', 549995.00, 22000.00, '/img/eqa.jpg', b'1', b'0'), -- Startet udlejning, tid tilbage
+    (0, 2024, 'Kia', 'EV6', 'Rød', 'GT-Line', 'EVK10001', 'KIAEV612345678', 'UV67890', 459995.00, 19500.00, '/img/ev6.jpg', b'1', b'0'), -- Startet udlejning, tid tilbage
+    (0, 2023, 'Skoda', 'Enyaq iV 80', 'Blå', 'Sportline', 'EVS10001', 'SKODAENYAQ12345678', 'WX12345', 499995.00, 21000.00, '/img/enyaq.jpg', b'1', b'0'), -- Startet udlejning, tid tilbage, LIMITED
+    (0, 2023, 'Ford', 'Mustang Mach-E', 'Grå', 'Extended Range', 'EVF20001', 'FORDMUSTANG12345678', 'YZ67890', 579995.00, 23000.00, '/img/mache.jpg', b'1', b'0'), -- Startet udlejning, tid tilbage, LIMITED
+    (0, 2022, 'Mazda', 'MX-30', 'Hvid', 'Exclusive', 'EVM30001', 'MAZDAMX3012345678', 'AC12345', 249995.00, 14500.00, '/img/mx30.jpg', b'1', b'0'); -- Startet udlejning, tid tilbage, LIMITED
 
 -- Indsætter testdata for medarbejdere.
 INSERT INTO employees (fullname, username, password, role)
@@ -146,7 +151,12 @@ VALUES
     (4, '2024-12-01', 'Laura Black', 'laura.black@example.com', 'Østerbrogade 100, 2100 København Ø', 4, '2025-04-01', 40, 10, 1, 3000, 0), -- Afsluttet, mangler skadesrapport
     (5, '2024-11-01', 'Sara Green', 'sara.green@example.com', 'Amagerbrogade 200, 2300 København S', 5, '2025-04-01', 20, 6, 1, 1750, 0), -- Afsluttet, mangler skadesrapport
     (9, '2024-12-15', 'Michael Brown', 'michael.brown@example.com', 'Vesterbrogade 50, 1620 København V', 4, '2025-04-15', 28, 3, 2, 1800, 0), -- Afsluttet, mangler skadesrapport
-    (10, '2024-12-15', 'Emily Davis', 'emily.davis@example.com', 'Frederiksberg Allé 25, 1820 Frederiksberg', 5, '2025-05-15', 30, 4, 2, 1600, 0); -- Afsluttet, mangler skadesrapport
+    (10, '2024-12-15', 'Emily Davis', 'emily.davis@example.com', 'Frederiksberg Allé 25, 1820 Frederiksberg', 5, '2025-05-15', 30, 4, 2, 1600, 0), -- Afsluttet, mangler skadesrapport
+    (11, '2025-05-25', 'Thomas Jensen', 'thomas.jensen@example.com', 'Gammel Kongevej 10, 1610 København V', 6, '2025-11-25', 30, 25, 1, 1200, 0), -- Startet udlejning, tid tilbage
+    (12, '2025-05-26', 'Anna Larsen', 'anna.larsen@example.com', 'Strandvejen 50, 2900 Hellerup', 6, '2025-11-26', 35, 30, 1, 1300, 0), -- Startet udlejning, tid tilbage
+    (13, '2025-05-20', 'Peter Nielsen', 'peter.nielsen@example.com', 'Lyngbyvej 20, 2100 København Ø', 5, '2025-10-20', 28, 5, 2, 2000, 0), -- Startet udlejning, tid tilbage, LIMITED
+    (14, '2025-05-15', 'Maria Hansen', 'maria.hansen@example.com', 'Frederikssundsvej 30, 2400 København NV', 5, '2025-10-15', 30, 6, 2, 1900, 0), -- Startet udlejning, tid tilbage, LIMITED
+    (15, '2025-05-10', 'Lars Petersen', 'lars.petersen@example.com', 'Ryesgade 25, 8000 Aarhus C', 5, '2025-10-10', 25, 4, 2, 1800, 0); -- Startet udlejning, tid tilbage, LIMITED
 
 -- Indsætter testdata for skadesrapporter.
 INSERT INTO damage_report (car_id, employee_id, customer_email, mileage)
